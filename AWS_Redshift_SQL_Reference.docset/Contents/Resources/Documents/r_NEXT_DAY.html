@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_NEXT_DAY">NEXT_DAY Function</h1><p>NEXT_DAY returns the date of the first instance of the specified day that is later
+                        than
+                        the given date.
+                     </p><p>If the <em>day</em> value is the same day of the week as
+                        <em>given_date</em>, the next occurrence of that day is returned.
+                     </p><h2 id="r_NEXT_DAY-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">NEXT_DAY ( { <em>date</em> | <em>timestamp</em> }, <em>day</em> )</code></pre><h2 id="r_NEXT_DAY-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>date</em> | <em>timestamp</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A date or timestamp column or an expression that implicitly converts to a
+                                 date or time stamp.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>day</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A string containing the name of any day. Capitalization does not
+                                 matter.
+                              </p>
+                              
+                              <p>Valid values are as follows:</p>
+                              
+                              <div class="table">
+                                 <div class="table-contents">
+                                    <table id="w278aac41c11c23c51b9b2b3b3b5">
+                                       
+                                       <tr>
+                                          
+                                          <th>Day</th>
+                                          
+                                          <th>Values</th>
+                                          
+                                       </tr>
+                                       
+                                       
+                                       <tr>
+                                          
+                                          <td>Sunday</td>
+                                          
+                                          <td>Su, Sun, Sunday</td>
+                                          
+                                       </tr>
+                                       
+                                       <tr>
+                                          
+                                          <td>Monday</td>
+                                          
+                                          <td>M, Mo, Mon, Monday</td>
+                                          
+                                       </tr>
+                                       
+                                       <tr>
+                                          
+                                          <td>Tuesday</td>
+                                          
+                                          <td>Tu, Tues, Tuesday</td>
+                                          
+                                       </tr>
+                                       
+                                       <tr>
+                                          
+                                          <td>Wednesday</td>
+                                          
+                                          <td>W, We Wed, Wednesday</td>
+                                          
+                                       </tr>
+                                       
+                                       <tr>
+                                          
+                                          <td>Thursday</td>
+                                          
+                                          <td>Th, Thu, Thurs, Thursday</td>
+                                          
+                                       </tr>
+                                       
+                                       <tr>
+                                          
+                                          <td>Friday</td>
+                                          
+                                          <td>F, Fr, Fri, Friday</td>
+                                          
+                                       </tr>
+                                       
+                                       <tr>
+                                          
+                                          <td>Saturday</td>
+                                          
+                                          <td>Sa, Sat, Saturday</td>
+                                          
+                                       </tr>
+                                       
+                                    </table>
+                                 </div>
+                              </div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_NEXT_DAY-return-type">Return Type</h2><p>DATE</p><h2 id="r_NEXT_DAY-example">Examples</h2><p>The following example returns the date of the first Tuesday after
+                        8/20/2014.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select next_day(&apos;2014-08-20&apos;,&apos;Tuesday&apos;);
+
+next_day
+-----------
+2014-08-26</code></pre><p>The
+                        following example gets target marketing dates for the third quarter:
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select username, (firstname ||&apos; &apos;|| lastname) as name,
+eventname, caldate, next_day (caldate, &apos;Monday&apos;) as marketing_target
+from sales, date, users, event
+where sales.buyerid = users.userid
+and sales.eventid = event.eventid
+and event.dateid = date.dateid
+and date.qtr = 3
+order by marketing_target, eventname, name;
+
+username  |     name          |   eventname        |    caldate    |   marketing_target
+----------+-------------------+--------------------+---------------+------------------
+MBO26QSG	Callum Atkinson  .38 Special            2008-07-06	2008-07-07
+WCR50YIU	Erasmus Alvarez  A Doll&apos;s House         2008-07-03	2008-07-07
+CKT70OIE	Hadassah Adkins  Ana Gabriel            2008-07-06	2008-07-07
+VVG07OUO	Nathan Abbott    Armando Manzanero      2008-07-04	2008-07-07
+GEW77SII	Scarlet Avila    August: Osage County   2008-07-06	2008-07-07
+ECR71CVS	Caryn Adkins     Ben Folds              2008-07-03	2008-07-07
+KUW82CYU	Kaden Aguilar    Bette Midler           2008-07-01	2008-07-07
+WZE78DJZ	Kay Avila        Bette Midler           2008-07-01	2008-07-07
+HXY04NVE	Dante Austin     Britney Spears         2008-07-02	2008-07-07
+URY81YWF	Wilma Anthony    Britney Spears         2008-07-02	2008-07-07
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

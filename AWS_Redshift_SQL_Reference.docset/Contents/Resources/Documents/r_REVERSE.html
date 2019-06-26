@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_REVERSE">REVERSE Function</h1><p>The REVERSE function operates on a string and returns the characters in reverse
+                        order. For example, <code class="code">reverse(&apos;abcde&apos;)</code> returns <code class="code">edcba</code>. This
+                        function works on numeric and date data types as well as character data types; however,
+                        in most cases it has practical value for character strings. 
+                     </p><h2 id="r_REVERSE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">REVERSE ( <em>expression</em> )</code></pre><h2 id="r_REVERSE-argument">Argument</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>An expression with a character, date, time stamp, or numeric data type
+                                 that represents the target of the character reversal. All expressions are
+                                 implicitly converted to variable-length character strings. Trailing blanks
+                                 in fixed-width character strings are ignored. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_REVERSE-return-type">Return Type</h2><p>REVERSE returns a VARCHAR. </p><h2 id="r_REVERSE-examples">Examples</h2><p>Select five distinct city names and their corresponding reversed names from the
+                        USERS table: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select distinct city as cityname, reverse(cityname)
+from users order by city limit 5;
+
+cityname | reverse
+---------+----------
+Aberdeen | needrebA
+Abilene  | enelibA
+Ada      | adA
+Agat     | tagA
+Agawam   | mawagA
+(5 rows)</code></pre><p>Select five sales IDs and their corresponding reversed IDs cast as character
+                        strings: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select salesid, reverse(salesid)::varchar
+from sales order by salesid desc limit 5;
+
+salesid | reverse
+--------+---------
+ 172456 | 654271
+ 172455 | 554271
+ 172454 | 454271
+ 172453 | 354271
+ 172452 | 254271
+(5 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

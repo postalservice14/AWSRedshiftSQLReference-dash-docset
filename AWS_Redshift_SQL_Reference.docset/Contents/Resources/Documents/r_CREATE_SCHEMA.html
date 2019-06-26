@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CREATE_SCHEMA">CREATE SCHEMA</h1><p>Defines a new schema for the current database.</p><h2 id="r_CREATE_SCHEMA-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CREATE SCHEMA [ IF NOT EXISTS ] <em>schema_name</em> [ AUTHORIZATION <em>username</em> ] [ <em>schema_element</em> [ ... ] ]
+
+CREATE SCHEMA AUTHORIZATION <em>username</em> [ <em>schema_element</em> [ ... ] ]</code></pre><h2 id="r_CREATE_SCHEMA-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term"> IF NOT EXISTS </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that indicates that if the specified schema already exists, the
+                                 command should make no changes and return a message that the schema exists,
+                                 rather than terminating with an error.
+                              </p>
+                              
+                              <p>This clause is useful when scripting, so the script doesn&#x2019;t fail if CREATE
+                                 SCHEMA tries to create a schema that already exists.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>schema_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the new schema. The schema name can&apos;t be <code class="code">PUBLIC</code>. For
+                                 more information about valid names, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>The list of schemas in the <a href="r_search_path.html">search_path</a> configuration parameter determines the
+                                    precedence of identically named objects when they are referenced without
+                                    schema names.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">AUTHORIZATION </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that gives ownership to a specified user.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>username</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the schema owner.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>schema_element</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Definition for one or more objects to be created within the schema.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="w2aac41b9c73b9">Limits</h2><p>Amazon Redshift enforces the following limits for schemas.</p><div class="itemizedlist">
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>There is a maximum of 9900 schemas per database.</p>
+                              
+                           </li>
+                        </ul>
+                     </div><h2 id="r_CREATE_SCHEMA-examples">Examples</h2><p>The following example creates a schema named US_SALES and gives ownership to the user
+                        DWUSER:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create schema us_sales authorization dwuser;</code></pre><p>To view the new schema, query the PG_NAMESPACE catalog table as shown
+                        following:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select nspname as schema, usename as owner
+from pg_namespace, pg_user
+where pg_namespace.nspowner = pg_user.usesysid
+and pg_user.usename =&apos;dwuser&apos;;
+
+   name   |  owner
+----------+----------
+ us_sales | dwuser
+(1 row)</code></pre><p>The following example either creates the US_SALES schema, or does nothing and returns
+                        a message if it already exists:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create schema if not exists us_sales;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

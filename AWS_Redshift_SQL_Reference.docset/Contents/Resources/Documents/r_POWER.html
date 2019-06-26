@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_POWER">POWER Function</h1><h2 id="r_POWER-synopsis">Syntax</h2><p> The POWER function is an exponential function that raises a numeric expression to
+                        the power of a second numeric expression. For example, 2 to the third power is
+                        calculated as <code class="code">power(2,3)</code>, with a result of 8. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">POW | POWER (<em>expression1</em>, <em>expression2</em>)</code></pre><p> POW and POWER are synonyms. </p><h2 id="r_POWER-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression1</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Numeric expression to be raised. Must be an integer, decimal, or
+                                 floating-point data type. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>expression2</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Power to raise <em>expression1</em>. Must be an integer,
+                                 decimal, or floating-point data type. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_POWER-return-type">Return Type</h2><p>POWER returns a DOUBLE PRECISION number. </p><h2 id="r_POWER-examples">Examples</h2><p>In the following example, the POWER function is used to forecast what ticket sales
+                        will look like in the next 10 years, based on the number of tickets sold in 2008 (the
+                        result of the subquery). The growth rate is set at 7% per year in this example. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select (select sum(qtysold) from sales, date
+where sales.dateid=date.dateid
+and year=2008) * pow((1+7::float/100),10) qty2010;
+
+qty2010
+------------------
+679353.754088594
+(1 row)</code></pre><p>The following example is a variation on the previous example, with the growth rate
+                        at 7% per year but the interval set to months (120 months over 10 years): 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select (select sum(qtysold) from sales, date
+where sales.dateid=date.dateid
+and year=2008) * pow((1+7::float/100/12),120) qty2010;
+
+qty2010
+-----------------
+694034.54678046
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

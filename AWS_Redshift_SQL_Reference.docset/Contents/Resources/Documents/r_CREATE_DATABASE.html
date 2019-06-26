@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CREATE_DATABASE">CREATE DATABASE</h1><p>Creates a new database.</p><h2 id="r_CREATE_DATABASE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CREATE DATABASE <em>database_name</em> [ WITH ]
+[ OWNER [=] <em>db_owner</em> ]
+[ CONNECTION LIMIT { <em>limit</em> | UNLIMITED } ]</code></pre><h2 id="r_CREATE_DATABASE-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>database_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the new database. For more information about valid names, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">WITH </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional keyword.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">OWNER </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Specifies a database owner.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">= </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional character.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>db_owner</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Username for the database owner.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">CONNECTION LIMIT { <em>limit</em> | UNLIMITED } </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The maximum number of database connections users are permitted to have open
+                                 concurrently. The limit is not enforced for super users. Use the UNLIMITED
+                                 keyword to permit the maximum number of concurrent connections. 
+                                                       
+                                 A limit on the number of
+                                 connections for each user might also apply. For more information, see <a href="r_CREATE_USER.html">CREATE USER</a>. The default is
+                                 UNLIMITED. To view current connections, query the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_SESSIONS.html">STV_SESSIONS</a> system
+                                 view.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>If both user and database connection limits apply, an unused connection
+                                    slot must be available that is within both limits when a user attempts to
+                                    connect.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CREATE_DATABASE-create-database-limits">CREATE DATABASE
+                        Limits
+                     </h2><p>Amazon Redshift enforces these limits for databases.</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>Maximum of 60 user-defined databases per cluster.</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>Maximum of 127 bytes for a database name.</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>Cannot be a reserved word.</p>
+                              
+                           </li>
+                        </ul>
+                     </div><h2 id="r_CREATE_DATABASE-examples">Examples</h2><p>The following example creates a database named TICKIT and gives ownership to the user
+                        DWUSER: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create database tickit
+with owner dwuser;</code></pre><p>Query the PG_DATABASE_INFO catalog table to view details about databases. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select datname, datdba, datconnlimit 
+from pg_database_info
+where datdba &gt; 1;
+
+ datname     | datdba | datconnlimit
+-------------+--------+-------------
+ admin       |    100 | UNLIMITED   
+ reports     |    100 | 100         
+ tickit      |    100 | 100         </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

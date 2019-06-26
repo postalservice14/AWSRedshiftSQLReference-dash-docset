@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVV_VACUUM_SUMMARY">SVV_VACUUM_SUMMARY</h1><p>The SVV_VACUUM_SUMMARY view joins the STL_VACUUM, STL_QUERY, and STV_TBL_PERM tables
+                        to summarize information about vacuum operations logged by the system. The view returns
+                        one row per table per vacuum transaction. The view records the elapsed time of the
+                        operation, the number of sort partitions created, the number of merge increments
+                        required, and deltas in row and block counts before and after the operation was
+                        performed.
+                     </p><p>SVV_VACUUM_SUMMARY is visible only to superusers. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_SVV_VACUUM_SUMMARY-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15d107b7b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>table_name </td>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>Name of the vacuumed table. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>xid </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Transaction ID of the VACUUM operation. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>sort_partitions </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Number of sorted partitions created during the
+                                    sort phase of the vacuum operation. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>merge_increments </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Number of merge increments required to complete
+                                    the merge phase of the vacuum operation. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>elapsed_time </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Elapsed run time of the vacuum operation (in
+                                    microseconds). 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>row_delta </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Difference in the total number of table rows
+                                    before and after the vacuum. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>sortedrow_delta </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Difference in the number of sorted table rows
+                                    before and after the vacuum. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>block_delta </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Difference in block count for the table before and
+                                    after the vacuum. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>max_merge_partitions </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td> This column is used for performance analysis and
+                                    represents the maximum number of partitions that vacuum can process
+                                    for the table per merge phase iteration. (Vacuum sorts the unsorted
+                                    region into one or more sorted partitions. Depending on the number
+                                    of columns in the table and the current Amazon Redshift configuration, the
+                                    merge phase can process a maximum number of partitions in a single
+                                    merge iteration. The merge phase will still work if the number of
+                                    sorted partitions exceeds the maximum number of merge partitions,
+                                    but more merge iterations will be required.) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVV_VACUUM_SUMMARY-sample-query">Sample Query</h2><p>The following query returns statistics for vacuum operations on three different
+                        tables. The SALES table was vacuumed twice. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">
+select table_name, xid, sort_partitions as parts, merge_increments as merges,
+elapsed_time, row_delta, sortedrow_delta as sorted_delta, block_delta
+from svv_vacuum_summary
+order by xid;
+
+table_  | xid  |parts|merges| elapsed_ | row_    | sorted_ | block_
+name    |      |     |      | time     | delta   | delta   | delta
+--------+------+-----+------+----------+---------+---------+--------
+users   | 2985 |   1 |    1 | 61919653 |       0 |   49990 |      20
+category| 3982 |   1 |    1 | 24136484 |       0 |      11 |       0
+sales   | 3992 |   2 |    1 | 71736163 |       0 | 1207192 |      32
+sales   | 4000 |   1 |    1 | 15363010 | -851648 | -851648 |    -140
+(4 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

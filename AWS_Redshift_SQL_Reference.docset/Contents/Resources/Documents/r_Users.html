@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_Users">Users</h1><p>You can create and manage database users using the Amazon Redshift SQL commands CREATE
+                        USER and
+                        ALTER USER, or you can configure your SQL client with custom Amazon Redshift
+                        JDBC or ODBC drivers that manage the process of creating database users and temporary
+                        passwords as part of the database logon process.
+                     </p><p>The drivers authenticate database users based on AWS Identity and Access Management
+                        (IAM) authentication. If you already manage user identities
+                        outside of AWS, you can use a SAML 2.0-compliant identity provider (IdP) to manage
+                        access
+                        to Amazon Redshift resources. You use an IAM role to configure your IdP and AWS to
+                        permit
+                        your federated users to generate temporary database credentials and log on to Amazon
+                        Redshift databases. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/generating-user-credentials.html">Using IAM Authentication to Generate Database User Credentials</a>.
+                        
+                     </p><p>Amazon Redshift user accounts can only be created and dropped by a database superuser.
+                        Users
+                        are authenticated when they login to Amazon Redshift. They can own databases and database
+                        objects
+                        (for example, tables) and can grant privileges on those objects to users, groups,
+                        and
+                        schemas to control who has access to which object. Users with CREATE DATABASE rights
+                        can
+                        create databases and grant privileges to those databases. Superusers have database
+                        ownership privileges for all databases.
+                     </p><h2 id="r_Users-creatingaltering-and-deleting-users">Creating, Altering, and
+                        Deleting Users
+                     </h2><p>Database users accounts are global across a data warehouse cluster (and not per
+                        individual database). 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p> To create a user use the <a href="r_CREATE_USER.html">CREATE USER</a> command. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p> To create a superuser use the <a href="r_CREATE_USER.html">CREATE USER</a> command with the CREATEUSER option. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>To remove an existing user, use the <a href="r_DROP_USER.html">DROP USER</a> command. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>To make changes to a user account, such as changing a password, use the <a href="r_ALTER_USER.html">ALTER USER</a> command. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>To view a list of users, query the PG_USER catalog table:</p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select * from pg_user;
+
+  usename   | usesysid | usecreatedb | usesuper | usecatupd |  passwd  | valuntil | useconfig
+------------+----------+-------------+----------+-----------+----------+----------+-----------
+ rdsdb      |        1 | t           | t        | t         | ******** |          |
+ masteruser |      100 | t           | t        | f         | ******** |          |
+ dwuser     |      101 | f           | f        | f         | ******** |          |
+ simpleuser |      102 | f           | f        | f         | ******** |          |
+ poweruser  |      103 | f           | t        | f         | ******** |          |
+ dbuser     |      104 | t           | f        | f         | ******** |          |
+(6 rows) </code></pre>
+                              </li>
+                        </ul>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

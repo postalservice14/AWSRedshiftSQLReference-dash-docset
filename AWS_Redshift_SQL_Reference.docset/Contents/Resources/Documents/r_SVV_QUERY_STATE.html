@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVV_QUERY_STATE">SVV_QUERY_STATE</h1><p> Use SVV_QUERY_STATE to view information about the execution of currently running
+                        queries.
+                     </p><p>The SVV_QUERY_STATE view contains a data subset of the STV_EXEC_STATE table.</p><p>SVV_QUERY_STATE is visible to all users. Superusers can see all rows; regular users
+                        can see only their own data. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_SVV_QUERY_STATE-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c55b9b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>userid </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>ID of user who generated entry. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Query ID. Can be used to join various other system
+                                    tables and views. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>seg </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Number of the query segment that is executing. A
+                                    query consists of multiple segments, and each segment consists of
+                                    one or more steps. Query segments can run in parallel. Each segment
+                                    runs in a single process. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>step </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Number of the query step that is executing. A step
+                                    is the smallest unit of query execution. Each step represents a
+                                    discrete unit of work, such as scanning a table, returning results,
+                                    or sorting data. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>maxtime </td>
+                                 
+                                 <td>interval </td>
+                                 
+                                 <td>Maximum amount of time (in microseconds) for this
+                                    step to execute. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>avgtime </td>
+                                 
+                                 <td>interval </td>
+                                 
+                                 <td>Average time (in microseconds) for this step to
+                                    execute. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>rows </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Number of rows produced by the step that is
+                                    executing. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>bytes </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Number of bytes produced by the step that is
+                                    executing.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>cpu </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>For internal use.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>memory </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>For internal use.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>rate_row </td>
+                                 
+                                 <td>double precision </td>
+                                 
+                                 <td>Rows-per-second rate since the query started,
+                                    computed by summing the rows and dividing by the number of seconds
+                                    from when the query started to the current time. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>rate_byte </td>
+                                 
+                                 <td>double precision </td>
+                                 
+                                 <td>Bytes-per-second rate since the query started,
+                                    computed by summing the bytes and dividing by the number of seconds
+                                    from when the query started to the current time. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>label </td>
+                                 
+                                 <td>character(25) </td>
+                                 
+                                 <td>Query label: a name for the step, such as
+                                    <code class="code">scan</code> or <code class="code">sort</code>. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>is_diskbased </td>
+                                 
+                                 <td>character(1) </td>
+                                 
+                                 <td>Whether this step of the query is executing as a
+                                    disk-based operation: true (<strong class="userinput"><code>t</code></strong>) or false
+                                    (<strong class="userinput"><code>f</code></strong>). Only certain steps, such as hash,
+                                    sort, and aggregate steps, can go to disk. Many types of steps are
+                                    always executed in memory. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>workmem </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Amount of working memory (in bytes) assigned to
+                                    the query step. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>num_parts </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Number of partitions a hash table is divided into
+                                    during a hash step. The hash table is partitioned when it is
+                                    estimated that the entire hash table might not fit into memory. A
+                                    positive number in this column does not imply that the hash step
+                                    executed as a disk-based operation. Check the value in the
+                                    IS_DISKBASED column to see if the hash step was disk-based. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>is_rrscan </td>
+                                 
+                                 <td>character(1) </td>
+                                 
+                                 <td>If true (<strong class="userinput"><code>t</code></strong>), indicates that
+                                    range-restricted scan was used on the step. Default is false
+                                    (<strong class="userinput"><code>f</code></strong>). 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>is_delayed_scan </td>
+                                 
+                                 <td>character(1) </td>
+                                 
+                                 <td>If true (<strong class="userinput"><code>t</code></strong>), indicates that
+                                    delayed scan was used on the step. Default is false
+                                    (<strong class="userinput"><code>f</code></strong>). 
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVV_QUERY_STATE-sample-queries">Sample Queries</h2><p>
+                        <b>Determining the Processing Time of a Query by Step</b>
+                        
+                     </p><p>The following query shows how long each step of the query with query ID 279 took
+                        to execute and how many data rows Amazon Redshift processed: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select query, seg, step, maxtime, avgtime, rows, label
+from svv_query_state
+where query = 279
+order by query, seg, step;</code></pre><p>This query retrieves the processing information about query 279, as shown in the
+                        following sample output: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">query |   seg   | step | maxtime | avgtime |  rows   | label
+------+---------+------+---------+---------+---------+-------------------
+  279 |       3 |    0 | 1658054 | 1645711 | 1405360 | scan
+  279 |       3 |    1 | 1658072 | 1645809 |       0 | project
+  279 |       3 |    2 | 1658074 | 1645812 | 1405434 | insert
+  279 |       3 |    3 | 1658080 | 1645816 | 1405437 | distribute
+  279 |       4 |    0 | 1677443 | 1666189 | 1268431 | scan
+  279 |       4 |    1 | 1677446 | 1666192 | 1268434 | insert
+  279 |       4 |    2 | 1677451 | 1666195 |       0 | aggr
+(7 rows)</code></pre><p>
+                        <b>Determining If Any Active Queries Are Currently Running on
+                           Disk</b>
+                        
+                     </p><p>The following query shows if any active queries are currently running on disk: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select query, label, is_diskbased from svv_query_state
+where is_diskbased = &apos;t&apos;;</code></pre><p>This sample output shows any active queries currently running on disk: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight "> query | label        | is_diskbased
+-------+--------------+--------------
+1025   | hash tbl=142 |      t
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

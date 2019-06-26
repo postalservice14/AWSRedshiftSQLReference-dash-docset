@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVV_VACUUM_PROGRESS">SVV_VACUUM_PROGRESS</h1><p>This view returns an estimate of how much time it will take to complete a vacuum
+                        operation that is currently in progress.
+                     </p><p>SVV_VACUUM_PROGRESS is visible only to superusers. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="sub-r_SVV_VACUUM_PROGRESS-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15d105b7b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>table_name </td>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>Name of the table currently being vacuumed, or the
+                                    table that was last vacuumed if no operation is in progress.
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>status </td>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>Description of the current activity being done as
+                                    part of the vacuum operation: 
+                                    <div class="itemizedlist">
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       
+                                       <ul class="itemizedlist" type="disc">
+                                          <li class="listitem">
+                                             
+                                             <p>Initialize</p>
+                                             
+                                          </li>
+                                          <li class="listitem">
+                                             
+                                             <p>Sort</p>
+                                             
+                                          </li>
+                                          <li class="listitem">
+                                             
+                                             <p>Merge</p>
+                                             
+                                          </li>
+                                          <li class="listitem">
+                                             
+                                             <p>Delete</p>
+                                             
+                                          </li>
+                                          <li class="listitem">
+                                             
+                                             <p>Select</p>
+                                             
+                                          </li>
+                                          <li class="listitem">
+                                             
+                                             <p>Failed</p>
+                                             
+                                          </li>
+                                          <li class="listitem">
+                                             
+                                             <p>Complete</p>
+                                             
+                                          </li>
+                                          <li class="listitem">
+                                             
+                                             <p>Skipped</p>
+                                             
+                                          </li>
+                                          <li class="listitem">
+                                             
+                                             <p>Building INTERLEAVED SORTKEY order</p>
+                                             
+                                          </li>
+                                       </ul>
+                                    </div>
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>time_remaining_estimate </td>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>Estimated time left for the current vacuum
+                                    operation to complete, in minutes and seconds: <strong class="userinput"><code>5m
+                                          10s</code></strong>, for example. An estimated time is not returned
+                                    until the vacuum completes its first sort operation. If no vacuum is
+                                    in progress, the last vacuum that was executed is displayed with
+                                    <strong class="userinput"><code>Completed</code></strong> in the STATUS column and an
+                                    empty TIME_REMAINING_ESTIMATE column. The estimate typically becomes
+                                    more accurate as the vacuum progresses. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVV_VACUUM_PROGRESS-sample-queries">Sample Queries</h2><p>The following queries, run a few minutes apart, show that a large table named
+                        SALESNEW is being vacuumed. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select * from svv_vacuum_progress;
+
+table_name    |            status             | time_remaining_estimate
+--------------+-------------------------------+-------------------------
+salesnew      |  Vacuum: initialize salesnew  |
+(1 row)
+...
+select * from svv_vacuum_progress;
+
+table_name   |         status         | time_remaining_estimate
+-------------+------------------------+-------------------------
+salesnew     |  Vacuum salesnew sort  | 33m 21s
+(1 row)</code></pre><p>The following query shows that no vacuum operation is currently in progress. The
+                        last table to be vacuumed was the SALES table. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select * from svv_vacuum_progress;
+
+table_name   |  status  | time_remaining_estimate
+-------------+----------+-------------------------
+  sales      | Complete |
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

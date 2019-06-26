@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_PG_TABLE_DEF">PG_TABLE_DEF</h1><p>Stores information about table columns.</p><p>PG_TABLE_DEF only returns information about tables that are visible to the user. If
+                        PG_TABLE_DEF does not return the expected results, verify that the <a href="r_search_path.html">search_path</a> parameter is set correctly
+                        to include the relevant schemas.
+                     </p><p>You can use <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SVV_TABLE_INFO.html">SVV_TABLE_INFO</a> to
+                        view more comprehensive information about a table, including data distribution skew,
+                        key
+                        distribution skew, table size, and statistics. 
+                     </p><h2 id="r_PG_TABLE_DEF-table-columns2">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c17c25b9b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>schemaname</td>
+                                 
+                                 <td>name</td>
+                                 
+                                 <td>Schema name.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>tablename</td>
+                                 
+                                 <td>name</td>
+                                 
+                                 <td>Table name.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>column</td>
+                                 
+                                 <td>name </td>
+                                 
+                                 <td>Column name.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>type </td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>Datatype of column.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>encoding </td>
+                                 
+                                 <td>character(32) </td>
+                                 
+                                 <td>Encoding of column.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>distkey </td>
+                                 
+                                 <td>boolean</td>
+                                 
+                                 <td>True if this column is the distribution key for
+                                    the table.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>sortkey</td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Order of the column in the sort key. If the table
+                                    uses a compound sort key, then all columns that are part of the sort
+                                    key have a positive value that indicates the position of the column
+                                    in the sort key. If the table uses an interleaved sort key, then all
+                                    each column that is part of the sort key has a value that is
+                                    alternately positive or negative, where the absolute value indicates
+                                    the position of the column in the sort key. If 0, the column is not
+                                    part of a sort key. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>notnull</td>
+                                 
+                                 <td>boolean </td>
+                                 
+                                 <td>True if the column has a NOT NULL
+                                    constraint.
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_PG_TABLE_DEF-example2">Example</h2><p>The following example shows the compound sort key columns for the
+                        LINEORDER_COMPOUND table.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select &quot;column&quot;, type, encoding, distkey, sortkey, &quot;notnull&quot; 
+from pg_table_def
+where tablename = &apos;lineorder_compound&apos; 
+and sortkey &lt;&gt; 0;
+
+column       | type    | encoding | distkey | sortkey | notnull
+-------------+---------+----------+---------+---------+--------
+lo_orderkey  | integer | delta32k | false   |       1 | true   
+lo_custkey   | integer | none     | false   |       2 | true   
+lo_partkey   | integer | none     | true    |       3 | true   
+lo_suppkey   | integer | delta32k | false   |       4 | true   
+lo_orderdate | integer | delta    | false   |       5 | true   
+(5 rows)</code></pre><p> The following example shows the interleaved sort key columns for the
+                        LINEORDER_INTERLEAVED table.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select &quot;column&quot;, type, encoding, distkey, sortkey, &quot;notnull&quot; 
+from pg_table_def
+where tablename = &apos;lineorder_interleaved&apos; 
+and sortkey &lt;&gt; 0;
+
+column       | type    | encoding | distkey | sortkey | notnull
+-------------+---------+----------+---------+---------+--------
+lo_orderkey  | integer | delta32k | false   |      -1 | true   
+lo_custkey   | integer | none     | false   |       2 | true   
+lo_partkey   | integer | none     | true    |      -3 | true   
+lo_suppkey   | integer | delta32k | false   |       4 | true   
+lo_orderdate | integer | delta    | false   |      -5 | true   
+(5 rows)</code></pre><p>PG_TABLE_DEF will only return information for tables in schemas that are included
+                        in the search path. For more information, see <a href="r_search_path.html">search_path</a>.
+                     </p><p>For example, suppose you create a new schema and a new table, then query
+                        PG_TABLE_DEF.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create schema demo;
+create table demo.demotable (one int);
+select * from pg_table_def where tablename = &apos;demotable&apos;;
+
+schemaname|tablename|column| type | encoding | distkey | sortkey | notnull 
+----------+---------+------+------+----------+---------+---------+--------</code></pre><p>The query returns no rows for the new table. Examine the setting for
+                        <code class="code">search_path</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">show search_path;
+
+  search_path
+---------------
+ $user, public
+(1 row)</code></pre><p>Add the <code class="code">demo</code> schema to the search path and execute the query
+                        again.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set search_path to &apos;$user&apos;, &apos;public&apos;, &apos;demo&apos;;
+
+select * from pg_table_def where tablename = &apos;demotable&apos;;
+
+schemaname| tablename |column|  type   | encoding |distkey|sortkey| notnull
+----------+-----------+------+---------+----------+-------+-------+--------
+demo      | demotable | one  | integer | none     | f     |     0 | f
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_GETDATE">GETDATE Function</h1><p>GETDATE returns the current date and time in the current session time zone (UTC by
+                        default).
+                     </p><h2 id="r_GETDATE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">GETDATE()</code></pre><p>The parentheses are required. </p><h2 id="r_GETDATE-return-type">Return Type</h2><p>TIMESTAMP</p><h2 id="r_GETDATE-examples">Examples</h2><p>The following example uses the GETDATE() function to return the full time stamp for
+                        the current date:
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select getdate();
+
+timestamp
+---------------------
+2008-12-04 16:10:43
+(1 row)</code></pre><p>The following example uses the GETDATE() function inside the TRUNC function to return
+                        the current date without the time:
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select trunc(getdate());
+
+trunc
+------------
+2008-12-04
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

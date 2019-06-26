@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_Privileges">Default Database User Privileges</h1><p>When you create a database object, you are its owner. By default, only a superuser
+                        or
+                        the owner of an object can query, modify, or grant privileges on the object. For users
+                        to
+                        use an object, you must grant the necessary privileges to the user or the group that
+                        contains the user. Database superusers have the same privileges as database owners.
+                     </p><p>Amazon Redshift supports the following privileges: SELECT, INSERT, UPDATE, DELETE,
+                        REFERENCES,
+                        CREATE, TEMPORARY, and USAGE. Different privileges are associated with different object
+                        types. For information on database object privileges supported by Amazon Redshift,
+                        see the <a href="r_GRANT.html">GRANT</a> command.
+                     </p><p>The right to modify or destroy an object is always the privilege of the owner only.
+                        
+                     </p><p>To revoke a privilege that was previously granted, use the <a href="r_REVOKE.html">REVOKE</a> command. The privileges of the object owner, such as DROP,
+                        GRANT, and REVOKE privileges, are implicit and cannot be granted or revoked. Object
+                        owners
+                        can revoke their own ordinary privileges, for example, to make a table read-only for
+                        themselves as well as others. Superusers retain all privileges regardless of GRANT
+                        and
+                        REVOKE commands.
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_TO_CHAR">TO_CHAR</h1><p>TO_CHAR converts a time stamp or numeric expression to a character-string data
+                        format. 
+                     </p><h2 id="r_TO_CHAR-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">TO_CHAR (<em>timestamp_expression</em> | <em>numeric_expression</em> , &apos;<em>format</em>&apos;)</code></pre><h2 id="r_TO_CHAR-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>timestamp_expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>An expression that results in a TIMESTAMP or TIMESTAMPTZ type value or a
+                                 value that can implicitly be coerced to a time stamp. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>numeric_expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>An expression that results in a numeric data type value or a value that
+                                 can implicitly be coerced to a numeric type. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Numeric_types201.html">Numeric Types</a>.
+                                 TO_CHAR inserts a space to the left of the numeral string.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>TO_CHAR does not support 128-bit DECIMAL values. </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>format</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The format for the new value. For valid formats, see <a href="r_FORMAT_strings.html">Datetime Format Strings</a> and <a href="r_Numeric_formating.html"> Numeric Format Strings</a>.
+                                 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_TO_CHAR-return-type">Return Type</h2><p>VARCHAR</p><h2 id="r_TO_CHAR-examples">Examples</h2><p>The following example converts each STARTTIME value in the EVENT table to a string
+                        that consists of hours, minutes, and seconds.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select to_char(starttime, &apos;HH12:MI:SS&apos;)
+from event where eventid between 1 and 5
+order by eventid;
+
+to_char
+----------
+02:30:00
+08:00:00
+02:30:00
+02:30:00
+07:00:00
+(5 rows)</code></pre><p>The following example converts an entire time stamp value into a different
+                        format.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select starttime, to_char(starttime, &apos;MON-DD-YYYY HH12:MIPM&apos;)
+from event where eventid=1;
+
+      starttime      |       to_char
+---------------------+---------------------
+ 2008-01-25 14:30:00 | JAN-25-2008 02:30PM
+(1 row)</code></pre><p>The following example converts a time stamp literal to a character string.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select to_char(timestamp &apos;2009-12-31 23:15:59&apos;,&apos;HH24:MI:SS&apos;);
+to_char
+----------
+23:15:59
+(1 row)</code></pre><p>The following example converts a number to a character string.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select to_char(-125.8, &apos;999D99S&apos;);
+to_char
+---------
+125.80-
+(1 row)
+</code></pre><p>The following example subtracts the commission from the price paid in the sales
+                        table. The difference is then rounded up and converted to a roman numeral, shown in
+                        the to_char column: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select salesid, pricepaid, commission, (pricepaid - commission)
+as difference, to_char(pricepaid - commission, &apos;rn&apos;) from sales
+group by sales.pricepaid, sales.commission, salesid
+order by salesid limit 10;
+
+ salesid | pricepaid | commission | difference |     to_char
+---------+-----------+------------+------------+-----------------
+       1 |    728.00 |     109.20 |     618.80 |           dcxix
+       2 |     76.00 |      11.40 |      64.60 |             lxv
+       3 |    350.00 |      52.50 |     297.50 |        ccxcviii
+       4 |    175.00 |      26.25 |     148.75 |           cxlix
+       5 |    154.00 |      23.10 |     130.90 |           cxxxi
+       6 |    394.00 |      59.10 |     334.90 |         cccxxxv
+       7 |    788.00 |     118.20 |     669.80 |           dclxx
+       8 |    197.00 |      29.55 |     167.45 |          clxvii
+       9 |    591.00 |      88.65 |     502.35 |             dii
+      10 |     65.00 |       9.75 |      55.25 |              lv
+(10 rows)</code></pre><p>The following example adds the currency symbol to the difference values shown in
+                        the to_char column: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select salesid, pricepaid, commission, (pricepaid - commission)
+as difference, to_char(pricepaid - commission, &apos;l99999D99&apos;) from sales
+group by sales.pricepaid, sales.commission, salesid
+order by salesid limit 10;
+
+salesid | pricepaid | commission | difference |  to_char
+--------+-----------+------------+------------+------------
+      1 |    728.00 |     109.20 |     618.80 | $   618.80
+      2 |     76.00 |      11.40 |      64.60 | $    64.60
+      3 |    350.00 |      52.50 |     297.50 | $   297.50
+      4 |    175.00 |      26.25 |     148.75 | $   148.75
+      5 |    154.00 |      23.10 |     130.90 | $   130.90
+      6 |    394.00 |      59.10 |     334.90 | $   334.90
+      7 |    788.00 |     118.20 |     669.80 | $   669.80
+      8 |    197.00 |      29.55 |     167.45 | $   167.45
+      9 |    591.00 |      88.65 |     502.35 | $   502.35
+     10 |     65.00 |       9.75 |      55.25 | $    55.25
+(10 rows)
+</code></pre><p>The following example lists the century in which each sale was made. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select salesid, saletime, to_char(saletime, &apos;cc&apos;) from sales
+order by salesid limit 10;
+
+ salesid |      saletime       | to_char
+---------+---------------------+---------
+       1 | 2008-02-18 02:36:48 | 21
+       2 | 2008-06-06 05:00:16 | 21
+       3 | 2008-06-06 08:26:17 | 21
+       4 | 2008-06-09 08:38:52 | 21
+       5 | 2008-08-31 09:17:02 | 21
+       6 | 2008-07-16 11:59:24 | 21
+       7 | 2008-06-26 12:56:06 | 21
+       8 | 2008-07-10 02:12:36 | 21
+       9 | 2008-07-22 02:23:17 | 21
+      10 | 2008-08-06 02:51:55 | 21
+(10 rows)</code></pre><p>The following example converts each STARTTIME value in the EVENT table to a string
+                        that consists of hours, minutes, seconds, and time zone. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select to_char(starttime, &apos;HH12:MI:SS TZ&apos;)
+from event where eventid between 1 and 5
+order by eventid;
+
+to_char
+----------
+02:30:00 UTC
+08:00:00 UTC
+02:30:00 UTC
+02:30:00 UTC
+07:00:00 UTC
+(5 rows)
+
+(10 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

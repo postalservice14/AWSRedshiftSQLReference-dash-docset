@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVV_EXTERNAL_COLUMNS">SVV_EXTERNAL_COLUMNS</h1><p>Use SVV_EXTERNAL_COLUMNS to view details for columns in external tables.</p><p>SVV_EXTERNAL_COLUMNS is visible to all users. Superusers can see all rows; regular
+                        users can see only metadata to which they have access. For more information, see <a href="r_CREATE_EXTERNAL_SCHEMA.html">CREATE EXTERNAL SCHEMA</a>.
+                     </p><h2 id="SVV_EXTERNAL_COLUMNS-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c27b7b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>schemaname</td>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>The name of the Amazon Redshift external schema for the
+                                    external table. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>tablename</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The name of the external table.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>columnname</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The name of the column.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>external_type</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The data type of the column.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>columnnum</td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>The external column number, starting from
+                                    1.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>part_key</td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>If the column is a partition key, the order of the
+                                    key. If the column isn&apos;t a partition, the value is
+                                    <strong class="userinput"><code>0</code></strong>.
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

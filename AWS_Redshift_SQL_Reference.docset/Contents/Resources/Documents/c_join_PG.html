@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="c_join_PG">Querying the Catalog Tables</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_join_PG_examples.html">Examples of Catalog Queries</a></li>
+                        </ul>
+                     </div><p>In general, you can join catalog tables and views (relations whose names begin with
+                        <strong class="userinput"><code>PG_</code></strong>) to Amazon Redshift tables and views. 
+                     </p><p>The catalog tables use a number of data types that Amazon Redshift does not support.
+                        The
+                        following data types are supported when queries join catalog tables to Amazon Redshift
+                        tables: 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>bool</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>&quot;char&quot;</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>float4</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>int2</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>int4</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>int8</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>name</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>oid</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>text</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>varchar</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>If you write a join query that explicitly or implicitly references a column that has
+                        an unsupported data type, the query returns an error. The SQL functions that are used
+                        in
+                        some of the catalog tables are also unsupported, except for those used by the
+                        PG_SETTINGS and PG_LOCKS tables.
+                     </p><p>For example, the PG_STATS table cannot be queried in a join with an Amazon Redshift
+                        table
+                        because of unsupported functions.
+                     </p><p>The following catalog tables and views provide useful information that can be joined
+                        to information in Amazon Redshift tables. Some of these tables allow only partial
+                        access
+                        because of data type and function restrictions. When you query the partially accessible
+                        tables, select or reference their columns carefully.
+                     </p><p>The following tables are completely accessible and contain no unsupported types or
+                        functions: 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-attribute.html" target="_blank">pg_attribute</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-cast.html" target="_blank">pg_cast </a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-depend.html" target="_blank">pg_depend</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-description.html" target="_blank">pg_description </a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/view-pg-locks.html" target="_blank">pg_locks </a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-opclass.html" target="_blank">pg_opclass </a>
+                                 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>The following tables are partially accessible and contain some unsupported types,
+                        functions, and truncated text columns. Values in text columns are truncated to
+                        varchar(256) values. 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-class.html" target="_blank">pg_class</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-constraint.html" target="_blank">pg_constraint</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-database.html" target="_blank">pg_database</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-group.html" target="_blank">pg_group</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-language.html" target="_blank">pg_language </a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-namespace.html" target="_blank">pg_namespace</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-operator.html" target="_blank">pg_operator</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-proc.html" target="_blank">pg_proc</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/view-pg-settings.html" target="_blank">pg_settings</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-statistic.html" target="_blank">pg_statistic</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/view-pg-tables.html" target="_blank">pg_tables</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/catalog-pg-type.html" target="_blank">pg_type </a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/view-pg-user.html" target="_blank">pg_user</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <a href="https://www.postgresql.org/docs/8.0/static/view-pg-views.html" target="_blank">pg_views</a>
+                                 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>The catalog tables that are not listed here are either inaccessible or unlikely to
+                        be
+                        useful to Amazon Redshift administrators. However, you can query any catalog table
+                        or view
+                        openly if your query does not involve a join to an Amazon Redshift table.
+                     </p><p>You can use the OID columns in the Postgres catalog tables as joining columns. For
+                        example, the join condition <code class="code">pg_database.oid = stv_tbl_perm.db_id</code> matches
+                        the internal database object ID for each PG_DATABASE row with the visible DB_ID column
+                        in the STV_TBL_PERM table. The OID columns are internal primary keys that are not
+                        visible when you select from the table. The catalog views do not have OID
+                        columns.
+                     </p><p>Some Amazon Redshift functions must execute only on the compute nodes. If a query
+                        references
+                        a user-created table, the SQL runs on the compute nodes.
+                     </p><p>A query that references only catalog tables (tables with a PG prefix, such as
+                        PG_TABLE_DEF) or that does not reference any tables, runs exclusively on the leader
+                        node.
+                     </p><p>If a query that uses a compute-node function doesn&apos;t reference a user-defined table
+                        or
+                        Amazon Redshift system table returns the following error.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">[Amazon](500310) Invalid operation: One or more of the used functions must be applied on at least one user created table.</code></pre><p>The following Amazon Redshift functions are compute-node only functions:</p><p>System information functions</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>LISTAGG</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>MEDIAN</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>PERCENTILE_CONT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>PERCENTILE_DISC and APPROXIMATE PERCENTILE_DISC</p>
+                              
+                           </li>
+                        </ul>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

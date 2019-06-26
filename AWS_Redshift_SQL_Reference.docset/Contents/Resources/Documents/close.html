@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="close">CLOSE</h1><p>(Optional) Closes all of the free resources that are associated with an open cursor.
+                        <a href="r_COMMIT.html">COMMIT</a>, <a href="r_END.html">END</a>, and <a href="r_ROLLBACK.html">ROLLBACK</a>
+                        automatically close the cursor, so it is not necessary to use the CLOSE command to
+                        explicitly close the cursor. 
+                     </p><p>For more information, see <a href="declare.html">DECLARE</a>, <a href="fetch.html">FETCH</a>. 
+                     </p><h2 id="close-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CLOSE <em>cursor</em></code></pre><h2 id="close-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term"><em>cursor</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the cursor to close. </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="close-example">CLOSE Example</h2><p>The following commands close the cursor and perform a commit, which ends the
+                        transaction:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">close movie_cursor;
+commit;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_MEDIAN">MEDIAN Function</h1><p>Calculates the median value for the range of values. NULL values in the range are
+                        ignored.
+                     </p><p>MEDIAN is an inverse distribution function that assumes a continuous distribution
+                        model.
+                     </p><p>MEDIAN is a special case of <a href="r_PERCENTILE_CONT.html">PERCENTILE_CONT</a>(.5).
+                     </p><p>MEDIAN is a compute-node only function. The
+                        function returns an error if the query doesn&apos;t reference a user-defined table or Amazon
+                        Redshift system
+                        table.
+                     </p><h2 id="r_MEDIAN-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">MEDIAN ( median_expression )</code></pre><h2 id="r_MEDIAN-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>median_expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The target column or expression that the function operates on.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_MEDIAN-data-types">Data Types</h2><p>The return type is determined by the data type of
+                        <em>median_expression</em>. The following table shows the return type
+                        for each <em>median_expression</em> data type.
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c13c27c15b5">
+                              
+                              <tr>
+                                 
+                                 <th>Input Type</th>
+                                 
+                                 <th>Return Type</th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>INT2, INT4, INT8, NUMERIC, DECIMAL</td>
+                                 
+                                 <td>DECIMAL</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>FLOAT, DOUBLE</td>
+                                 
+                                 <td>DOUBLE</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>DATE</td>
+                                 
+                                 <td>DATE</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>TIMESTAMPTZ</td>
+                                 
+                                 <td>TIMESTAMPTZ</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="w2aac41c11c13c27c17">Usage Notes</h2><p>If the <em>median_expression</em> argument is a DECIMAL data type
+                        defined with the maximum precision of 38 digits, it is possible that MEDIAN will
+                        return either an inaccurate result or an error. If the return value of the MEDIAN
+                        function exceeds 38 digits, the result is truncated to fit, which causes a loss of
+                        precision. If, during interpolation, an intermediate result exceeds the maximum
+                        precision, a numeric overflow occurs and the function returns an error. To avoid
+                        these conditions, we recommend either using a data type with lower precision or
+                        casting the <em>median_expression</em> argument to a lower precision. 
+                     </p><p>If a statement includes multiple calls to sort-based aggregate functions (LISTAGG,
+                        PERCENTILE_CONT, or MEDIAN), they must all use the same ORDER BY values. Note that
+                        MEDIAN applies an implicit order by on the expression value. 
+                     </p><p>For example, the following statement returns an error. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select top 10 salesid, sum(pricepaid), 
+percentile_cont(0.6) within group (order by salesid),
+median (pricepaid)
+from sales group by salesid, pricepaid;
+
+An error occurred when executing the SQL command:
+select top 10 salesid, sum(pricepaid), 
+percentile_cont(0.6) within group (order by salesid),
+median (pricepaid)
+from sales group by salesid, pricepai...
+
+ERROR: within group ORDER BY clauses for aggregate functions must be the same</code></pre><p>The following statement executes successfully. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select top 10 salesid, sum(pricepaid), 
+percentile_cont(0.6) within group (order by salesid),
+median (salesid)
+from sales group by salesid, pricepaid;</code></pre><h2 id="r_MEDIAN-examples">Examples</h2><p>The following example shows that MEDIAN produces the same results as
+                        PERCENTILE_CONT(0.5). 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select top 10  distinct sellerid, qtysold, 
+percentile_cont(0.5) within group (order by qtysold),
+median (qtysold) 
+from sales
+group by sellerid, qtysold;
+
+sellerid | qtysold | percentile_cont | median
+---------+---------+-----------------+-------
+       1 |       1 |             1.0 |    1.0
+       2 |       3 |             3.0 |    3.0
+       5 |       2 |             2.0 |    2.0
+       9 |       4 |             4.0 |    4.0
+      12 |       1 |             1.0 |    1.0
+      16 |       1 |             1.0 |    1.0
+      19 |       2 |             2.0 |    2.0
+      19 |       3 |             3.0 |    3.0
+      22 |       2 |             2.0 |    2.0
+      25 |       2 |             2.0 |    2.0</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

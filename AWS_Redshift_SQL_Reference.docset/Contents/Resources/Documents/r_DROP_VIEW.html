@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DROP_VIEW">DROP VIEW</h1><p>Removes a view from the database. Multiple views can be dropped with a single DROP
+                        VIEW
+                        command. This command is not reversible.
+                     </p><h2 id="r_DROP_VIEW-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">DROP VIEW [ IF EXISTS ] <em>name</em> [, ... ] [ CASCADE | RESTRICT ] </code></pre><h2 id="r_DROP_VIEW-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">IF EXISTS</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that indicates that if the specified view doesn&#x2019;t exist, the command
+                                 should make no changes and return a message that the view doesn&apos;t exist, rather
+                                 than terminating with an error.
+                              </p>
+                              
+                              <p>This clause is useful when scripting, so the script doesn&#x2019;t fail if DROP
+                                 VIEW runs against a nonexistent view.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the view to be removed.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">CASCADE</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that indicates to automatically drop objects that depend on the view,
+                                 such as other views.
+                              </p>
+                              
+                              <p>To create a view that is not dependent on other database objects, such as
+                                 views and tables, include the WITH NO SCHEMA BINDING clause in the view
+                                 definition. For more information, see <a href="r_CREATE_VIEW.html">CREATE VIEW</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">RESTRICT</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that indicates not to drop the view if any objects depend on it. This
+                                 action is the default.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_DROP_VIEW-examples">Examples</h2><p>The following example drops the view called <em>event</em>:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop view event;</code></pre><p>To remove a view that has dependencies, use the CASCADE option. For example, say we
+                        start with a table called EVENT. We then create the eventview view of the EVENT table,
+                        using the CREATE VIEW command, as shown in the following example: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create view eventview as
+select dateid, eventname, catid
+from event where catid = 1;</code></pre><p>Now, we create a second view called <em>myeventview</em>, that is based
+                        on the first view <em>eventview</em>:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create view myeventview as 
+select eventname, catid
+from eventview where eventname &lt;&gt; &apos; &apos;;</code></pre><p>At this point, two views have been created: <em>eventview</em> and
+                        <em>myeventview</em>.
+                     </p><p>The <em>myeventview</em> view is a child view
+                        with<em>eventview</em> as its parent.
+                     </p><p>To delete the <em>eventview</em> view, the obvious command to use is the
+                        following: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop view eventview;</code></pre><p>Notice that if you run this command in this case, you get the following error:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop view eventview;
+ERROR: can&apos;t drop view eventview because other objects depend on it
+HINT: Use DROP ... CASCADE to drop the dependent objects too.</code></pre><p>To remedy this, execute the following command (as suggested in the error message):
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop view eventview cascade;</code></pre><p>Both <em>eventview</em> and <em>myeventview</em> have now
+                        been dropped successfully.
+                     </p><p>The following example either drops the <em>eventview</em> view if it
+                        exists, or does nothing and returns a message if it does not:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop view if exists eventview;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

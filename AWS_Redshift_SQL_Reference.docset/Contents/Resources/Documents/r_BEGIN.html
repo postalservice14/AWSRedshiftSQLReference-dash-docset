@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_BEGIN">BEGIN</h1><p>Starts a transaction. Synonymous with START TRANSACTION.</p><p>A transaction is a single, logical unit of work, whether it consists of one command
+                        or
+                        multiple commands. In general, all commands in a transaction execute on a snapshot
+                        of the
+                        database whose starting time is determined by the value set for the
+                        transaction_snapshot_begin system configuration parameter.
+                     </p><p>By default, individual Amazon Redshift operations (queries, DDL statements, loads)
+                        are
+                        automatically committed to the database. If you want to suspend the commit for an
+                        operation
+                        until subsequent work is completed, you need to open a transaction with the BEGIN
+                        statement, then run the required commands, then close the transaction with a <a href="r_COMMIT.html">COMMIT</a> or <a href="r_END.html">END</a> statement. If necessary, you can use a <a href="r_ROLLBACK.html">ROLLBACK</a> statement to abort a transaction that
+                        is in progress. An exception to this behavior is the <a href="r_TRUNCATE.html">TRUNCATE</a> command, which commits the transaction in which it is run
+                        and can&apos;t be rolled back.
+                     </p><h2 id="r_BEGIN-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">BEGIN [ WORK | TRANSACTION ] [ ISOLATION LEVEL <em>option</em> ] [ READ WRITE | READ ONLY ]
+
+START TRANSACTION [ ISOLATION LEVEL <em>option</em> ] [ READ WRITE | READ ONLY ]
+
+Where <em>option</em> is
+
+SERIALIZABLE
+| READ UNCOMMITTED
+| READ COMMITTED
+| REPEATABLE READ
+
+<b>Note</b>: READ UNCOMMITTED, READ COMMITTED, and REPEATABLE READ have no
+operational impact and map to SERIALIZABLE in Amazon Redshift.</code></pre><h2 id="r_BEGIN-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">WORK </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional keyword.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">TRANSACTION </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional keyword; WORK and TRANSACTION are synonyms.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ISOLATION LEVEL SERIALIZABLE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Serializable isolation is supported by default, so the behavior of the
+                                 transaction is the same whether or not this syntax is included in the
+                                 statement. See <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Concurrent_writes.html">Managing Concurrent Write Operations</a>. No other isolation levels are
+                                 supported.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>The SQL standard defines four levels of transaction isolation to prevent
+                                    <em>dirty reads</em> (where a transaction reads data written
+                                    by a concurrent uncommitted transaction), <em>nonrepeatable
+                                       reads</em> (where a transaction re-reads data it read previously
+                                    and finds that data was changed by another transaction that committed since
+                                    the initial read), and <em>phantom reads</em> (where a
+                                    transaction re-executes a query, returns a set of rows that satisfy a search
+                                    condition, and then finds that the set of rows has changed because of
+                                    another recently-committed transaction):
+                                 </p>
+                                 <div class="itemizedlist">
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <ul class="itemizedlist" type="disc">
+                                       <li class="listitem">
+                                          
+                                          <p>Read uncommitted: Dirty reads, nonrepeatable reads, and phantom
+                                             reads are possible.
+                                          </p>
+                                          
+                                       </li>
+                                       <li class="listitem">
+                                          
+                                          <p>Read committed: Nonrepeatable reads and phantom reads are
+                                             possible.
+                                          </p>
+                                          
+                                       </li>
+                                       <li class="listitem">
+                                          
+                                          <p>Repeatable read: Phantom reads are possible.</p>
+                                          
+                                       </li>
+                                       <li class="listitem">
+                                          
+                                          <p>Serializable: Prevents dirty reads, nonrepeatable reads, and
+                                             phantom reads.
+                                          </p>
+                                          
+                                       </li>
+                                    </ul>
+                                 </div>
+                                 <p>Though you can use any of the four transaction isolation levels, Amazon Redshift
+                                    processes all isolation levels as serializable.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">READ WRITE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Gives the transaction read and write permissions.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">READ ONLY </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Gives the transaction read-only permissions.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_BEGIN-examples">Examples</h2><p>The following example starts a serializable transaction block: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">begin;</code></pre><p>The following example starts the transaction block with a serializable isolation
+                        level and read and write permissions: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">begin read write;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

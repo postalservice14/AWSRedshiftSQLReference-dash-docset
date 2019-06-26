@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVL_STATEMENTTEXT">SVL_STATEMENTTEXT</h1><p>Use the SVL_STATEMENTTEXT view to get a complete record of all of the SQL commands
+                        that have been run on the system.
+                     </p><p>The SVL_STATEMENTTEXT view contains the union of all of the rows in the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_DDLTEXT.html">STL_DDLTEXT</a>, <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_QUERYTEXT.html">STL_QUERYTEXT</a>, and <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_UTILITYTEXT.html">STL_UTILITYTEXT</a> tables. This view
+                        also includes a join to the STL_QUERY table.
+                     </p><p>SVL_STATEMENTTEXT is visible to all users. Superusers can see all rows; regular users
+                        can see only their own data. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_SVL_STATEMENTTEXT-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c87b9b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>userid </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>ID of user who generated entry. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>xid </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Transaction ID associated with the statement.
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>pid </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Process ID for the statement. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>label </td>
+                                 
+                                 <td>character(30) </td>
+                                 
+                                 <td>Either the name of the file used to run the query
+                                    or a label defined with a SET QUERY_GROUP command. If the query is
+                                    not file-based or the QUERY_GROUP parameter is not set, this field
+                                    is blank. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>starttime </td>
+                                 
+                                 <td>timestamp</td>
+                                 
+                                 <td>Exact time when the statement started executing,
+                                    with 6 digits of precision for fractional seconds. For example:
+                                    <strong class="userinput"><code>2009-06-12 11:29:19.131358</code></strong>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>endtime </td>
+                                 
+                                 <td>timestamp</td>
+                                 
+                                 <td>Exact time when the statement finished executing,
+                                    with 6 digits of precision for fractional seconds. For example:
+                                    <strong class="userinput"><code>2009-06-12 11:29:19.193640</code></strong>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>sequence </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>When a single statement contains more than 200
+                                    characters, additional rows are logged for that statement. Sequence
+                                    0 is the first row, 1 is the second, and so on. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>type </td>
+                                 
+                                 <td>varchar(10) </td>
+                                 
+                                 <td>Type of SQL statement:
+                                    <strong class="userinput"><code>QUERY</code></strong>, <strong class="userinput"><code>DDL</code></strong>, or
+                                    <strong class="userinput"><code>UTILITY</code></strong>. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>character(200) </td>
+                                 
+                                 <td>SQL text, in 200-character increments. </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVL_STATEMENTTEXT-sample-query">Sample Query</h2><p>The following query returns DDL statements that were run on June 16th, 2009: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select starttime, type, rtrim(text) from svl_statementtext
+where starttime like &apos;2009-06-16%&apos; and type=&apos;DDL&apos; order by starttime asc;
+
+starttime                  | type |              rtrim
+---------------------------|------|--------------------------------
+2009-06-16 10:36:50.625097 | DDL  | create table ddltest(c1 int);
+2009-06-16 15:02:16.006341 | DDL  | drop view alltickitjoin;
+2009-06-16 15:02:23.65285  | DDL  | drop table sales;
+2009-06-16 15:02:24.548928 | DDL  | drop table listing;
+2009-06-16 15:02:25.536655 | DDL  | drop table event;
+...</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

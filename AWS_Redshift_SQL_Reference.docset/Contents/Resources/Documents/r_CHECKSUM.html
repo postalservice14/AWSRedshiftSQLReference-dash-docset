@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CHECKSUM">CHECKSUM Function</h1><p>Computes a checksum value for building a hash index. </p><h2 id="r_CHECKSUM-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CHECKSUM(<em>expression</em>)</code></pre><h2 id="r_CHECKSUM-argument">Argument</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The input expression must be a VARCHAR, INTEGER, or DECIMAL data type.
+                                 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CHECKSUM-return-type">Return Type</h2><p>The CHECKSUM function returns an integer. </p><h2 id="r_CHECKSUM-example">Example</h2><p>The following example computes a checksum value for the COMMISSION column: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select checksum(commission)
+from sales
+order by salesid
+limit 10;
+
+checksum
+----------
+10920
+1140
+5250
+2625
+2310
+5910
+11820
+2955
+8865
+975
+(10 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DATE_PART_function">DATE_PART Function</h1><p>DATE_PART extracts datepart values from an expression. DATE_PART is a synonym of the
+                        PGDATE_PART function. 
+                     </p><h2 id="r_DATE_PART_function-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">DATE_PART ( <em>datepart</em>, {<em>date</em>|<em>timestamp</em>} )</code></pre><h2 id="r_DATE_PART_function-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>datepart</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The specific part of the date value (year, month, or day, for example)
+                                 that the function operates on. For more information, see <a href="r_Dateparts_for_datetime_functions.html">Dateparts for Date or Time Stamp
+                                    Functions</a>. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">{<em>date</em>|<em>timestamp</em>}</span></dt>
+                           
+                           <dd>
+                              
+                              <p>A date or timestamp column or an expression that implicitly converts to a
+                                 date or time stamp. The expression must be a date or time stamp expression
+                                 that contains the specified datepart. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_DATE_PART_function-return-type">Return Type</h2><p>DOUBLE</p><h2 id="r_DATE_PART_function-examples">Examples</h2><p>Apply the DATE_PART function to a column in a table:
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select date_part(w, listtime) as weeks, listtime
+from listing where listid=10;
+
+weeks |      listtime
+------+---------------------
+ 25   | 2008-06-17 09:44:54
+(1 row)</code></pre><p>You
+                        can name dateparts in full or abbreviate them; in this case, <em>w</em>
+                        stands for weeks. 
+                     </p><p>The day of week datepart returns an integer from 0-6, starting with Sunday. Use
+                        DATE_PART with dow (DAYOFWEEK) to view events on a Saturday. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select date_part(dow, starttime) as dow,
+starttime from event
+where date_part(dow, starttime)=6
+order by 2,1;
+
+ dow |      starttime
+-----+---------------------
+   6 | 2008-01-05 14:00:00
+   6 | 2008-01-05 14:00:00
+   6 | 2008-01-05 14:00:00
+   6 | 2008-01-05 14:00:00
+...
+(1147 rows)</code></pre><p>Apply the DATE_PART function to a literal date value:
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select date_part(minute, &apos;2009-01-01 02:08:01&apos;);
+
+pgdate_part
+-------------
+8
+(1 row)</code></pre><p>The
+                        default column name for the DATE_PART function is PGDATE_PART. 
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

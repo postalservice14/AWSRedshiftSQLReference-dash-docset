@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DROP_TABLE">DROP TABLE</h1><p>Removes a table from a database. Only the owner of the table, the schema owner, or
+                        a
+                        superuser can drop a table. 
+                     </p><p>If you are trying to empty a table of rows, without removing the table, use the DELETE
+                        or TRUNCATE command. 
+                     </p><p>DROP TABLE removes constraints that exist on the target table. Multiple tables can
+                        be
+                        removed with a single DROP TABLE command. 
+                     </p><p>DROP TABLE with an external table can&apos;t be used inside a transaction (BEGIN &#x2026;
+                        END).
+                     </p><h2 id="r_DROP_TABLE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">DROP TABLE [ IF EXISTS ] <em>name</em> [, ...] [ CASCADE | RESTRICT ]</code></pre><h2 id="r_DROP_TABLE-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">IF EXISTS</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that indicates that if the specified table doesn&#x2019;t exist, the command
+                                 should make no changes and return a message that the table doesn&apos;t exist,
+                                 rather than terminating with an error.
+                              </p>
+                              
+                              <p>This clause is useful when scripting, so the script doesn&#x2019;t fail if DROP
+                                 TABLE runs against a nonexistent table.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the table to drop. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">CASCADE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that indicates to automatically drop objects that depend on the
+                                 table, such as views. 
+                              </p>
+                              
+                              <p>To create a view that is not dependent on a table referenced by the view,
+                                 include the WITH NO SCHEMA BINDING clause in the view definition. For more
+                                 information, see <a href="r_CREATE_VIEW.html">CREATE VIEW</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">RESTRICT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that indicates not to drop the table if any objects depend on it.
+                                 This action is the default.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_DROP_TABLE-examples">Examples</h2><p>
+                        <b>Dropping a Table with No Dependencies</b>
+                        
+                     </p><p>The following example creates and drops a table called FEEDBACK that has no
+                        dependencies: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table feedback(a int);
+
+drop table feedback;</code></pre><p> If a table contains columns that are referenced by views or other tables, Amazon
+                        Redshift
+                        displays a message such as the following. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">Invalid operation: cannot drop table feedback because other objects depend on it</code></pre><p>
+                        <b>Dropping Two Tables Simultaneously</b>
+                        
+                     </p><p>The following command set creates a FEEDBACK table and a BUYERS table and then drops
+                        both tables with a single command: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table feedback(a int);
+
+create table buyers(a int);
+
+drop table feedback, buyers;
+</code></pre><p>
+                        <b>Dropping a Table with a Dependency</b>
+                        
+                     </p><p>The following steps show how to drop a table called FEEDBACK using the CASCADE
+                        switch. 
+                     </p><p>First, create a simple table called FEEDBACK using the CREATE TABLE command: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table feedback(a int);</code></pre><p> Next, use the CREATE VIEW command to create a view called FEEDBACK_VIEW that relies
+                        on the table FEEDBACK: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create view feedback_view as select * from feedback;</code></pre><p> The following example drops the table FEEDBACK and also drops the view
+                        FEEDBACK_VIEW, because FEEDBACK_VIEW is dependent on the table FEEDBACK: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop table feedback cascade;</code></pre><p>
+                        <b>Viewing the Dependencies for a Table</b>
+                        
+                     </p><p>You can create a view that holds the dependency information for all of the tables
+                        in
+                        a database. Before dropping a given table, query this view to determine if the table
+                        has
+                        dependencies. 
+                     </p><p>Type the following command to create a FIND_DEPEND view, which joins dependencies
+                        with object references: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create view find_depend as
+select distinct c_p.oid as tbloid,
+n_p.nspname as schemaname, c_p.relname as name,
+n_c.nspname as refbyschemaname, c_c.relname as refbyname,
+c_c.oid as viewoid
+from pg_catalog.pg_class c_p
+join pg_catalog.pg_depend d_p
+on c_p.relfilenode = d_p.refobjid
+join pg_catalog.pg_depend d_c
+on d_p.objid = d_c.objid
+join pg_catalog.pg_class c_c
+on d_c.refobjid = c_c.relfilenode
+left outer join pg_namespace n_p
+on c_p.relnamespace = n_p.oid
+left outer join pg_namespace n_c
+on c_c.relnamespace = n_c.oid
+where d_c.deptype = &apos;i&apos;::&quot;char&quot;
+and c_c.relkind = &apos;v&apos;::&quot;char&quot;;</code></pre><p>Now create a SALES_VIEW from the SALES table: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create view sales_view as select * from sales;</code></pre><p>Now query the FIND_DEPEND view to view dependencies in the database. Limit the scope
+                        of the query to the PUBLIC schema, as shown in the following code: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select * from find_depend
+where refbyschemaname=&apos;public&apos;
+order by name;</code></pre><p>This query returns the following dependencies, showing that the SALES_VIEW view is
+                        also dropped by using the CASCADE option when dropping the SALES table: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight "> tbloid | schemaname |    name     | viewoid | refbyschemaname |  refbyname
+--------+------------+-------------+---------+-----------------+-------------
+100241 | public     | find_depend |  100241 | public          | find_depend
+100203 | public     | sales       |  100245 | public          | sales_view
+100245 | public     | sales_view  |  100245 | public          | sales_view
+(3 rows)</code></pre><p>
+                        <b>Dropping a Table Using IF EXISTS</b>
+                        
+                     </p><p>The following example either drops the FEEDBACK table if it exists, or does nothing
+                        and returns a message if it does not: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop table if exists feedback;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

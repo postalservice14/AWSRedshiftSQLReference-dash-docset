@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_WF_PERCENTILE_CONT">PERCENTILE_CONT Window Function</h1><p>PERCENTILE_CONT is an inverse distribution function that assumes a continuous
+                        distribution model. It takes a percentile value and a sort specification, and returns
+                        an
+                        interpolated value that would fall into the given percentile value with respect to
+                        the
+                        sort specification. 
+                     </p><p>PERCENTILE_CONT computes a linear interpolation between values after ordering them.
+                        Using the percentile value <code class="code">(P)</code> and the number of not null rows
+                        <code class="code">(N)</code> in the aggregation group, the function computes the row number after
+                        ordering the rows according to the sort specification. This row number <code class="code">(RN)</code>
+                        is computed according to the formula <code class="code">RN = (1+ (P*(N-1))</code>. The final result
+                        of the aggregate function is computed by linear interpolation between the values from
+                        rows at row numbers <code class="code">CRN = CEILING(RN)</code> and <code class="code">FRN = FLOOR(RN)</code>. 
+                     </p><p>The final result will be as follows.</p><p>If <code class="code">(CRN = FRN = RN)</code> then the result is <code class="code">(value of expression from
+                           row at RN)</code>
+                        
+                     </p><p>Otherwise the result is as follows:</p><p><code class="code">(CRN - RN) * (value of expression for row at FRN) + (RN - FRN) * (value of
+                           expression for row at CRN)</code>.
+                     </p><p>You can specify only the PARTITION clause in the OVER clause. If PARTITION is
+                        specified, for each row, PERCENTILE_CONT returns the value that would fall into the
+                        specified percentile among a set of values within a given partition. 
+                     </p><p>PERCENTILE_CONT is a compute-node only function. The
+                        function returns an error if the query doesn&apos;t reference a user-defined table or Amazon
+                        Redshift system
+                        table.
+                     </p><h2 id="r_WF_PERCENTILE_CONT-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">PERCENTILE_CONT ( <em>percentile</em> )
+WITHIN GROUP (ORDER BY <em>expr</em>)
+OVER (  [ PARTITION BY <em>expr_list</em> ]  )
+</code></pre><h2 id="r_WF_PERCENTILE_CONT-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>percentile</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Numeric constant between 0 and 1. Nulls are ignored in the
+                                 calculation.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">WITHIN GROUP ( ORDER BY <em>expr</em>) </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Specifies numeric or date/time values to sort and compute the percentile
+                                 over. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">OVER </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Specifies the window partitioning. The OVER clause cannot contain a
+                                 window ordering or window frame specification.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">PARTITION BY <em>expr</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional argument that sets the range of records for each group in the
+                                 OVER clause.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_WF_PERCENTILE_CONT-returns">Returns</h2><p>The return type is determined by the data type of the ORDER BY expression in the
+                        WITHIN GROUP clause. The following table shows the return type for each ORDER BY
+                        expression data type.
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c17c55c23b5">
+                              
+                              <tr>
+                                 
+                                 <th>Input Type</th>
+                                 
+                                 <th>Return Type</th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>INT2, INT4, INT8, NUMERIC, DECIMAL</td>
+                                 
+                                 <td>DECIMAL</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>FLOAT, DOUBLE</td>
+                                 
+                                 <td>DOUBLE</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>DATE</td>
+                                 
+                                 <td>DATE</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="w2aac41c11c17c55c25">Usage Notes</h2><p>If the ORDER BY expression is a DECIMAL data type defined with the maximum
+                        precision of 38 digits, it is possible that PERCENTILE_CONT will return either an
+                        inaccurate result or an error. If the return value of the PERCENTILE_CONT function
+                        exceeds 38 digits, the result is truncated to fit, which causes a loss of precision.
+                        If, during interpolation, an intermediate result exceeds the maximum precision, a
+                        numeric overflow occurs and the function returns an error. To avoid these conditions,
+                        we recommend either using a data type with lower precision or casting the ORDER BY
+                        expression to a lower precision. 
+                     </p><p>For example, a SUM function with a DECIMAL argument returns a default precision of
+                        38 digits. The scale of the result is the same as the scale of the argument. So, for
+                        example, a SUM of a DECIMAL(5,2) column returns a DECIMAL(38,2) data type. 
+                     </p><p>The following example uses a SUM function in the ORDER BY clause of a
+                        PERCENTILE_CONT function. The data type of the PRICEPAID column is DECIMAL (8,2),
+                        so
+                        the SUM function returns DECIMAL(38,2). 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select salesid, sum(pricepaid), percentile_cont(0.6) 
+within group (order by sum(pricepaid) desc) over()
+from sales where salesid &lt; 10 group by salesid;</code></pre><p>To avoid a potential loss of precision or an overflow error, cast the result to a
+                        DECIMAL data type with lower precision, as the following example shows.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select salesid, sum(pricepaid), percentile_cont(0.6) 
+within group (order by sum(pricepaid)::decimal(30,2) desc) over()
+from sales where salesid &lt; 10 group by salesid;</code></pre><h2 id="r_WF_PERCENTILE_CONT-examples">Examples</h2><p>See <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_PERCENTILE_CONT_WF.html">PERCENTILE_CONT Window Function
+                           Examples</a>. 
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

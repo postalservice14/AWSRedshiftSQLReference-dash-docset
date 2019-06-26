@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_COPY">COPY</h1><p>Loads data into a table from data files or from an Amazon DynamoDB table. The files
+                        can be
+                        located in an Amazon Simple Storage Service (Amazon S3) bucket, an Amazon EMR cluster,
+                        or a remote host that is accessed
+                        using a Secure Shell (SSH) connection.
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>Amazon Redshift Spectrum external tables are read-only. You can&apos;t COPY to an external
+                           table.
+                        </p>
+                     </div><p>The COPY command appends the new input data to any existing rows in the table.</p><p>The maximum size of a single input row from any source is 4 MB.</p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>To use the COPY command, you must have <a href="r_GRANT.html#grant-insert">INSERT</a> privilege for the
+                           Amazon Redshift table. 
+                        </p>
+                     </div><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#r_COPY-syntax">COPY Syntax</a></li>
+                           <li><a href="#r_COPY-syntax-overview">COPY Syntax Overview</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_COPY-parameters.html">COPY Parameter Reference</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_COPY_usage_notes.html">Usage Notes</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_COPY_command_examples.html">COPY Examples</a></li>
+                        </ul>
+                     </div><h2 id="r_COPY-syntax">COPY Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">COPY <em>table-name</em> 
+[ <em>column-list</em> ]
+FROM <em>data_source</em>
+<em>authorization</em>
+[ [ FORMAT ] [ AS ] <em>data_format</em> ] 
+[ <em>parameter</em> [ <em>argument</em> ] [, ... ] ]</code></pre><h2 id="r_COPY-syntax-overview">COPY Syntax Overview</h2><p>You can perform a COPY operation with as few as three parameters: a table name, a
+                        data
+                        source, and authorization to access the data. 
+                     </p><p>Amazon Redshift extends the functionality of the COPY command to enable you to load
+                        data in
+                        several data formats from multiple data sources, control access to load data, manage
+                        data
+                        transformations, and manage the load operation. 
+                     </p><p>This section presents the required COPY command parameters and groups the optional
+                        parameters by function. Subsequent topics describe each parameter and explain how
+                        various
+                        options work together. You can also go directly to a parameter description by using
+                        the
+                        alphabetical parameter list. 
+                     </p><div class="highlights" id="inline-topiclist">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#r_COPY-syntax-required-parameters">Required Parameters</a></li>
+                           <li><a href="#r_COPY-syntax-overview-optional-parameters">Optional Parameters</a></li>
+                           <li><a href="#r_COPY-using-the-copy-command">Using the COPY Command</a></li>
+                        </ul>
+                     </div><h3 id="r_COPY-syntax-required-parameters">Required Parameters</h3><p>The COPY command requires three elements: </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="r_COPY.html#r_COPY-syntax-overview-table-name">Table Name</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="r_COPY.html#r_COPY-syntax-overview-data-source">Data Source</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="r_COPY.html#r_COPY-syntax-overview-credentials">Authorization</a></p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>The simplest COPY command uses the following format. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">COPY <em>table-name</em> 
+FROM <em>data-source</em>
+<em>authorization</em>;</code></pre><p>The following example creates a table named CATDEMO, and then loads the table with
+                        sample data from a data file in Amazon S3 named <code>category_pipe.txt</code>. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table catdemo(catid smallint, catgroup varchar(10), catname varchar(10), catdesc varchar(50));</code></pre><p>In the following example, the data source for the COPY command is a data file named
+                        <code>category_pipe.txt</code> in the <code>tickit</code> folder of
+                        an Amazon S3 bucket named <code>awssampledbuswest2</code>. The COPY command is
+                        authorized to access the Amazon S3 bucket through an AWS Identity and Access Management
+                        (IAM) role. If your cluster
+                        has an existing IAM role with permission to access Amazon S3 attached, you can substitute
+                        your role&apos;s Amazon Resource Name (ARN) in the following COPY command and execute
+                        it.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">copy catdemo
+from &apos;s3://awssampledbuswest2/tickit/category_pipe.txt&apos;
+iam_role &apos;arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;role-name&gt;</code></em>&apos;
+region &apos;us-west-2&apos;;</code></pre><p>For steps to create an IAM role, see <a href="https://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-create-an-iam-role.html">Step 2: Create an IAM Role</a>
+                        in the Amazon Redshift Getting Started. For complete instructions on how to use COPY
+                        commands to load
+                        sample data, including instructions for loading data from other AWS regions, see <a href="https://docs.aws.amazon.com/redshift/latest/gsg/rs-gsg-create-sample-db.html">Step 6: Load Sample Data from Amazon
+                           S3</a> in the Amazon Redshift Getting Started..
+                     </p><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><a id="r_COPY-syntax-overview-table-name"></a><span class="term"><em>table-name</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the target table for the COPY command. The table must already
+                                 exist in the database. The table can be temporary or persistent. The COPY
+                                 command appends the new input data to any existing rows in the table.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="r_COPY-syntax-overview-data-source"></a><span class="term">FROM <em>data-source</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>The location of the source data to be loaded into the target table.</p>
+                              
+                              <p>The most commonly used data repository is an Amazon S3 bucket. You can also load
+                                 from data files located in an Amazon EMR cluster, an Amazon EC2 instance, or a remote
+                                 host that your cluster can access using an SSH connection, or you can load
+                                 directly from a DynamoDB table. 
+                              </p>
+                              
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-source-s3.html">COPY from Amazon S3</a></p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-source-emr.html">COPY from Amazon EMR</a>
+                                          
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-source-ssh.html">COPY from Remote Host (SSH)</a></p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-source-dynamodb.html">COPY from Amazon DynamoDB</a></p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="r_COPY-syntax-overview-credentials"></a><span class="term">Authorization</span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that indicates the method that your cluster uses for authentication
+                                 and authorization to access other AWS resources. The COPY command needs
+                                 authorization to access data in another AWS resource, including in Amazon S3, Amazon
+                                 EMR,
+                                 Amazon DynamoDB, and Amazon EC2. You can provide that authorization by referencing
+                                 an IAM
+                                 role that is attached to your cluster or by providing the access key ID and
+                                 secret access key for an IAM user. 
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-authorization.html">Authorization Parameters</a>
+                                          
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-usage_notes-access-permissions.html#copy-usage_notes-access-role-based">Role-Based Access
+                                             Control</a>
+                                          
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-usage_notes-access-permissions.html#copy-usage_notes-access-key-based">Key-Based Access Control</a>
+                                          
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h3 id="r_COPY-syntax-overview-optional-parameters">Optional Parameters</h3><p>You can optionally specify how COPY maps field data to columns in the target table,
+                        define source data attributes to enable the COPY command to correctly read and parse
+                        the
+                        source data, and manage which operations the COPY command performs during the load
+                        process. 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-column-mapping.html">Column Mapping Options</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="r_COPY.html#r_COPY-syntax-overview-data-format">Data Format Parameters</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="r_COPY.html#r_COPY-syntax-overview-data-conversion">Data Conversion
+                                    Parameters</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="r_COPY.html#r_COPY-syntax-overview-data-load">Data Load Operations</a></p>
+                              
+                           </li>
+                        </ul>
+                     </div><h4 id="r_COPY-syntax-overview-column-mapping">Column Mapping</h4><p>By default, COPY inserts field values into the target table&apos;s columns in the same
+                        order as the fields occur in the data files. If the default column order will not
+                        work, you can specify a column list or use JSONPath expressions to map source data
+                        fields to the target columns. 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-column-mapping.html#copy-column-list">Column List</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-column-mapping.html#copy-column-mapping-jsonpaths">JSONPaths File</a></p>
+                              
+                           </li>
+                        </ul>
+                     </div><h4 id="r_COPY-syntax-overview-data-format">Data Format Parameters</h4><p>You can load data from text files in fixed-width, character-delimited,
+                        comma-separated values (CSV), or JSON format, or from Avro files.
+                     </p><p>By default, the COPY command expects the source data to be in character-delimited
+                        UTF-8 text files. The default delimiter is a pipe character ( | ). If the source data
+                        is in another format, use the following parameters to specify the data format.
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                         
+                                       
+                                         
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-format">FORMAT</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-csv">CSV</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-delimiter">DELIMITER</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-fixedwidth">FIXEDWIDTH</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-avro">AVRO</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-json">JSON</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-source-s3.html#copy-encrypted">ENCRYPTED</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-file-compression.html#copy-bzip2">BZIP2</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-file-compression.html#copy-gzip">GZIP</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-file-compression.html#copy-lzop">LZOP</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-parquet">PARQUET</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-orc">ORC</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-file-compression.html#copy-zstd">ZSTD</a>
+                                 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><h4 id="r_COPY-syntax-overview-data-conversion">Data Conversion
+                        Parameters
+                     </h4><p>As it loads the table, COPY attempts to implicitly convert the strings in the
+                        source data to the data type of the target column. If you need to specify a
+                        conversion that is different from the default behavior, or if the default conversion
+                        results in errors, you can manage data conversions by specifying the following
+                        parameters.
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-acceptanydate">ACCEPTANYDATE</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-acceptinvchars">ACCEPTINVCHARS</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-blanksasnull">BLANKSASNULL</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-dateformat">DATEFORMAT</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-emptyasnull">EMPTYASNULL</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-encoding">ENCODING</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-escape">ESCAPE</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-explicit-ids">EXPLICIT_IDS</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-fillrecord">FILLRECORD</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-ignoreblanklines">IGNOREBLANKLINES</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-ignoreheader">IGNOREHEADER</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-null-as">NULL AS</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-removequotes">REMOVEQUOTES</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-roundec">ROUNDEC</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-timeformat">TIMEFORMAT</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-trimblanks">TRIMBLANKS</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-conversion.html#copy-truncatecolumns">TRUNCATECOLUMNS</a>
+                                 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><h4 id="r_COPY-syntax-overview-data-load">Data Load Operations</h4><p>Manage the default behavior of the load operation for troubleshooting or to reduce
+                        load times by specifying the following parameters. 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-load.html#copy-comprows">COMPROWS</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-load.html#copy-compupdate">COMPUPDATE</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-load.html#copy-maxerror">MAXERROR</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-load.html#copy-noload">NOLOAD</a>
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-load.html#copy-statupdate">STATUPDATE</a>
+                                 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><h3 id="r_COPY-using-the-copy-command">Using the COPY Command</h3><p>For more information about how to use the COPY command, see the following topics:
+                        
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_COPY_command_examples.html">COPY Examples</a></p>
+                              
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_COPY_usage_notes.html">Usage Notes</a></p>
+                              
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/tutorial-loading-data.html">Tutorial: Loading Data from Amazon S3</a></p>
+                              
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_loading-data-best-practices.html">Amazon Redshift Best Practices for Loading Data</a></p>
+                              
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Loading_tables_with_the_COPY_command.html">Using a COPY Command to Load
+                                    Data</a></p>
+                              
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Loading-data-from-S3.html">Loading Data from Amazon S3</a></p>
+                                       
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/loading-data-from-emr.html">Loading Data from Amazon EMR</a></p>
+                                       
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/loading-data-from-remote-hosts.html">Loading Data from Remote Hosts</a>
+                                          
+                                       </p>
+                                       
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Loading-data-from-dynamodb.html">Loading Data from an Amazon DynamoDB
+                                             Table</a></p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Troubleshooting_load_errors.html">Troubleshooting Data Loads</a></p>
+                              
+                           </li>
+                        </ul>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

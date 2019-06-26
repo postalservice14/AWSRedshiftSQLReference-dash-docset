@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVCS_STREAM_SEGS">SVCS_STREAM_SEGS</h1><p>Lists the relationship between streams and concurrent segments.</p><p>This table is visible to all users. Superusers can see all rows; regular users can
+                        see only their own data. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_SVCS_STREAM_SEGS-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c91b7b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>userid</td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>ID of the user who generated the entry.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query </td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>Query ID. The query column can be used to join other system tables and views.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>stream </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>The set of concurrent segments of a query.
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>segment</td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>Number that identifies the query segment.</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVCS_STREAM_SEGS-sample-queries">Sample Queries</h2><p>To view the relationship between streams and concurrent segments for the most
+                        recent query, type the following query: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select *
+from svcs_stream_segs
+where query = pg_last_query_id();
+
+ query | stream | segment
+-------+--------+---------
+    10 |      1 |       2
+    10 |      0 |       0
+    10 |      2 |       4
+    10 |      1 |       3
+    10 |      0 |       1
+(5 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

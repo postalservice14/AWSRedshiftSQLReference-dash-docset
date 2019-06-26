@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CURRENT_SCHEMAS">CURRENT_SCHEMAS</h1><p>Returns an array of the names of any schemas in the current search path. The current
+                        search path is defined in the search_path parameter. 
+                     </p><h2 id="r_CURRENT_SCHEMAS-synopsis">Syntax</h2><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>This is a leader-node function. This function returns an error if it references
+                           a user-created table, an STL or STV system table, or an SVV or SVL system
+                           view.
+                        </p>
+                     </div><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">current_schemas(<em>include_implicit</em>)</code></pre><h2 id="r_CURRENT_SCHEMAS-argument">Argument</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>include_implicit</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>If true, specifies that the search path should include any implicitly
+                                 included system schemas. Valid values are <code class="code">true</code> and
+                                 <code class="code">false</code>. Typically, if <code class="code">true</code>, this parameter
+                                 returns the <code class="code">pg_catalog</code> schema in addition to the current
+                                 schema. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CURRENT_SCHEMAS-return-type">Return Type</h2><p>Returns a CHAR or VARCHAR string. </p><h2 id="r_CURRENT_SCHEMAS-examples">Examples</h2><p>The following example returns the names of the schemas in the current search path,
+                        not including implicitly included system schemas: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select current_schemas(false);
+
+current_schemas
+-----------------
+{public}
+(1 row)</code></pre><p>The following example returns the names of the schemas in the current search path,
+                        including implicitly included system schemas: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select current_schemas(true);
+
+current_schemas
+---------------------
+{pg_catalog,public}
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

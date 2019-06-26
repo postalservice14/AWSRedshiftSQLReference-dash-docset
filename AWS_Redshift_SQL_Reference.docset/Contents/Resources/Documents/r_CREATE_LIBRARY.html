@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CREATE_LIBRARY">CREATE LIBRARY</h1><p>Installs a Python library, which is available for users to incorporate when creating
+                        a
+                        user-defined function (UDF) with the <a href="r_CREATE_FUNCTION.html">CREATE FUNCTION</a> command. The total size of user-installed libraries
+                        can&apos;t exceed 100 MB. CREATE LIBRARY can&apos;t be run inside a transaction block (BEGIN
+                        &#x2026; END).
+                        For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-python-language-support.html#udf-importing-custom-python-library-modules">Importing Custom Python
+                           Library Modules</a>.
+                     </p><p>Amazon Redshift supports Python version 2.7. For more information, go to <a href="https://www.python.org/" target="_blank">www.python.org</a>.
+                     </p><h2 id="r_CREATE_LIBRARY-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CREATE [ OR REPLACE ] LIBRARY <em>library_name</em> LANGUAGE plpythonu
+FROM
+{ &apos;https://<em>file_url</em>&apos;
+| &apos;s3://<em>bucketname/file_name</em>&apos;
+<em>authorization</em>
+  [ REGION [AS] &apos;<em>aws_region</em>&apos;]
+}</code></pre><h2 id="r_CREATE_LIBRARY-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">OR REPLACE</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Specifies that if a library with the same name as this one already exists,
+                                 the existing library is replaced. REPLACE commits immediately. If a UDF that
+                                 depends on the library is running concurrently, the UDF might fail or return
+                                 unexpected results, even if the UDF is running within a transaction. You must
+                                 be the owner or a superuser to replace a library.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>library_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the library to be installed. You can&apos;t create a library that
+                                 contains a module with the same name as a Python Standard Library module or an
+                                 Amazon Redshift preinstalled Python module. If an existing user-installed library
+                                 uses
+                                 the same Python package as the library to be installed , you must drop the
+                                 existing library before installing the new library. For more information, see
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-python-language-support.html">Python Language Support for UDFs</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">LANGUAGE plpythonu</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The language to use. Python (plpythonu) is the only supported language.
+                                 Amazon Redshift supports Python version 2.7. For more information, go to <a href="https://www.python.org/" target="_blank">www.python.org</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">FROM</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The location of the library file. You can specify an Amazon S3 bucket and object
+                                 name, or you can specify a URL to download the file from a public website. The
+                                 library must be packaged in the form of a <code class="code">.zip</code> file. For more
+                                 information, go to <a href="https://docs.python.org/2/library/distutils.html?highlight=distutils#module-distutils" target="_blank">Building and Installing Python Modules</a> in the Python
+                                 documentation.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"> https://<em>file_url</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              
+                              <p>The URL to download the file from a public website. The URL can contain up
+                                 to three redirects. The following is an example of a file URL.
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">&apos;https://www.example.com/pylib.zip&apos;</code></pre>
+                              </dd>
+                           
+                           
+                           <dt><span class="term"> s3://<em>bucket_name/file_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The path to a single Amazon S3 object that contains the library file. The
+                                 following is an example of an Amazon S3 object path.
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">&apos;s3://mybucket/my-pylib.zip&apos;</code></pre>
+                              <p>If you specify an Amazon S3 bucket, you must also provide credentials for an AWS
+                                 user that has permission to download the file. 
+                              </p>
+                              
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p> If the Amazon S3 bucket does not reside in the same AWS Region as your Amazon Redshift
+                                    cluster, you must use the REGION option to specify the AWS Region in which
+                                    the data is located. The value for <em>aws_region</em> must
+                                    match an AWS Region listed in the table in the <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-source-s3.html#copy-region">REGION</a>
+                                    parameter description for the COPY command.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"><em>authorization</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that indicates the method your cluster uses for authentication and
+                                 authorization to access the Amazon S3 bucket that contains the library file. Your
+                                 cluster must have permission to access the Amazon S3 with the LIST and GET
+                                 actions.
+                              </p>
+                              
+                              <p>The syntax for authorization is the same as for the COPY command
+                                 authorization. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-authorization.html">Authorization Parameters</a>.
+                              </p>
+                              
+                              
+                              <p>To specify an IAM role, replace
+                                 <em class="replaceable"><code>&lt;account-id&gt;</code></em> and
+                                 <em class="replaceable"><code>&lt;role-name&gt;</code></em> with the account ID and role
+                                 name in the CREDENTIALS <em>credentials-args</em> string, as shown
+                                 following:
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">&apos;aws_iam_role=arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;role-name&gt;</code></em>&apos;</code></pre>
+                              <p>Optionally, if the Amazon S3 bucket uses server-side encryption, provide the
+                                 encryption key in the credentials-args string. If you use temporary security
+                                 credentials, provide the temporary token in the
+                                 <em>credentials-args</em> string.
+                              </p>
+                              
+                              <p>To specify key-based access control, provide the
+                                 <em>credentials-args</em> in the following format:
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">&apos;aws_access_key_id=<em class="replaceable"><code>&lt;access-key-id&gt;</code></em>;aws_secret_access_key=<em class="replaceable"><code>&lt;secret-access-key&gt;</code></em>&apos;</code></pre>
+                              <p>To use temporary token credentials, you must provide the temporary access
+                                 key ID, the temporary secret access key, and the temporary token. The
+                                 <em>credentials-args</em> string is in the following format: 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">WITH CREDENTIALS AS 
+&apos;aws_access_key_id=<em class="replaceable"><code>&lt;temporary-access-key-id&gt;</code></em>;aws_secret_access_key=<em class="replaceable"><code>&lt;temporary-secret-access-key&gt;</code></em>;token=<em class="replaceable"><code>&lt;temporary-token&gt;</code></em>&apos;</code></pre>
+                              <p>For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-usage_notes-access-permissions.html#r_copy-temporary-security-credentials">Temporary Security
+                                    Credentials</a></p>
+                              
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"> REGION [AS] <em>aws_region</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The AWS Region where the Amazon S3 bucket is located. REGION is required when the
+                                 Amazon S3 bucket is not in the same AWS Region as the Amazon Redshift cluster. The
+                                 value
+                                 for <em>aws_region</em> must match an AWS Region listed in the
+                                 table in the <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-source-s3.html#copy-region">REGION</a> parameter description for the COPY
+                                 command.
+                              </p>
+                              
+                              <p>By default, CREATE LIBRARY assumes that the Amazon S3 bucket is located in the
+                                 same AWS Region as the Amazon Redshift cluster.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CREATE_LIBRARY-examples">Examples</h2><p>The following two examples install the <a href="https://docs.python.org/2/library/urlparse.html#module-urlparse" target="_blank">urlparse</a> Python module, which is packaged in a file named
+                        <code class="code">urlparse3-1.0.3.zip</code>. 
+                     </p><p>The following command installs a UDF library named <code class="code">f_urlparse</code> from a
+                        package that has been uploaded to an Amazon S3 bucket located in the US East region.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">create library f_urlparse 
+language plpythonu 
+from &apos;s3://mybucket/urlparse3-1.0.3.zip&apos; 
+credentials &apos;aws_access_key_id=<em class="replaceable"><code>&lt;access-key-id&gt;</code></em>;aws_secret_access_key=<em class="replaceable"><code>&lt;secret-access-key&gt;</code></em>&apos;
+region as &apos;us-east-1&apos;;  </code></pre><p>The following example installs a library named <code class="code">f_urlparse</code> from a library
+                        file on a website.
+                     </p><p>
+                        
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create library f_urlparse 
+language plpythonu 
+from &apos;https://example.com/packages/urlparse3-1.0.3.zip&apos;;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

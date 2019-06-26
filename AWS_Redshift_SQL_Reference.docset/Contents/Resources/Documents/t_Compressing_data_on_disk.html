@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="t_Compressing_data_on_disk">Choosing a Column Compression Type</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Compression_encodings.html">Compression Encodings</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Verifying_data_compression.html">Testing Compression Encodings</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/Examples__compression_encodings_in_CREATE_TABLE_statements.html">Example: Choosing Compression Encodings for the CUSTOMER Table</a></li>
+                        </ul>
+                     </div><p>Compression is a column-level operation that reduces the size of data when it is
+                        stored. Compression conserves storage space and reduces the size of data that is read
+                        from storage, which reduces the amount of disk I/O and therefore improves query
+                        performance.
+                     </p><p>You can apply a compression type, or <em>encoding</em>, to the columns in
+                        a table manually when you create the table, or you can use the COPY command to analyze
+                        and apply compression automatically. For details about applying automatic compression,
+                        see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Loading_tables_auto_compress.html">Loading Tables with Automatic
+                           Compression</a>.
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>We strongly recommend using the COPY command to apply automatic
+                           compression.
+                        </p>
+                     </div><p>You might choose to apply compression encodings manually if the new table shares the
+                        same data characteristics as another table, or if in testing you discover that the
+                        compression encodings that are applied during automatic compression are not the best
+                        fit
+                        for your data. If you choose to apply compression encodings manually, you can run
+                        the
+                        <a href="r_ANALYZE_COMPRESSION.html">ANALYZE COMPRESSION</a>
+                        command against an already populated table and use the results to choose compression
+                        encodings.
+                     </p><p>To apply compression manually, you specify compression encodings for individual
+                        columns as part of the CREATE TABLE statement. The syntax is as follows:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CREATE TABLE <em>table_name</em> (<em>column_name</em> 
+<em>data_type</em> ENCODE <em>encoding-type</em>)[, ...] </code></pre><p>Where <em>encoding-type</em> is taken from the keyword table in the
+                        following section.
+                     </p><p>For example, the following statement creates a two-column table, PRODUCT. When data
+                        is
+                        loaded into the table, the PRODUCT_ID column is not compressed, but the PRODUCT_NAME
+                        column is compressed, using the byte dictionary encoding (BYTEDICT).
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table product(
+product_id int encode raw,
+product_name char(20) encode bytedict);</code></pre><p>You cannot change the compression encoding for a column after the table is created.
+                        You can specify the encoding for a column when it is added to a table using the ALTER
+                        TABLE command.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ALTER TABLE table-name ADD [ COLUMN ] column_name column_type ENCODE <em>encoding-type</em></code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

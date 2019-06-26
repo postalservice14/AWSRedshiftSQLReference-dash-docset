@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_PG_STATISTIC_INDICATOR">PG_STATISTIC_INDICATOR</h1><p>Stores information about the number of rows inserted or deleted since the last
+                        ANALYZE. The PG_STATISTIC_INDICATOR table is updated frequently following DML
+                        operations, so statistics are approximate.
+                     </p><p>PG_STATISTIC_INDICATOR is visible only to superusers. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_PG_STATISTIC_INDICATOR-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c17c23b7b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name</th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>stairelid</td>
+                                 
+                                 <td>oid</td>
+                                 
+                                 <td>Table ID</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>stairows</td>
+                                 
+                                 <td>float</td>
+                                 
+                                 <td>Total number of rows in the table.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>staiins</td>
+                                 
+                                 <td>float </td>
+                                 
+                                 <td>Number of rows inserted since the last
+                                    ANALYZE.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>staidels</td>
+                                 
+                                 <td>float</td>
+                                 
+                                 <td>Number of rows deleted or updated since the last
+                                    ANALYZE.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_PG_STATISTIC_INDICATOR-example">Example</h2><p>The following example returns information for table changes since the last
+                        ANALYZE. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select * from pg_statistic_indicator;
+
+stairelid | stairows | staiins | staidels
+----------+----------+---------+---------
+   108271 |       11 |       0 |        0
+   108275 |      365 |       0 |        0
+   108278 |     8798 |       0 |        0
+   108280 |    91865 |       0 |   100632
+   108267 |    89981 |   49990 |     9999
+   108269 |      808 |     606 |      374
+   108282 |   152220 |   76110 |   248566
+                </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

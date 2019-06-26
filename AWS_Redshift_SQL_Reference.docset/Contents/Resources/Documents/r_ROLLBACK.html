@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_ROLLBACK">ROLLBACK</h1><p>Aborts the current transaction and discards all updates made by that transaction.</p><p>This command performs the same function as the <a href="r_ABORT.html">ABORT</a> command.
+                     </p><h2 id="r_ROLLBACK-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">ROLLBACK [ WORK | TRANSACTION ]</code></pre><h2 id="r_ROLLBACK-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">WORK</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional keyword.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">TRANSACTION</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional keyword; WORK and TRANSACTION are synonyms.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_ROLLBACK-example">Example</h2><p>The following example creates a table then starts a transaction where data is
+                        inserted into the table. The ROLLBACK command then rolls back the data insertion to
+                        leave the table empty.
+                     </p><p>The following command creates an example table called MOVIE_GROSS:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table movie_gross( name varchar(30), gross bigint );</code></pre><p>The next set of commands starts a transaction that inserts two data rows into the
+                        table:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">begin;
+
+insert into movie_gross values ( &apos;Raiders of the Lost Ark&apos;, 23400000);
+
+insert into movie_gross values ( &apos;Star Wars&apos;, 10000000 );</code></pre><p>Next, the following command selects the data from the table to show that it was
+                        successfully inserted:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select * from movie_gross;</code></pre><p>The command output shows that both rows successfully inserted:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">name           |  gross
+-------------------------+----------
+Raiders of the Lost Ark | 23400000
+Star Wars               | 10000000
+(2 rows)</code></pre><p>This command now rolls back the data changes to where the transaction began:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">rollback;</code></pre><p>Selecting data from the table now shows an empty table:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select * from movie_gross;
+
+name | gross
+------+-------
+(0 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

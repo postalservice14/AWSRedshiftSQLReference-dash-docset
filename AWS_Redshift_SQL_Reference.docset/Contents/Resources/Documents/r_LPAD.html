@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_LPAD">LPAD and RPAD Functions</h1><p>These functions prepend or append characters to a string, based on a specified
+                        length. 
+                     </p><h2 id="r_LPAD-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">LPAD (<em>string1</em>, <em>length</em>, [ <em>string2</em> ])</code></pre><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">RPAD (<em>string1</em>, <em>length</em>, [ <em>string2</em> ])</code></pre><h2 id="r_LPAD-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string1</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A character string or an expression that evaluates to a character string,
+                                 such as the name of a character column. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>length</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>An integer that defines the length of the result of the function. The
+                                 length of a string is based on the number of characters, not bytes, so that
+                                 multi-byte characters are counted as single characters. If
+                                 <em>string1</em> is longer than the specified length, it is
+                                 truncated (on the right). If <em>length</em> is a negative
+                                 number, the result of the function is an empty string.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>string2</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>One or more characters that are prepended or appended to
+                                 <em>string1</em>. This argument is optional; if it is not
+                                 specified, spaces are used. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_LPAD-return-type">Return Type</h2><p>These functions return a VARCHAR data type. </p><h2 id="r_LPAD-examples">Examples</h2><p>Truncate a specified set of event names to 20 characters and prepend the shorter
+                        names with spaces: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select lpad(eventname,20) from event
+where eventid between 1 and 5 order by 1;
+
+lpad
+----------------------
+Salome
+Il Trovatore
+Boris Godunov
+Gotterdammerung
+La Cenerentola (Cind
+(5 rows)</code></pre><p>Truncate the same set of event names to 20 characters but append the shorter names
+                        with <code class="code">0123456789</code>. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select rpad(eventname,20,&apos;0123456789&apos;) from event
+where eventid between 1 and 5 order by 1;
+
+rpad
+----------------------
+Boris Godunov0123456
+Gotterdammerung01234
+Il Trovatore01234567
+La Cenerentola (Cind
+Salome01234567890123
+(5 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

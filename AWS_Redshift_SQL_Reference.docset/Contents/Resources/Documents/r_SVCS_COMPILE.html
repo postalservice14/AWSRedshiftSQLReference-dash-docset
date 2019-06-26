@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVCS_COMPILE">SVCS_COMPILE</h1><p>Records compile time and location for each query segment of queries, including
+                        queries run on a scaling cluster as well as queries run on the main cluster.
+                     </p><p>SVCS_COMPILE is visible to all users.</p><h2 id="r_SVCS_COMPILE-table-rows">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c17b7b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>userid</td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>The ID of the user who generated the entry.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>xid </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>The transaction ID associated with the statement. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>pid </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>The process ID associated with the statement. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query</td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>The query ID. You can use this ID to join various
+                                    other system tables and views. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>segment </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>The query segment to be compiled. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>locus </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>The location where the segment executes,
+                                    <strong class="userinput"><code>1</code></strong> if on a compute node and
+                                    <strong class="userinput"><code>2</code></strong> if on the leader node. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>starttime</td>
+                                 
+                                 <td>timestamp</td>
+                                 
+                                 <td>The time in Universal Coordinated Time (UTC) that
+                                    the compile started.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>endtime</td>
+                                 
+                                 <td>timestamp</td>
+                                 
+                                 <td>The time in UTC that the compile ended.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>compile </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>A value that is <strong class="userinput"><code>0</code></strong> if the
+                                    compile was reused and <strong class="userinput"><code>1</code></strong> if the segment was
+                                    compiled.
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVCS_COMPILE-sample-queries">Sample Queries</h2><p>In this example, queries 35878 and 35879 executed the same SQL statement. The
+                        compile column for query 35878 shows <code class="code">1</code> for four query segments, which
+                        indicates that the segments were compiled. Query 35879 shows <code class="code">0</code> in the
+                        compile column for every segment, indicating that the segments did not need to be
+                        compiled again.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select userid, xid,  pid, query, segment, locus,  
+datediff(ms, starttime, endtime) as duration, compile 
+from svcs_compile 
+where query = 35878 or query = 35879
+order by query, segment;
+
+ userid |  xid   |  pid  | query | segment | locus | duration | compile
+--------+--------+-------+-------+---------+-------+----------+---------
+    100 | 112780 | 23028 | 35878 |       0 |     1 |        0 |       0
+    100 | 112780 | 23028 | 35878 |       1 |     1 |        0 |       0
+    100 | 112780 | 23028 | 35878 |       2 |     1 |        0 |       0
+    100 | 112780 | 23028 | 35878 |       3 |     1 |        0 |       0
+    100 | 112780 | 23028 | 35878 |       4 |     1 |        0 |       0
+    100 | 112780 | 23028 | 35878 |       5 |     1 |        0 |       0
+    100 | 112780 | 23028 | 35878 |       6 |     1 |     1380 |       1
+    100 | 112780 | 23028 | 35878 |       7 |     1 |     1085 |       1
+    100 | 112780 | 23028 | 35878 |       8 |     1 |     1197 |       1
+    100 | 112780 | 23028 | 35878 |       9 |     2 |      905 |       1
+    100 | 112782 | 23028 | 35879 |       0 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       1 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       2 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       3 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       4 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       5 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       6 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       7 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       8 |     1 |        0 |       0
+    100 | 112782 | 23028 | 35879 |       9 |     2 |        0 |       0
+(20 rows)
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

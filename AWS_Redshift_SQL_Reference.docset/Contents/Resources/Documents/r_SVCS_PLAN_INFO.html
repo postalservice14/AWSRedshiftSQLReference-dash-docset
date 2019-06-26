@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVCS_PLAN_INFO">SVCS_PLAN_INFO</h1><p>Use the SVCS_PLAN_INFO table to look at the EXPLAIN output for a query in terms of
+                        a
+                        set of rows. This is an alternative way to look at query plans. 
+                     </p><p>This table is visible to all users. Superusers can see all rows; regular users can
+                        see only their own data. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_SVCS_PLAN_INFO-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c39b7b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>userid</td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>ID of the user who generated the entry.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query</td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>Query ID. The query column can be used to join other system tables and views.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>nodeid </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Plan node identifier, where a node maps to one or
+                                    more steps in the execution of the query. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>segment </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Number that identifies the query segment.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>step </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Number that identifies the query step.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>locus </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Location where the step executes. 0 if on a
+                                    compute node and 1 if on the leader node. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>plannode </td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>Enumerated value of the plan node. See the
+                                    following table for enums for plannode. (The PLANNODE column in
+                                    <a href="r_SVCS_EXPLAIN.html">SVCS_EXPLAIN</a>
+                                    contains the plan node text.)
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>startupcost </td>
+                                 
+                                 <td>double precision</td>
+                                 
+                                 <td>The estimated relative cost of returning the first
+                                    row for this step.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>totalcost </td>
+                                 
+                                 <td>double precision</td>
+                                 
+                                 <td>The estimated relative cost of executing the
+                                    step.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>rows </td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>The estimated number of rows that will be produced
+                                    by the step.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>bytes </td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>The estimated number of bytes that will be
+                                    produced by the step.
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVCS_PLAN_INFO-sample-queries">Sample Queries</h2><p>The following examples compare the query plans for a simple SELECT query returned
+                        by using the EXPLAIN command and by querying the SVCS_PLAN_INFO table. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">explain select * from category;
+QUERY PLAN
+-------------------------------------------------------------
+XN Seq Scan on category (cost=0.00..0.11 rows=11 width=49)
+(1 row)
+
+select * from category;
+catid | catgroup | catname | catdesc
+-------+----------+-----------+--------------------------------------------
+1 | Sports | MLB | Major League Baseball
+3 | Sports | NFL | National Football League
+5 | Sports | MLS | Major League Soccer
+...
+
+select * from svcs_plan_info where query=256;
+
+query | nodeid | segment | step | locus | plannode | startupcost | totalcost
+| rows | bytes
+-------+--------+---------+------+-------+----------+-------------+-----------+------+-------
+256 | 1 | 0 | 1 | 0 | 104 | 0 | 0.11 | 11 | 539
+256 | 1 | 0 | 0 | 0 | 104 | 0 | 0.11 | 11 | 539
+(2 rows)</code></pre><p>In this example, PLANNODE 104 refers to the sequential scan of the CATEGORY
+                        table.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select distinct eventname from event order by 1;
+
+eventname
+------------------------------------------------------------------------
+.38 Special
+3 Doors Down
+70s Soul Jam
+A Bronx Tale
+...
+
+explain select distinct eventname from event order by 1;
+
+QUERY PLAN
+-------------------------------------------------------------------------------------
+XN Merge (cost=1000000000136.38..1000000000137.82 rows=576 width=17)
+Merge Key: eventname
+-&gt; XN Network (cost=1000000000136.38..1000000000137.82 rows=576
+width=17)
+Send to leader
+-&gt; XN Sort (cost=1000000000136.38..1000000000137.82 rows=576
+width=17)
+Sort Key: eventname
+-&gt; XN Unique (cost=0.00..109.98 rows=576 width=17)
+-&gt; XN Seq Scan on event (cost=0.00..87.98 rows=8798
+width=17)
+(8 rows)
+
+select * from svcs_plan_info where query=240 order by nodeid desc;
+
+query | nodeid | segment | step | locus | plannode | startupcost |
+totalcost | rows | bytes
+-------+--------+---------+------+-------+----------+------------------+------------------+------+--------
+240 | 5 | 0 | 0 | 0 | 104 | 0                | 87.98   | 8798 | 149566         
+240 | 5 | 0 | 1 | 0 | 104 | 0                | 87.98   | 8798 | 149566
+240 | 4 | 0 | 2 | 0 | 117 | 0                | 109.975 | 576  | 9792
+240 | 4 | 0 | 3 | 0 | 117 | 0                | 109.975 | 576  | 9792
+240 | 4 | 1 | 0 | 0 | 117 | 0                | 109.975 | 576  | 9792
+240 | 4 | 1 | 1 | 0 | 117 | 0                | 109.975 | 576  | 9792
+240 | 3 | 1 | 2 | 0 | 114 | 1000000000136.38 | 1000000000137.82 | 576 | 9792
+240 | 3 | 2 | 0 | 0 | 114 | 1000000000136.38 | 1000000000137.82 | 576 | 9792
+240 | 2 | 2 | 1 | 0 | 123 | 1000000000136.38 | 1000000000137.82 | 576 | 9792
+240 | 1 | 3 | 0 | 0 | 122 | 1000000000136.38 | 1000000000137.82 | 576 | 9792
+(10 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

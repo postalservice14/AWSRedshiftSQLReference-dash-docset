@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="REGEXP_REPLACE">REGEXP_REPLACE Function</h1><p>Searches a string for a regular expression pattern and replaces every occurrence of
+                        the pattern with the specified string. REGEXP_REPLACE is similar to the <a href="r_REPLACE.html">REPLACE Function</a>, but lets you search a string for a
+                        regular expression pattern. For more information about regular expressions, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/pattern-matching-conditions-posix.html">POSIX Operators</a>.
+                     </p><p>REGEXP_REPLACE is similar to the <a href="r_TRANSLATE.html">TRANSLATE Function</a> and the <a href="r_REPLACE.html">REPLACE Function</a>, except that TRANSLATE makes multiple single-character
+                        substitutions and REPLACE substitutes one entire string with another string, while
+                        REGEXP_REPLACE lets you search a string for a regular expression pattern.
+                     </p><h2 id="REGEXP_REPLACE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">REGEXP_REPLACE ( <em>source_string</em>, <em>pattern</em> [, <em>replace_string</em> [ , <em>position</em> ] ] )</code></pre><h2 id="REGEXP_REPLACE-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>source_string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A string expression, such as a column name, to be searched. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>pattern</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A string literal that represents a SQL standard regular expression
+                                 pattern. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"><em>replace_string</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A string expression, such as a column name, that will replace each
+                                 occurrence of pattern. The default is an empty string ( &quot;&quot; ). 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>position</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A positive integer that indicates the position within
+                                 <em>source_string</em> to begin searching. The position is
+                                 based on the number of characters, not bytes, so that multibyte characters
+                                 are counted as single characters. The default is 1. If
+                                 <em>position</em> is less than 1, the search begins at the
+                                 first character of <em>source_string</em>. If
+                                 <em>position</em> is greater than the number of characters in
+                                 <em>source_string</em>, the result is
+                                 <em>source_string</em>.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="REGEXP_REPLACE-return-type">Return Type</h2><p>VARCHAR</p><p>If either <em>pattern</em> or <em>replace_string</em> is
+                        NULL, the return is NULL.
+                     </p><h2 id="REGEXP_REPLACE-examples">Example</h2><p>The following example deletes the <code class="code">@</code> and domain name from email
+                        addresses.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select email, regexp_replace( email, &apos;@.*\\.(org|gov|com)$&apos;) 
+from users limit 5; 
+
+              email                | regexp_replace 
+-----------------------------------+----------------  
+  DonecFri@semperpretiumneque.com  | DonecFri
+  mk1wait@UniOfTech.org            | mk1wait
+  sed@redshiftemails.com           | sed
+  bunyung@integermath.gov          | bunyung
+  tomsupporter@galaticmess.org     | tomsupporter </code></pre><p>The following example selects URLs from the fictional WEBSITES table and replaces
+                        the domain names with this value: <code class="code">internal.company.com/</code></p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select url, regexp_replace(url, &apos;^.*\\.[[:alpha:]]{3}/&apos;, 
+&apos;internal.company.com/&apos;) from websites limit 4;
+
+  url                                                                                          
+-----------------------------------------------------
+|  regexp_replace                       
++-----------------------------------------------------
+example.com/cuisine/locations/home.html    
+| internal.company.com/cuisine/locations/home.html  
+
+anycompany.employersthere.com/employed/A/index.html   
+| internal.company.com/employed/A/index.html  
+
+example.gov/credentials/keys/public      
+| internal.company.com/credentials/keys/public  
+
+yourcompany.com/2014/Q1/summary.pdf          
+| internal.company.com/2014/Q1/summary.pdf </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

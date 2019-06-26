@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="REGEXP_SUBSTR">REGEXP_SUBSTR Function</h1><p>Returns the characters extracted from a string by searching for a regular expression
+                        pattern. REGEXP_SUBSTR is similar to the <a href="r_SUBSTRING.html">SUBSTRING Function</a> function, but lets you search a string for a regular
+                        expression pattern. For more information about regular expressions, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/pattern-matching-conditions-posix.html">POSIX Operators</a>.
+                     </p><h2 id="REGEXP_SUBSTR-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">REGEXP_SUBSTR ( <em>source_string</em>, <em>pattern</em> [, <em>position </em>[, <em>occurrence</em> [, <em>parameters</em> ] ] ] )</code></pre><h2 id="REGEXP_SUBSTR-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>source_string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A string expression, such as a column name, to be searched. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>pattern</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A string literal that represents a SQL standard regular expression
+                                 pattern.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>position</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A positive integer that indicates the position within
+                                 <em>source_string</em> to begin searching. The position is
+                                 based on the number of characters, not bytes, so that multi-byte characters
+                                 are counted as single characters. The default is 1. If
+                                 <em>position</em> is less than 1, the search begins at the
+                                 first character of <em>source_string</em>. If
+                                 <em>position</em> is greater than the number of characters in
+                                 <em>source_string</em>, the result is an empty string
+                                 (&quot;&quot;).
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>occurrence</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A positive integer that indicates which occurrence of the pattern to use.
+                                 REGEXP_SUBSTR skips the first <em>occurrence</em> -1 matches.
+                                 The default is 1. If <em>occurrence</em> is less than 1 or
+                                 greater than the number of characters in <em>source_string</em>,
+                                 the search is ignored and the result is NULL.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>parameters</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>One or more string literals that indicate how the function matches the
+                                 pattern. The possible values are the following:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>c &#x2013; Perform case-sensitive matching. The default is to use
+                                          case-sensitive matching. 
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>i &#x2013; Perform case-insensitive matching. </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>e &#x2013; Extract a substring using a subexpression. </p>
+                                       
+                                       <p>If <em>pattern</em> includes a subexpression,
+                                          REGEXP_SUBSTR matches a substring using the first subexpression in
+                                          <em>pattern</em>. REGEXP_SUBSTR considers only the
+                                          first subexpression; additional subexpressions are ignored. If the
+                                          pattern doesn&apos;t have a subexpression, REGEXP_SUBSTR ignores the &apos;e&apos;
+                                          parameter. 
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="REGEXP_SUBSTR-return-type">Return Type</h2><p>VARCHAR</p><h2 id="REGEXP_SUBSTR-examples">Example</h2><p>The following example returns the portion of an email address between the @
+                        character and the domain extension.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select email, regexp_substr(email,&apos;@[^.]*&apos;)
+from users limit 5;
+
+   email                                    | regexp_substr
+--------------------------------------------+----------------
+Suspendisse.tristique@nonnisiAenean.edu     | @nonnisiAenean
+sed@lacusUtnec.ca                           | @lacusUtnec
+elementum@semperpretiumneque.ca             | @semperpretiumneque
+Integer.mollis.Integer@tristiquealiquet.org | @tristiquealiquet
+Donec.fringilla@sodalesat.org               | @sodalesat</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

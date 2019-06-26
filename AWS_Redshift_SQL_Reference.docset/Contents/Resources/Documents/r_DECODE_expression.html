@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DECODE_expression">DECODE Expression</h1><p>A DECODE expression replaces a specific value with either another specific value or
+                        a
+                        default value, depending on the result of an equality condition. This operation is
+                        equivalent to the operation of a simple CASE expression or an IF-THEN-ELSE
+                        statement.
+                     </p><h2 id="r_DECODE_expression-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">DECODE ( <em>expression</em>, <em>search</em>, <em>result</em> [, <em>search</em>, <em>result</em> ]... [ ,<em>default</em> ] )</code></pre><p>This type of expression is useful for replacing abbreviations or codes that are
+                        stored in tables with meaningful business values that are needed for reports.
+                     </p><h2 id="r_DECODE_expression-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The source of the value that you want to compare, such as a column in a
+                                 table.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>search</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The target value that is compared against the source expression, such as
+                                 a numeric value or a character string. The search expression must evaluate
+                                 to a single fixed value. You cannot specify an expression that evaluates to
+                                 a range of values, such as <code class="code">age between 20 and 29</code>; you need to
+                                 specify separate search/result pairs for each value that you want to
+                                 replace.
+                              </p>
+                              
+                              <p>The data type of all instances of the search expression must be the same
+                                 or compatible. The <em>expression</em> and
+                                 <em>search</em> parameters must also be compatible.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>result</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The replacement value that query returns when the expression matches the
+                                 search value. You must include at least one search/result pair in the DECODE
+                                 expression.
+                              </p>
+                              
+                              <p>The data types of all instances of the result expression must be the same
+                                 or compatible. The <em>result</em> and
+                                 <em>default</em> parameters must also be compatible.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>default</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>An optional default value that is used for cases when the search
+                                 condition fails. If you do not specify a default value, the DECODE
+                                 expression returns NULL.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="decode-expression-usage-notes">Usage Notes</h2><p>If the <em>expression</em> value and the <em>search</em>
+                        value are both NULL, the DECODE result is the corresponding
+                        <em>result</em> value. For an illustration of this use of the
+                        function, see the Examples section.
+                     </p><p>When used this way, DECODE is similar to <a href="r_NVL2.html">NVL2 Expression</a>, but there are some differences. For a description of
+                        these differences, see the NVL2 usage notes.
+                     </p><h2 id="r_DECODE_expression-examples">Examples</h2><p>When the value <code class="code">2008-06-01</code> exists in the START_DATE column of
+                        DATETABLE, the following example replaces it with <code class="code">June 1st, 2008</code>. The
+                        example replaces all other START_DATE values with NULL. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select decode(caldate, &apos;2008-06-01&apos;, &apos;June 1st, 2008&apos;)
+from date where month=&apos;JUN&apos; order by caldate;
+
+case
+----------------
+June 1st, 2008
+
+...
+(30 rows)</code></pre><p>The following example uses a DECODE expression to convert the five abbreviated
+                        CATNAME columns in the CATEGORY table to full names and convert other values in the
+                        column to <code class="code">Unknown</code>. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select catid, decode(catname,
+&apos;NHL&apos;, &apos;National Hockey League&apos;,
+&apos;MLB&apos;, &apos;Major League Baseball&apos;,
+&apos;MLS&apos;, &apos;Major League Soccer&apos;,
+&apos;NFL&apos;, &apos;National Football League&apos;,
+&apos;NBA&apos;, &apos;National Basketball Association&apos;,
+&apos;Unknown&apos;)
+from category
+order by catid;
+
+catid  |	case
+-------+---------------------------------
+1      | Major League Baseball
+2      | National Hockey League
+3      | National Football League
+4      | National Basketball Association
+5      | Major League Soccer
+6      | Unknown
+7      | Unknown
+8      | Unknown
+9      | Unknown
+10     | Unknown
+11     | Unknown
+(11 rows)
+</code></pre><p>Use a DECODE expression to find venues in Colorado and Nevada with NULL in the
+                        VENUESEATS column; convert the NULLs to zeroes. If the VENUESEATS column is not NULL,
+                        return 1 as the result. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select venuename, venuestate, decode(venueseats,null,0,1)
+from venue
+where venuestate in(&apos;NV&apos;,&apos;CO&apos;)
+order by 2,3,1;
+
+venuename	              | venuestate     | case
+------------------------------+----------------+-----------
+Coors Field                   |	CO	       |   1
+Dick&apos;s Sporting Goods Park    |	CO	       |   1
+Ellie Caulkins Opera House    |	CO	       |   1
+INVESCO Field		      |	CO	       |   1
+Pepsi Center		      |	CO	       |   1
+Ballys Hotel		      |	NV	       |   0
+Bellagio Hotel                |	NV	       |   0
+Caesars Palace                |	NV	       |   0
+Harrahs Hotel                 |	NV	       |   0
+Hilton Hotel                  |	NV	       |   0
+...						
+(20 rows)
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

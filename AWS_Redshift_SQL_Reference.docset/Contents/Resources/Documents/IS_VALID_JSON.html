@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="IS_VALID_JSON">IS_VALID_JSON Function</h1><p>IS_VALID_JSON validates a JSON string. The function returns Boolean <code class="code">true</code>
+                        (<code class="code">t</code>) if the string is properly formed JSON or <code class="code">false</code>
+                        (<code class="code">f</code>) if the string is malformed. To validate a JSON array, use <a href="IS_VALID_JSON_ARRAY.html">IS_VALID_JSON_ARRAY Function</a></p><p>For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/json-functions.html">JSON Functions</a>. 
+                     </p><h2 id="IS_VALID_JSON-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">is_valid_json(&apos;<em>json_string</em>&apos;)</code></pre><h2 id="IS_VALID_JSON-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>json_string</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A string or expression that evaluates to a JSON string.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="IS_VALID_JSON-return">Return Type</h2><p>BOOLEAN</p><h2 id="IS_VALID_JSON-examples">Example</h2><p>The following example creates a table and inserts JSON strings for testing.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table test_json(id int identity(0,1), json_strings varchar);
+
+-- Insert valid JSON strings --
+insert into test_json(json_strings) values
+(&apos;{&quot;a&quot;:2}&apos;), 
+(&apos;{&quot;a&quot;:{&quot;b&quot;:{&quot;c&quot;:1}}}&apos;), 
+(&apos;{&quot;a&quot;: [1,2,&quot;b&quot;]}&apos;);
+
+-- Insert invalid JSON strings --
+insert into test_json(json_strings)values
+(&apos;{{}}&apos;), 
+(&apos;{1:&quot;a&quot;}&apos;), 
+(&apos;[1,2,3]&apos;);</code></pre><p>The following example validates the strings in the preceding example.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select id, json_strings, is_valid_json(json_strings) 
+from test_json order by id;
+
+id | json_strings        | is_valid_json
+---+---------------------+--------------
+ 0 | {&quot;a&quot;:2}             | true         
+ 2 | {&quot;a&quot;:{&quot;b&quot;:{&quot;c&quot;:1}}} | true         
+ 4 | {&quot;a&quot;: [1,2,&quot;b&quot;]}    | true         
+ 6 | {{}}                | false        
+ 8 | {1:&quot;a&quot;}             | false        
+10 | [1,2,3]             | false   </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

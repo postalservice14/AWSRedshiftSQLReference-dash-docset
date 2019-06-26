@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="t_Defining_constraints">Defining Constraints</h1><p>Uniqueness, primary key, and foreign key constraints are informational only;
+                        <em>they are not enforced by Amazon Redshift</em>. Nonetheless, primary keys
+                        and foreign keys are used as planning hints and they should be declared if your ETL
+                        process or some other process in your application enforces their integrity.
+                     </p><p>For example, the query planner uses primary and foreign keys in certain statistical
+                        computations, to infer uniqueness and referential relationships that affect subquery
+                        decorrelation techniques, to order large numbers of joins, and to eliminate redundant
+                        joins.
+                     </p><p>The planner leverages these key relationships, but it assumes that all keys in
+                        Amazon Redshift tables are valid as loaded. If your application allows invalid foreign
+                        keys or
+                        primary keys, some queries could return incorrect results. For example, a SELECT
+                        DISTINCT query might return duplicate rows if the primary key is not unique. Do not
+                        define key constraints for your tables if you doubt their validity. On the other hand,
+                        you should always declare primary and foreign keys and uniqueness constraints when
+                        you
+                        know that they are valid.
+                     </p><p>Amazon Redshift <em>does</em> enforce NOT NULL column constraints.
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

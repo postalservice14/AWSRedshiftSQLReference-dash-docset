@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="t_user_group_examples">Example for Controlling User and Group
+                        Access
+                     </h1><p>This example creates user groups and user accounts and then grants them various
+                        privileges for an Amazon Redshift database that connects to a web application client.
+                        This example
+                        assumes three groups of users: regular users of a web application, power users of
+                        a web
+                        application, and web developers.
+                     </p><div class="orderedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ol>
+                           <li>
+                              
+                              <p>Create the groups where the user accounts will be assigned. The following set of
+                                 commands creates three different user groups: 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create group webappusers;
+
+create group webpowerusers;
+
+create group webdevusers;
+</code></pre>
+                              </li>
+                           <li>
+                              
+                              <p>
+                                 <span>Create several database user accounts with different privileges and add them
+                                    to the groups. </span>
+                                 
+                              </p>
+                              
+                              <div class="orderedlist">
+                                 
+                                 
+                                 
+                                 
+                                 <ol>
+                                    <li>
+                                       
+                                       <p>
+                                          <span>Create two users and add them to the WEBAPPUSERS group: </span>
+                                          
+                                       </p>
+                                       <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user webappuser1 password &apos;webAppuser1pass&apos;
+in group webappusers;
+
+create user webappuser2 password &apos;webAppuser2pass&apos;
+in group webappusers;
+</code></pre>
+                                       </li>
+                                    <li>
+                                       
+                                       <p>
+                                          <span>Create an account for a web developer and adds it to the WEBDEVUSERS
+                                             group: </span>
+                                          
+                                       </p>
+                                       <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user webdevuser1 password &apos;webDevuser2pass&apos;
+in group webdevusers;
+</code></pre>
+                                       </li>
+                                    <li>
+                                       
+                                       <p>
+                                          <span>Create a superuser account. This user will have administrative rights
+                                             to create other users: </span>
+                                          
+                                       </p>
+                                       <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user webappadmin  password &apos;webAppadminpass1&apos;
+createuser;
+</code></pre>
+                                       </li>
+                                 </ol>
+                              </div>
+                              
+                           </li>
+                           <li>
+                              
+                              <p>
+                                 <span>Create a schema to be associated with the database tables used by the web
+                                    application, and grant the various user groups access to this schema: </span>
+                                 
+                              </p>
+                              
+                              <div class="orderedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ol>
+                                    <li>
+                                       
+                                       <p>
+                                          <span>Create the WEBAPP schema: </span>
+                                          
+                                       </p>
+                                       <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create schema webapp;
+</code></pre>
+                                       </li>
+                                    <li>
+                                       
+                                       <p>
+                                          <span>Grant USAGE privileges to the WEBAPPUSERS group: </span>
+                                          
+                                       </p>
+                                       <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">grant usage on schema webapp to group webappusers;
+</code></pre>
+                                       </li>
+                                    <li>
+                                       
+                                       <p>
+                                          <span>Grant USAGE privileges to the WEBPOWERUSERS group: </span>
+                                          
+                                       </p>
+                                       <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">grant usage on schema webapp to group webpowerusers;
+</code></pre>
+                                       </li>
+                                    <li>
+                                       
+                                       <p>
+                                          <span>Grant ALL privileges to the WEBDEVUSERS group: </span>
+                                          
+                                       </p>
+                                       <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">grant all on schema webapp to group webdevusers;
+</code></pre>
+                                       </li>
+                                 </ol>
+                              </div>
+                              
+                              <p>The basic users and groups are now set up. You can now make changes to alter the
+                                 users and groups. 
+                              </p>
+                              
+                           </li>
+                           <li>
+                              
+                              <p>
+                                 <span>For example, the following command alters the search_path parameter for the
+                                    WEBAPPUSER1. </span>
+                                 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter user webappuser1 set search_path to webapp, public;
+</code></pre>
+                              <p>The SEARCH_PATH specifies the schema search order for database objects, such as
+                                 tables and functions, when the object is referenced by a simple name with no schema
+                                 specified. 
+                              </p>
+                              
+                           </li>
+                           <li>
+                              
+                              <p>
+                                 <span>You can also add users to a group after creating the group, such as adding
+                                    WEBAPPUSER2 to the WEBPOWERUSERS group: </span>
+                                 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter group webpowerusers add user webappuser2;
+</code></pre>
+                              </li>
+                        </ol>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

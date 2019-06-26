@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="String_functions_header">String Functions</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_concat_op.html">|| (Concatenation) Operator</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_BPCHARCMP.html">BPCHARCMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_BTRIM.html">BTRIM Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_BTTEXT_PATTERN_CMP.html">BTTEXT_PATTERN_CMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CHAR_LENGTH.html">CHAR_LENGTH Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CHARACTER_LENGTH.html">CHARACTER_LENGTH Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CHARINDEX.html">CHARINDEX Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CHR.html">CHR Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CONCAT.html">CONCAT (Oracle Compatibility Function)</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/crc32-function.html">CRC32 Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/FUNC_SHA1.html">FUNC_SHA1 Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_INITCAP.html">INITCAP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LEFT.html">LEFT and RIGHT Functions</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LEN.html">LEN Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LENGTH.html">LENGTH Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LOWER.html">LOWER Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LPAD.html">LPAD and RPAD Functions</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LTRIM.html">LTRIM Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_MD5.html">MD5 Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_OCTET_LENGTH.html">OCTET_LENGTH Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_POSITION.html">POSITION Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_QUOTE_IDENT.html">QUOTE_IDENT Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_QUOTE_LITERAL.html">QUOTE_LITERAL Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/REGEXP_COUNT.html">REGEXP_COUNT Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/REGEXP_INSTR.html">REGEXP_INSTR Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/REGEXP_REPLACE.html">REGEXP_REPLACE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/REGEXP_SUBSTR.html">REGEXP_SUBSTR Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_REPEAT.html">REPEAT Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_REPLACE.html">REPLACE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_REPLICATE.html">REPLICATE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_REVERSE.html">REVERSE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_RTRIM.html">RTRIM Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/SPLIT_PART.html">SPLIT_PART Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STRPOS.html">STRPOS Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STRTOL.html">STRTOL Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SUBSTRING.html">SUBSTRING Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TEXTLEN.html">TEXTLEN Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TRANSLATE.html">TRANSLATE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TRIM.html">TRIM Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_UPPER.html">UPPER Function</a></li>
+                        </ul>
+                     </div><p>String functions process and manipulate character strings or expressions that evaluate
+                        to character strings. When the <em>string</em> argument in these functions is a
+                        literal value, it must be enclosed in single quotes. Supported data types include
+                        CHAR and
+                        VARCHAR. 
+                     </p><p>The following section provides the function names, syntax, and descriptions for
+                        supported functions. All offsets into strings are 1-based. 
+                     </p><p class="title"><b>Deprecated Leader Node-Only Functions</b></p><p>The following string functions are deprecated because they execute only on the leader
+                        node. For more information, see <a href="c_SQL_functions_leader_node_only.html">Leader Node&#x2013;Only
+                           Functions</a></p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>ASCII</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>GET_BIT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>GET_BYTE</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>SET_BIT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>SET_BYTE</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>TO_ASCII</p>
+                              
+                           </li>
+                        </ul>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

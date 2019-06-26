@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_AVG">AVG Function</h1><p> The AVG function returns the average (arithmetic mean) of the input expression
+                        values. The AVG function works with numeric values and ignores NULL values.
+                     </p><h2 id="r_AVG-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">AVG ( [ DISTINCT | ALL ] <em>expression</em> )</code></pre><h2 id="r_AVG-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression </em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The target column or expression that the function operates on.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DISTINCT | ALL </span></dt>
+                           
+                           <dd>
+                              
+                              <p>With the argument DISTINCT, the function eliminates all duplicate values
+                                 from the specified expression before calculating the average. With the
+                                 argument ALL, the function retains all duplicate values from the expression
+                                 for calculating the average. ALL is the default.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_AVG-data-types">Data Types</h2><p> The argument types supported by the AVG function are SMALLINT, INTEGER, BIGINT,
+                        NUMERIC, DECIMAL, REAL, and DOUBLE PRECISION.
+                     </p><p>The return types supported by the AVG function are: </p><div class="itemizedlist">
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>NUMERIC for any integer type argument</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>DOUBLE PRECISION for a floating point argument</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>The default precision for an AVG function result with a 64-bit NUMERIC or DECIMAL
+                        argument is 19. The default precision for a result with a 128-bit NUMERIC or DECIMAL
+                        argument is 38. The scale of the result is the same as the scale of the argument.
+                        For
+                        example, an AVG of a DEC(5,2) column returns a DEC(19,2) data type.
+                     </p><h2 id="r_AVG-examples">Examples</h2><p>Find the average quantity sold per transaction from the SALES table: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select avg(qtysold)from sales;
+
+avg
+-----
+2
+(1 row)</code></pre><p>Find the average total price listed for all listings: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select avg(numtickets*priceperticket) as avg_total_price from listing;
+
+avg_total_price
+-----------------
+3034.41
+(1 row)</code></pre><p>Find the average price paid, grouped by month in descending order: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select avg(pricepaid) as avg_price, month 
+from sales, date
+where sales.dateid = date.dateid
+group by month
+order by avg_price desc;
+
+avg_price | month
+-----------+-------
+659.34 | MAR
+655.06 | APR
+645.82 | JAN
+643.10 | MAY
+642.72 | JUN
+642.37 | SEP
+640.72 | OCT
+640.57 | DEC
+635.34 | JUL
+635.24 | FEB
+634.24 | NOV
+632.78 | AUG
+(12 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

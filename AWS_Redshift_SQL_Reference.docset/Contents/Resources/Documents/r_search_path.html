@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_search_path">search_path</h1><h2 id="r_search_path-values">Values (Default in Bold)</h2><p><b>&apos;$user&apos;, public,
+                           </b><em>schema_names</em></p><p>A comma-separated list of existing schema names. If <b>&apos;$user&apos;</b> is present, then the schema having the same name as
+                        <code class="code">SESSION_USER</code> is substituted, otherwise it is ignored. If <b>public</b> is present and no schema with the name
+                        <code class="code">public</code> exists, it is ignored.
+                     </p><h2 id="r_search_path-description">Description</h2><p>This parameter specifies the order in which schemas are searched when an object (such
+                        as a table or a function) is referenced by a simple name with no schema component.
+                        
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>Search paths are not supported with external schemas and external tables.
+                                 External tables must be explicitly qualified by an external schema.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>When objects are created without a specific target schema, they are placed in
+                                 the first schema listed in the search path. If the search path is empty, the
+                                 system returns an error. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>When objects with identical names exist in different schemas, the one found
+                                 first in the search path is used. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>An object that is not in any of the schemas in the search path can only be
+                                 referenced by specifying its containing schema with a qualified (dotted) name.
+                                 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>The system catalog schema, pg_catalog, is always searched. If it is mentioned
+                                 in the path, it is searched in the specified order. If not, it is searched before
+                                 any of the path items. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>The current session&apos;s temporary-table schema, pg_temp_nnn, is always searched
+                                 if it exists. It can be explicitly listed in the path by using the alias pg_temp.
+                                 If it is not listed in the path, it is searched first (even before pg_catalog).
+                                 However, the temporary schema is only searched for relation names (tables, views).
+                                 It is not searched for function names. 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><h2 id="r_search_path-example">Example</h2><p>The following example creates the schema ENTERPRISE and sets the search_path to the
+                        new schema.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create schema enterprise;
+set search_path to enterprise;
+show search_path;
+
+ search_path
+-------------
+ enterprise
+(1 row)</code></pre><p>The following example adds the schema ENTERPRISE to the default search_path.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set search_path to &apos;$user&apos;, public, enterprise;
+show search_path;
+
+         search_path
+-----------------------------
+ &quot;$user&quot;, public, enterprise
+(1 row)</code></pre><p>The following example adds the table FRONTIER to the schema ENTERPRISE: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table enterprise.frontier (c1 int);</code></pre><p>When the table PUBLIC.FRONTIER is created in the same database, and the user does
+                        not
+                        specify the schema name in a query, PUBLIC.FRONTIER takes precedence over
+                        ENTERPRISE.FRONTIER:.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table public.frontier(c1 int);
+insert into enterprise.frontier values(1);
+select * from frontier;
+
+frontier
+----
+(0 rows)
+
+select * from enterprise.frontier;
+
+c1
+----
+1
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

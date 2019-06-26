@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_superusers">Superusers</h1><p>Database superusers have the same privileges
+                        as database owners for all databases.
+                     </p><p>The <em>masteruser</em>, which is the user you created when you launched the
+                        cluster, is a superuser.
+                     </p><p>You must be a superuser to create a superuser.</p><p>Amazon Redshift system tables and system views are either visible only to superusers
+                        or visible
+                        to all users. Only superusers can query system tables and system views that are designated
+                        &quot;visible to superusers.&quot; For information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_intro_system_tables.html">System Tables and Views</a>.
+                     </p><p>Superusers can view all PostgreSQL catalog tables. For information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_intro_catalog_views.html">System Catalog Tables</a>.
+                     </p><p>A database superuser bypasses all permission checks. Be very careful when using a
+                        superuser role. We recommend that you do most of your work as a role that is not a
+                        superuser. Superusers retain all privileges regardless of GRANT and REVOKE commands.
+                     </p><p>To create a new database superuser, log on to the database as a superuser and issue
+                        a
+                        CREATE USER command or an ALTER USER command with the CREATEUSER privilege.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user adminuser createuser password &apos;1234Admin&apos;;
+alter user adminuser createuser;
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

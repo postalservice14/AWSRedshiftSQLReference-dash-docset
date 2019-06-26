@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_ANALYZE">ANALYZE</h1><p>Updates table statistics for use by the query planner. </p><h2 id="r_ANALYZE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ANALYZE [ VERBOSE ]
+[ [ <em>table_name</em> [ ( <em>column_name</em> [, ...] ) ] ]
+[ PREDICATE COLUMNS | ALL  COLUMNS ]</code></pre><h2 id="r_ANALYZE-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">VERBOSE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that returns progress information messages about the ANALYZE
+                                 operation. This option is useful when you don&apos;t specify a table.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>table_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>You can analyze specific tables, including temporary tables. You can qualify
+                                 the table with its schema name. You can optionally specify a table_name to
+                                 analyze a single table. You can&apos;t specify more than one
+                                 <em>table_name</em> with a single ANALYZE
+                                 <em>table_name</em> statement. If you don&apos;t specify a
+                                 <em>table_name</em> value, all of the tables in the currently
+                                 connected database are analyzed, including the persistent tables in the system
+                                 catalog. Amazon Redshift skips analyzing a table if the percentage of rows that have
+                                 changed since the last ANALYZE is lower than the analyze threshold. For more
+                                 information, see <a href="r_ANALYZE.html#r_ANALYZE-threshold">Analyze Threshold</a>.
+                              </p>
+                              
+                              <p>You don&apos;t need to analyze Amazon Redshift system tables (STL and STV
+                                 tables).
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>column_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>If you specify a <em>table_name</em>, you can also specify one
+                                 or more columns in the table (as a column-separated list within parentheses).
+                                 If a column list is specified, only the listed columns are analyzed.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"> PREDICATE COLUMNS | ALL COLUMNS </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clauses that indicates whether ANALYZE should include only predicate
+                                 columns. Specify PREDICATE COLUMNS to analyze only columns that have been used
+                                 as predicates in previous queries or are likely candidates to be used as
+                                 predicates. Specify ALL COLUMNS to analyze all columns. The default is ALL
+                                 COLUMNS. 
+                              </p>
+                              
+                              <p>A column is included in the set of predicate columns if any of the following
+                                 is true:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>The column has been used in a query as a part of a filter, join
+                                          condition, or group by clause.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>The column is a distribution key.</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>The column is part of a sort key.</p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              <p>If no columns are marked as predicate columns, for example because the table
+                                 has not yet been queried, all of the columns are analyzed even when PREDICATE
+                                 COLUMNS is specified. For more information about predicate columns, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Analyzing_tables.html">Analyzing Tables</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_ANALYZE-usage-notes">Usage Notes</h2><p>Amazon Redshift automatically runs ANALYZE on tables that you create with the following
+                        commands: 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>CREATE TABLE AS</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>CREATE TEMP TABLE AS </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>SELECT INTO</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p> You can&apos;t analyze an external table.</p><p>You do not need to run the ANALYZE command on these tables when they are first
+                        created. If you modify them, you should analyze them in the same way as other
+                        tables.
+                     </p><h3 id="r_ANALYZE-threshold">Analyze Threshold</h3><p>To reduce processing time and improve overall system performance, Amazon Redshift
+                        skips
+                        ANALYZE for a table if the percentage of rows that have changed since the last
+                        ANALYZE command run is lower than the analyze threshold specified by the <a href="r_analyze_threshold_percent.html">analyze_threshold_percent</a> parameter. By default, <code class="code">analyze_threshold_percent</code> is 10. To change
+                        <code class="code">analyze_threshold_percent</code> for the current session, execute the <a href="r_SET.html">SET</a> command. The following example changes
+                        <code class="code">analyze_threshold_percent</code> to 20 percent.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set analyze_threshold_percent to 20;</code></pre><p>To analyze tables when only a small number of rows have changed, set
+                        <code class="code">analyze_threshold_percent</code> to an arbitrarily small number. For
+                        example, if you set <code class="code">analyze_threshold_percent</code> to 0.01, then a table with
+                        100,000,000 rows are not skipped if at least 10,000 rows have changed. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set analyze_threshold_percent to 0.01;</code></pre><p>If ANALYZE skips a table because it doesn&apos;t meet the analyze threshold, Amazon
+                        Redshift returns the following message.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">ANALYZE SKIP</code></pre><p>To analyze all tables even if no rows have changed, set
+                        <code class="code">analyze_threshold_percent</code> to 0.
+                     </p><p>To view the results of ANALYZE operations, query the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_ANALYZE.html">STL_ANALYZE</a> system table. 
+                     </p><p>For more information about analyzing tables, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Analyzing_tables.html">Analyzing Tables</a>.
+                     </p><h2 id="r_ANALYZE-examples">Examples</h2><p>Analyze all of the tables in the TICKIT database and return progress
+                        information.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">analyze verbose;</code></pre><p>Analyze the LISTING table only.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">analyze listing;</code></pre><p>Analyze the VENUEID and VENUENAME columns in the VENUE table. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">analyze venue(venueid, venuename);</code></pre><p>Analyze only predicate columns in the VENUE table.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">analyze venue predicate columns;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="c_security-overview">Amazon Redshift Security Overview</h1><p>Amazon Redshift database security is distinct from other types of Amazon Redshift
+                        security. In
+                        addition to database security, which is described in this section, Amazon Redshift
+                        provides these
+                        features to manage security:
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>
+                                 <b>Sign-in credentials</b> &#x2014; Access to your Amazon Redshift
+                                 Management Console is controlled by your AWS account privileges. For more
+                                 information, see <a href="https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html">Sign-In
+                                    Credentials</a>.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <b>Access management</b> &#x2014; To control access to
+                                 specific Amazon Redshift resources, you define AWS Identity and Access Management
+                                 (IAM)
+                                 accounts. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/iam-redshift-user-mgmt.html">Controlling Access to Amazon Redshift
+                                    Resources</a>.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <b>Cluster security groups</b> &#x2014; To grant other users
+                                 inbound access to an Amazon Redshift cluster, you define a cluster security group
+                                 and
+                                 associate it with a cluster. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-security-groups.html"> Amazon Redshift Cluster Security
+                                    Groups</a>.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <b>VPC</b> &#x2014; To protect access to your cluster by
+                                 using a virtual networking environment, you can launch your cluster in an Amazon Virtual
+                                 Private Cloud
+                                 (VPC). For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/managing-clusters-vpc.html">Managing Clusters in Virtual Private Cloud (VPC)</a>.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <b>Cluster encryption</b> &#x2014; To encrypt the data in
+                                 all your user-created tables, you can enable cluster encryption when you launch the
+                                 cluster. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a>.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <b>SSL connections</b> &#x2014; To encrypt the connection
+                                 between your SQL client and your cluster, you can use secure sockets layer (SSL)
+                                 encryption. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/connecting-ssl-support.html">Connect to Your Cluster Using
+                                    SSL</a>.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <b>Load data encryption</b> &#x2014; To encrypt your table
+                                 load data files when you upload them to Amazon S3, you can use either server-side
+                                 encryption or client-side encryption. When you load from server-side encrypted data,
+                                 Amazon S3 handles decryption transparently. When you load from client-side encrypted
+                                 data,
+                                 the Amazon Redshift COPY command decrypts the data as it loads the table. For more
+                                 information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/t_uploading-encrypted-data.html">Uploading Encrypted Data to
+                                    Amazon S3</a>.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><b>Data in transit</b> &#x2014; To protect your data in
+                                 transit within the AWS cloud, Amazon Redshift uses hardware accelerated SSL to communicate
+                                 with Amazon S3 or Amazon DynamoDB for COPY, UNLOAD, backup, and restore operations.
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

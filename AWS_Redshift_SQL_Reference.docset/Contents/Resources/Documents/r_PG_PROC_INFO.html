@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_PG_PROC_INFO">PG_PROC_INFO</h1><p>PG_PROC_INFO is an Amazon Redshift system view built on the PostgreSQL catalog table
+                        PG_PROC and
+                        the internal catalog table PG_PROC_EXTENDED. PG_PROC_INFO includes details about stored
+                        procedures and functions, including information related to output arguments, if
+                        any.
+                     </p><h2 id="r_PG_PROC_INFO-table-columns">Table Columns</h2><p>PG_PROC_INFO shows the following columns in addition to the columns in
+                        PG_PROC.
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c17c19b5b5">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>prooid</td>
+                                 
+                                 <td>oid</td>
+                                 
+                                 <td>The object ID of the function or stored
+                                    procedure.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>prokind</td>
+                                 
+                                 <td>&quot;char&quot;</td>
+                                 
+                                 <td>A value that indicates the type of functions or
+                                    stored procedures. This value is &apos;f&apos; for regular functions, &apos;p&apos; for
+                                    stored procedures, and &apos;a&apos; for aggregate functions.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>proargmodes</td>
+                                 
+                                 <td>&quot;char&quot;[ ] </td>
+                                 
+                                 <td>An array with the modes of the procedure
+                                    arguments, encoded as &apos;i&apos; for IN arguments, &apos;o&apos; for OUT arguments,
+                                    and &apos;b&apos; for INOUT arguments. If all the arguments are IN arguments,
+                                    this field is NULL. Subscripts correspond to positions in the
+                                    proallargtypes array.
+                                 </td>
+                                 
+                              </tr> 
+                              
+                              <tr>
+                                 
+                                 <td>proallargtypes</td>
+                                 
+                                 <td>oid[ ] </td>
+                                 
+                                 <td>An array with the data types of the procedure
+                                    arguments. This array includes all types of arguments (including OUT
+                                    and INOUT arguments). However, if all the arguments are IN
+                                    arguments, this field is NULL. Subscripting is 1-based. In contrast,
+                                    proargtypes is subscripted from 0.
+                                 </td>
+                                 
+                              </tr> 
+                              
+                           </table>
+                        </div>
+                     </div><p>The field proargnames in PG_PROC_INFO contains the names of all types of arguments
+                        (including OUT and INOUT), if any.
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_EXPLAIN">EXPLAIN</h1><p>Displays the execution plan for a query statement without running the query.</p><h2 id="r_EXPLAIN-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">EXPLAIN [ VERBOSE ] <em>query</em>
+                  </code></pre><h2 id="r_EXPLAIN-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">VERBOSE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Displays the full query plan instead of just a summary.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>query</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Query statement to explain. The query can be a SELECT, INSERT, CREATE TABLE
+                                 AS, UPDATE, or DELETE statement.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_EXPLAIN-usage-notes">Usage Notes</h2><p>EXPLAIN performance is sometimes influenced by the time it takes to create temporary
+                        tables. For example, a query that uses the common subexpression optimization requires
+                        temporary tables to be created and analyzed in order to return the EXPLAIN output.
+                        The
+                        query plan depends on the schema and statistics of the temporary tables. Therefore,
+                        the
+                        EXPLAIN command for this type of query might take longer to run than expected.
+                     </p><p>You can use EXPLAIN only for the following commands:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>SELECT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>SELECT INTO</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>CREATE TABLE AS</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>INSERT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>UPDATE</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>DELETE</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>The EXPLAIN command will fail if you use it for other SQL commands, such as data
+                        definition language (DDL) or database operations.
+                     </p><h2 id="r_EXPLAIN-query-planning-and-execution-steps">Query Planning and
+                        Execution Steps
+                     </h2><p>The execution plan for a specific Amazon Redshift query statement breaks down execution
+                        and
+                        calculation of a query into a discrete sequence of steps and table operations that
+                        eventually produce a final result set for the query. The following table provides
+                        a
+                        summary of steps that Amazon Redshift can use in developing an execution plan for
+                        any query a
+                        user submits for execution.
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41b9d117c11b5">
+                              
+                              <tr>
+                                 
+                                 <th>EXPLAIN Operators </th>
+                                 
+                                 <th>Query Execution Steps </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td colspan="3" style="vertical-align: top;"><b>SCAN:</b>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;"> Sequential Scan </td>
+                                 
+                                 <td style="vertical-align: top;">scan </td>
+                                 
+                                 <td>Amazon Redshift relation scan or table scan operator or step.
+                                    Scans whole table sequentially from beginning to end; also evaluates query
+                                    constraints for every row (Filter) if specified with WHERE clause. Also used
+                                    to run INSERT, UPDATE, and DELETE statements. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td colspan="3" style="vertical-align: top;"><b>JOINS:</b> Amazon Redshift uses different join operators based on the
+                                    physical design of the tables being joined, the location of the data
+                                    required for the join, and specific attributes of the query itself. Subquery
+                                    Scan -- Subquery scan and append are used to run UNION queries. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Nested Loop </td>
+                                 
+                                 <td style="vertical-align: top;">nloop </td>
+                                 
+                                 <td>Least optimal join; mainly used for cross-joins
+                                    (Cartesian products; without a join condition) and some inequality joins.
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Hash Join </td>
+                                 
+                                 <td style="vertical-align: top;">hjoin </td>
+                                 
+                                 <td>Also used for inner joins and left and right outer joins
+                                    and typically faster than a nested loop join. Hash Join reads the outer
+                                    table, hashes the joining column, and finds matches in the inner hash table.
+                                    Step can spill to disk. (Inner input of hjoin is hash step which can be
+                                    disk-based.) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Merge Join </td>
+                                 
+                                 <td style="vertical-align: top;">mjoin </td>
+                                 
+                                 <td style="vertical-align: top;">Also used for inner joins and outer joins
+                                    (for join tables that are both distributed and sorted on the joining
+                                    columns). Typically the fastest Amazon Redshift join algorithm, not including other
+                                    cost considerations. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td colspan="3" style="vertical-align: top;"><b>AGGREGATION:</b> Operators and steps used for queries that
+                                    involve aggregate functions and GROUP BY operations. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Aggregate </td>
+                                 
+                                 <td style="vertical-align: top;">aggr </td>
+                                 
+                                 <td>Operator/step for scalar aggregate functions. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">HashAggregate </td>
+                                 
+                                 <td style="vertical-align: top;">aggr </td>
+                                 
+                                 <td>Operator/step for grouped aggregate functions. Can
+                                    operate from disk by virtue of hash table spilling to disk. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">GroupAggregate </td>
+                                 
+                                 <td style="vertical-align: top;">aggr </td>
+                                 
+                                 <td>Operator sometimes chosen for grouped aggregate queries
+                                    if the Amazon Redshift configuration setting for force_hash_grouping setting is
+                                    off. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td colspan="3" style="vertical-align: top;"><b>SORT:</b> Operators and steps used when queries have to sort or
+                                    merge result sets. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Sort </td>
+                                 
+                                 <td style="vertical-align: top;">sort </td>
+                                 
+                                 <td>Sort performs the sorting specified by the ORDER BY
+                                    clause as well as other operations such as UNIONs and joins. Can operate
+                                    from disk. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Merge </td>
+                                 
+                                 <td style="vertical-align: top;">merge </td>
+                                 
+                                 <td>Produces final sorted results of a query based on
+                                    intermediate sorted results derived from operations performed in parallel.
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td colspan="3" style="vertical-align: top;"><b>EXCEPT,
+                                       INTERSECT, and UNION operations:</b>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">SetOp Except [Distinct] </td>
+                                 
+                                 <td style="vertical-align: top;">hjoin </td>
+                                 
+                                 <td>Used for EXCEPT queries. Can operate from disk based on
+                                    virtue of fact that input hash can be disk-based. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Hash Intersect [Distinct] </td>
+                                 
+                                 <td style="vertical-align: top;">hjoin </td>
+                                 
+                                 <td>Used for INTERSECT queries. Can operate from disk based
+                                    on virtue of fact that input hash can be disk-based. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Append [All |Distinct] </td>
+                                 
+                                 <td style="vertical-align: top;">save </td>
+                                 
+                                 <td>Append used with Subquery Scan to implement UNION and
+                                    UNION ALL queries. Can operate from disk based on virtue of &quot;save&quot;. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td colspan="3" style="vertical-align: top;"><b>Miscellaneous/Other:</b>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Hash </td>
+                                 
+                                 <td style="vertical-align: top;">hash </td>
+                                 
+                                 <td>Used for inner joins and left and right outer joins
+                                    (provides input to a hash join). The Hash operator creates the hash table
+                                    for the inner table of a join. (The inner table is the table that is checked
+                                    for matches and, in a join of two tables, is usually the smaller of the
+                                    two.) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Limit </td>
+                                 
+                                 <td style="vertical-align: top;">limit </td>
+                                 
+                                 <td>Evaluates the LIMIT clause. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Materialize </td>
+                                 
+                                 <td style="vertical-align: top;">save </td>
+                                 
+                                 <td>Materialize rows for input to nested loop joins and some
+                                    merge joins. Can operate from disk. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">-- </td>
+                                 
+                                 <td style="vertical-align: top;">parse </td>
+                                 
+                                 <td>Used to parse textual input data during a load. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">-- </td>
+                                 
+                                 <td style="vertical-align: top;">project </td>
+                                 
+                                 <td>Used to rearrange columns and compute expressions, that
+                                    is, project data. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Result </td>
+                                 
+                                 <td style="vertical-align: top;">-- </td>
+                                 
+                                 <td>Run scalar functions that do not involve any table
+                                    access. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">-- </td>
+                                 
+                                 <td style="vertical-align: top;">return </td>
+                                 
+                                 <td>Return rows to the leader or client. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Subplan </td>
+                                 
+                                 <td style="vertical-align: top;">-- </td>
+                                 
+                                 <td>Used for certain subqueries. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Unique </td>
+                                 
+                                 <td style="vertical-align: top;">unique </td>
+                                 
+                                 <td>Eliminates duplicates from SELECT DISTINCT and UNION
+                                    queries. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Window </td>
+                                 
+                                 <td style="vertical-align: top;">window </td>
+                                 
+                                 <td>Compute aggregate and ranking window functions. Can
+                                    operate from disk. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td colspan="3" style="vertical-align: top;"><b>Network
+                                       Operations:</b>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Network (Broadcast) </td>
+                                 
+                                 <td style="vertical-align: top;">bcast </td>
+                                 
+                                 <td>Broadcast is also an attribute of Join Explain operators
+                                    and steps. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Network (Distribute) </td>
+                                 
+                                 <td style="vertical-align: top;">dist </td>
+                                 
+                                 <td>Distribute rows to compute nodes for parallel processing
+                                    by data warehouse cluster. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Network (Send to Leader) </td>
+                                 
+                                 <td style="vertical-align: top;">return </td>
+                                 
+                                 <td>Sends results back to the leader for further processing.
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td colspan="3" style="vertical-align: top;"><b>DML
+                                       Operations (operators that modify data):</b>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Insert (using Result) </td>
+                                 
+                                 <td style="vertical-align: top;">insert </td>
+                                 
+                                 <td>Inserts data. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Delete (Scan + Filter) </td>
+                                 
+                                 <td style="vertical-align: top;">delete </td>
+                                 
+                                 <td>Deletes data. Can operate from disk. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td style="vertical-align: top;">Update (Scan + Filter) </td>
+                                 
+                                 <td style="vertical-align: top;">delete, insert </td>
+                                 
+                                 <td>Implemented as delete and Insert. </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_EXPLAIN-examples">Examples</h2><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>For these examples, the sample output might vary depending on Amazon Redshift
+                           configuration.
+                        </p>
+                     </div><p>The following example returns the query plan for a query that selects the EVENTID,
+                        EVENTNAME, VENUEID, and VENUENAME from the EVENT and VENUE tables:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">explain
+select eventid, eventname, event.venueid, venuename
+from event, venue
+where event.venueid = venue.venueid;</code></pre><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">                                QUERY PLAN
+--------------------------------------------------------------------------
+XN Hash Join DS_DIST_OUTER  (cost=2.52..58653620.93 rows=8712 width=43)
+Hash Cond: (&quot;outer&quot;.venueid = &quot;inner&quot;.venueid)
+-&gt;  XN Seq Scan on event  (cost=0.00..87.98 rows=8798 width=23)
+-&gt;  XN Hash  (cost=2.02..2.02 rows=202 width=22)
+-&gt;  XN Seq Scan on venue  (cost=0.00..2.02 rows=202 width=22)
+(5 rows)</code></pre><p>The following example returns the query plan for the same query with verbose
+                        output:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">explain verbose
+select eventid, eventname, event.venueid, venuename
+from event, venue
+where event.venueid = venue.venueid;</code></pre><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">                                QUERY PLAN
+--------------------------------------------------------------------------
+{HASHJOIN
+:startup_cost 2.52
+:total_cost 58653620.93
+:plan_rows 8712
+:plan_width 43
+:best_pathkeys &lt;&gt;
+:dist_info DS_DIST_OUTER
+:dist_info.dist_keys (
+TARGETENTRY
+{
+VAR
+:varno 2
+:varattno 1
+...
+
+XN Hash Join DS_DIST_OUTER  (cost=2.52..58653620.93 rows=8712 width=43)
+Hash Cond: (&quot;outer&quot;.venueid = &quot;inner&quot;.venueid)
+-&gt;  XN Seq Scan on event  (cost=0.00..87.98 rows=8798 width=23)
+-&gt;  XN Hash  (cost=2.02..2.02 rows=202 width=22)
+-&gt;  XN Seq Scan on venue  (cost=0.00..2.02 rows=202 width=22)
+(519 rows)</code></pre><p>The following example returns the query plan for a CREATE TABLE AS (CTAS) statement:
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">explain create table venue_nonulls as
+select * from venue
+where venueseats is not null;
+
+QUERY PLAN
+-----------------------------------------------------------
+XN Seq Scan on venue  (cost=0.00..2.02 rows=187 width=45)
+Filter: (venueseats IS NOT NULL)
+(2 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

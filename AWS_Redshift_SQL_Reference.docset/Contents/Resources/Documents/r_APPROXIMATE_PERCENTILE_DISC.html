@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_APPROXIMATE_PERCENTILE_DISC">APPROXIMATE PERCENTILE_DISC
+                        Function
+                     </h1><p>APPROXIMATE PERCENTILE_DISC is an inverse distribution function that assumes a
+                        discrete distribution model. It takes a percentile value and a sort specification
+                        and
+                        returns an element from the given set. Approximation enables the function to execute
+                        much faster, with a low relative error of around 0.5 percent.
+                     </p><p>For a given <em>percentile</em> value, APPROXIMATE PERCENTILE_DISC uses a
+                        quantile summary algorithm to approximate the discrete percentile of the expression
+                        in
+                        the ORDER BY clause. APPROXIMATE PERCENTILE_DISC returns the value with the smallest
+                        cumulative distribution value (with respect to the same sort specification) that is
+                        greater than or equal to <em>percentile</em>. 
+                     </p><p>APPROXIMATE PERCENTILE_DISC is a compute-node only function. The
+                        function returns an error if the query doesn&apos;t reference a user-defined table or Amazon
+                        Redshift system
+                        table.
+                     </p><h2 id="r_APPROXIMATE_PERCENTILE_DISC-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">APPROXIMATE  PERCENTILE_DISC ( <em>percentile</em> )
+WITHIN GROUP (ORDER BY <em>expr</em>)</code></pre><h2 id="r_APPROXIMATE_PERCENTILE_DISC-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>percentile</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Numeric constant between 0 and 1. Nulls are ignored in the
+                                 calculation.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">WITHIN GROUP ( ORDER BY <em>expr</em>) </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that specifies numeric or date/time values to sort and compute the
+                                 percentile over. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_APPROXIMATE_PERCENTILE_DISC-returns">Returns</h2><p>The same data type as the ORDER BY expression in the WITHIN GROUP clause.</p><h2 id="w2aac41c11c13c15c15">Usage Notes</h2><p>If the APPROXIMATE PERCENTILE_DISC statement includes a GROUP BY clause, the
+                        result set is limited. The limit varies based on node type and the number of nodes.
+                        If the limit is exceeded, the function fails and returns the following error.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">GROUP BY limit for approximate percentile_disc exceeded.</code></pre><p>If you need to evaluate more groups than the limit permits, consider using <a href="r_PERCENTILE_CONT.html">PERCENTILE_CONT Function</a>. 
+                     </p><h2 id="r_APPROXIMATE_PERCENTILE_DISC-examples">Examples</h2><p>The following example returns the number of sales, total sales, and fiftieth
+                        percentile value for the top 10 dates.. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select top 10 date.caldate,
+count(totalprice), sum(totalprice),
+approximate percentile_disc(0.5) 
+within group (order by totalprice)
+from listing
+join date on listing.dateid = date.dateid
+group by date.caldate
+order by 3 desc;
+
+caldate    | count | sum        | percentile_disc
+-----------+-------+------------+----------------
+2008-01-07 |   658 | 2081400.00 |         2020.00
+2008-01-02 |   614 | 2064840.00 |         2178.00
+2008-07-22 |   593 | 1994256.00 |         2214.00
+2008-01-26 |   595 | 1993188.00 |         2272.00
+2008-02-24 |   655 | 1975345.00 |         2070.00
+2008-02-04 |   616 | 1972491.00 |         1995.00
+2008-02-14 |   628 | 1971759.00 |         2184.00
+2008-09-01 |   600 | 1944976.00 |         2100.00
+2008-07-29 |   597 | 1944488.00 |         2106.00
+2008-07-23 |   592 | 1943265.00 |         1974.00</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

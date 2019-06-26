@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_ALTER_GROUP">ALTER GROUP</h1><p>Changes a user group. Use this command to add users to the group, drop users from
+                        the
+                        group, or rename the group. 
+                     </p><h2 id="r_ALTER_GROUP-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ALTER GROUP <em>group_name</em>
+{
+ADD USER <em>username</em> [, ... ] |
+DROP USER <em>username</em> [, ... ] |
+RENAME TO <em>new_name</em>
+}</code></pre><h2 id="r_ALTER_GROUP-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>group_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the user group to modify. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ADD </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Adds a user to a user group. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DROP </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Removes a user from a user group. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>username</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the user to add to the group or drop from the group. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">RENAME TO </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Renames the user group. Group names beginning with two underscores are
+                                 reserved for Amazon Redshift internal use. For more information about valid names,
+                                 see
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>new_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>New name of the user group. </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_ALTER_GROUP-examples">Examples</h2><p>The following example adds a user named DWUSER to the ADMIN_GROUP group:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter group admin_group
+add user dwuser;</code></pre><p>The following example renames the group ADMIN_GROUP to ADMINISTRATORS: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter group admin_group
+rename to administrators;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

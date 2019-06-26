@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DELETE">DELETE</h1><p>Deletes rows from tables.</p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>The maximum size for a single SQL statement is 16 MB.</p>
+                     </div><h2 id="r_DELETE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">DELETE [ FROM ] <em>table_name</em>
+[ {USING } <em>table_name, ...</em> ]
+[ WHERE <em>condition</em> ]</code></pre><h2 id="r_DELETE-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">FROM</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The FROM keyword is optional, except when the USING clause is specified. The
+                                 statements <code class="code">delete from event;</code> and <code class="code">delete event;</code> are
+                                 equivalent operations that remove all of the rows from the EVENT table.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>To delete all the rows from a table, <a href="r_TRUNCATE.html">TRUNCATE</a> the table. TRUNCATE is much more efficient
+                                    than DELETE and does not require a VACUUM and ANALYZE. However, be aware
+                                    that TRUNCATE commits the transaction in which it is run.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>table_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A temporary or persistent table. Only the owner of the table or a user with
+                                 DELETE privilege on the table may delete rows from the table.
+                              </p>
+                              
+                              <p>Consider using the TRUNCATE command for fast unqualified delete operations
+                                 on large tables; see <a href="r_TRUNCATE.html">TRUNCATE</a>.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>After deleting a large number of rows from a table:</p>
+                                 <div class="itemizedlist">
+                                    
+                                    
+                                    
+                                    <ul class="itemizedlist" type="disc">
+                                       <li class="listitem">
+                                          
+                                          <p>Vacuum the table to reclaim storage space and resort rows.</p>
+                                          
+                                       </li>
+                                       <li class="listitem">
+                                          
+                                          <p>Analyze the table to update statistics for the query
+                                             planner.
+                                          </p>
+                                          
+                                       </li>
+                                    </ul>
+                                 </div>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">USING <em>table_name</em>, ...</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The USING keyword is used to introduce a table list when additional tables
+                                 are referenced in the WHERE clause condition. For example, the following
+                                 statement deletes all of the rows from the EVENT table that satisfy the join
+                                 condition over the EVENT and SALES tables. The SALES table must be explicitly
+                                 named in the FROM list:
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">delete from event using sales where event.eventid=sales.eventid;</code></pre>
+                              <p>If you repeat the target table name in the USING clause, the DELETE
+                                 operation runs a self-join. You can use a subquery in the WHERE clause instead
+                                 of the USING syntax as an alternative way to write the same query.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">WHERE <em>condition</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional clause that limits the deletion of rows to those that match the
+                                 condition. For example, the condition can be a restriction on a column, a join
+                                 condition, or a condition based on the result of a query. The query can
+                                 reference tables other than the target of the DELETE command. For
+                                 example:
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">delete from t1
+where col1 in(select col2 from t2);</code></pre>
+                              <p>If no condition is specified, all of the rows in the table are
+                                 deleted.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_DELETE-examples">Examples</h2><p>Delete all of the rows from the CATEGORY table:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">delete from category;</code></pre><p>Delete rows with CATID values between 0 and 9 from the CATEGORY table:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">delete from category
+where catid between 0 and 9;</code></pre><p>Delete rows from the LISTING table whose SELLERID values do not exist in the SALES
+                        table:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">delete from listing
+where listing.sellerid not in(select sales.sellerid from sales);</code></pre><p>The following two queries both delete one row from the CATEGORY table, based on a
+                        join to the EVENT table and an additional restriction on the CATID column:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">delete from category
+using event
+where event.catid=category.catid and category.catid=9;</code></pre><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">delete from category
+where catid in
+(select category.catid from category, event
+where category.catid=event.catid and category.catid=9);</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

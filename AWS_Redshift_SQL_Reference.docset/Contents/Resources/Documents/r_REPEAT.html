@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_REPEAT">REPEAT Function</h1><p>Repeats a string the specified number of times. If the input parameter is numeric,
+                        REPEAT treats it as a string. 
+                     </p><p>Synonym for <a href="r_REPLICATE.html">REPLICATE Function</a>. 
+                     </p><h2 id="r_REPEAT-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">REPEAT(<em>string</em>, <em>integer</em>)</code></pre><h2 id="r_REPEAT-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The first input parameter is the string to be repeated. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>integer</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The second parameter is an integer indicating the number of times to
+                                 repeat the string. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_REPEAT-return-type">Return Type</h2><p>The REPEAT function returns a string. </p><h2 id="r_REPEAT-examples">Examples</h2><p>The following example repeats the value of the CATID column in the CATEGORY table
+                        three times: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select catid, repeat(catid,3)
+from category
+order by 1,2;
+
+ catid | repeat
+-------+--------
+     1 | 111
+     2 | 222
+     3 | 333
+     4 | 444
+     5 | 555
+     6 | 666
+     7 | 777
+     8 | 888
+     9 | 999
+    10 | 101010
+    11 | 111111
+(11 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

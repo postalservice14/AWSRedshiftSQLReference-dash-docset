@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DROP_PROCEDURE">DROP PROCEDURE</h1><p>Drops a procedure. To drop a procedure, both the procedure name and input argument
+                        data
+                        types (signature), are required. Optionally, you can include the full argument data
+                        types,
+                        including OUT arguments. 
+                     </p><h2 id="r_DROP_PROCEDURE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">DROP PROCEDURE sp_name ( [ [ argname ] [ argmode ] argtype [, ...] ] )
+</code></pre><h2 id="r_DROP_PROCEDURE-parameters">Parameters</h2><div class="variablelist">           
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>sp_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the procedure to be removed. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>argname</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of an input argument. DROP PROCEDURE ignores argument names, because only
+                                 the argument data types are needed to determine the procedure&apos;s identity. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>argmode</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The mode of an argument, which can be IN, OUT, or INOUT. OUT arguments are
+                                 optional because they aren&apos;t used to identify a stored procedure. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>argtype</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The data type of the input argument. For a list of the supported data types, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html">Data Types</a>. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_DROP_PROCEDURE-examples">Examples</h2><p>The following example drops a stored procedure named
+                        <code class="code">quarterly_revenue</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">DROP PROCEDURE quarterly_revenue(volume INOUT bigint, at_price IN numeric,result OUT int);</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

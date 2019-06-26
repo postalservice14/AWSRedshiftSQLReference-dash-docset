@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SHOW">SHOW</h1><p>Displays the current value of a server configuration parameter. This value may be
+                        specific to the current session if a SET command is in effect. For a list of configuration
+                        parameters, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/cm_chap_ConfigurationRef.html">Configuration Reference</a>.
+                     </p><h2 id="r_SHOW-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SHOW { <em>parameter_name</em> | ALL }</code></pre><h2 id="r_SHOW-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>parameter_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Displays the current value of the specified parameter.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ALL </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Displays the current values of all of the parameters.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_SHOW-examples">Examples</h2><p>The following example displays the value for the query_group parameter: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">show query_group;
+
+query_group
+
+unset
+(1 row)</code></pre><p>The following example displays a list of all parameters and their values: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">show all;
+name        |   setting
+--------------------+--------------
+datestyle          | ISO, MDY
+extra_float_digits | 0
+query_group        | unset
+search_path        | $user,public
+statement_timeout  | 0
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

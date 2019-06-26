@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_TRUNC">TRUNC Function</h1><p>The TRUNC function truncates a number and right-fills it with zeros from the position
+                        specified. This function also truncates a time stamp and returns a date. 
+                     </p><h2 id="r_TRUNC-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">TRUNC(<em>number</em> [ , <em>integer</em> ] |
+<em>timestamp</em> )</code></pre><h2 id="r_TRUNC-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>number</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Numeric data type to be truncated. SMALLINT, INTEGER, BIGINT, DECIMAL,
+                                 REAL, and DOUBLE PRECISION data types are supported. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>integer</em> (optional) </span></dt>
+                           
+                           <dd>
+                              
+                              <p>An integer that indicates the number of decimal places of precision, in
+                                 either direction. If no integer is provided, the number is truncated as a
+                                 whole number; if an integer is specified, the number is truncated to the
+                                 specified decimal place. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>timestamp</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The function can also return the date from a time stamp. (To return a
+                                 time stamp value with <code class="code">00:00:00</code> as the time, cast the function
+                                 result to a time stamp.) 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_TRUNC-return-type">Return Type</h2><p>TRUNC returns the same numeric data type as the first input argument. For time
+                        stamps, TRUNC returns a date. 
+                     </p><h2 id="r_TRUNC-examples">Examples</h2><p>Truncate the commission paid for a given sales transaction. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select commission, trunc(commission)
+from sales where salesid=784;
+
+commission | trunc
+-----------+-------
+    111.15 |   111
+
+(1 row)</code></pre><p>Truncate the same commission value to the first decimal place. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select commission, trunc(commission,1)
+from sales where salesid=784;
+
+commission | trunc
+-----------+-------
+    111.15 | 111.1
+
+(1 row)</code></pre><p>Truncate the commission with a negative value for the second argument;
+                        <code class="code">111.15</code> is rounded down to <code class="code">110</code>. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select commission, trunc(commission,-1)
+from sales where salesid=784;
+
+commission | trunc
+-----------+-------
+    111.15 |   110
+(1 row)</code></pre><p>Return the date portion from the result of the SYSDATE function (which returns a
+                        time stamp): 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select sysdate;
+
+timestamp
+----------------------------
+2011-07-21 10:32:38.248109
+(1 row)
+
+select trunc(sysdate);
+
+trunc
+------------
+2011-07-21
+(1 row)</code></pre><p>Apply the TRUNC function to a TIMESTAMP column. The return type is a date. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select trunc(starttime) from event
+order by eventid limit 1;
+
+trunc
+------------
+2008-01-25
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

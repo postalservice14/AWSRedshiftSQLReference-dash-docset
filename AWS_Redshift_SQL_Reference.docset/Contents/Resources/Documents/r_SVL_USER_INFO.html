@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVL_USER_INFO">SVL_USER_INFO</h1><p>You can retrieve data about Amazon Redshift database users with the SVL_USER_INFO
+                        view.
+                     </p><h2 id="SVL_USER_INFO-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15d103b5b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>usename </td>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>The user name for the role. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>usesysid</td>
+                                 
+                                 <td>integer</td>
+                                 
+                                 <td>The user ID for the user.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>usecreatedb</td>
+                                 
+                                 <td>boolean</td>
+                                 
+                                 <td>A value that indicates whether the user has
+                                    permissions to create databases. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>usesuper</td>
+                                 
+                                 <td>boolean</td>
+                                 
+                                 <td>A value that indicates whether the user is a
+                                    superuser.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>usecatupd</td>
+                                 
+                                 <td>boolean</td>
+                                 
+                                 <td>A value that indicates whether the user can update
+                                    system catalogs. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>useconnlimit </td>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>The number of connections that the user can
+                                    open.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>syslogaccess </td>
+                                 
+                                 <td>text </td>
+                                 
+                                 <td>A value that indicates whether the user has access
+                                    to the system logs. The two possible values are
+                                    <code class="code">RESTRICTED</code> and <code class="code">UNRESTRICTED</code>.
+                                    <code class="code">RESTRICTED</code> means that users that are not superusers
+                                    can see their own records. <code class="code">UNRESTICTED</code> means that user
+                                    that are not superusers can see all records in the system views and
+                                    tables to which they have <code class="code">SELECT</code> privileges. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>last_ddl_ts</td>
+                                 
+                                 <td>timestamp</td>
+                                 
+                                 <td>The timestamp for the last data definition
+                                    language (DDL) create statement run by the user. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="SVL_USER_INFO-sample-queries">Sample Queries</h2><p>The following command retrieves user information from SVL_USER_INFO.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">SELECT * FROM SVL_USER_INFO;
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

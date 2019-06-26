@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_BOOL_OR">BOOL_OR Function</h1><h2 id="r_BOOL_OR-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">BOOL_OR ( [DISTINCT | ALL] <em>expression</em> )</code></pre><h2 id="r_BOOL_OR-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression </em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The target column or expression that the function operates on. This
+                                 expression must have a BOOLEAN or integer data type. The return type of the
+                                 function is BOOLEAN.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DISTINCT | ALL</span></dt>
+                           
+                           <dd>
+                              
+                              <p>With the argument DISTINCT, the function eliminates all duplicate values
+                                 for the specified expression before calculating the result. With the
+                                 argument ALL, the function retains all duplicate values. ALL is the default.
+                                 See <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_bitwise_aggregate_functions.html#distinct-support-for-bit-wise-aggregations">DISTINCT Support for
+                                    Bit-Wise Aggregations</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

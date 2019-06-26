@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_timezone_config">timezone</h1><h2 id="r_timezone_config-values">Values (Default in Bold)</h2><p>
+                        <b>UTC</b>, time zone
+                     </p><h2 id="r_timezone_config-syntax">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SET timezone { TO | = } [ <em>time_zone</em> | DEFAULT ]
+
+SET time zone [ <em>time_zone</em> | DEFAULT ]</code></pre><h2 id="r_timezone_config-description">Description</h2><p>Sets the time zone for the current session. The time zone can be the offset from
+                        Coordinated Universal Time (UTC) or a time zone name. 
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>You can&apos;t set the <code class="code">timezone</code> configuration parameter by using a cluster
+                           parameter group. The time zone can be set only for the current session by using a
+                           SET
+                           command. To set the time zone for all sessions run by a specific database user, use
+                           the <a href="r_ALTER_USER.html">ALTER USER</a> command. ALTER USER &#x2026;
+                           SET TIMEZONE changes the time zone for subsequent sessions, not for the current
+                           session.
+                        </p>
+                     </div><p>When you set the time zone using the <code class="code">SET timezone</code> (one word) command
+                        with either <code class="code">TO</code> or <code class="code">=</code>, you can specify
+                        <em>time_zone</em> as a time zone name, a POSIX-style format offset, or
+                        an ISO-8601 format offset, as shown following.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SET timezone { TO | = } <em>time_zone</em></code></pre><p>When you set the time zone using the SET time zone command
+                        <em>without</em>
+                        <code class="code">TO</code> or <code class="code">=</code>, you can specify <em>time_zone</em> using
+                        an INTERVAL as well as a time zone name, a POSIX-style format offset, or an ISO-8601
+                        format offset, as shown following.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SET time zone <em>time_zone</em></code></pre><h2 id="r_timezone_config-formats">Time Zone Formats</h2><p>Amazon Redshift supports the following time zone formats:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>Time zone name</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>INTERVAL</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>POSIX-style time zone specification</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>ISO-8601 offset</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>Because time zone abbreviations, such as PST or PDT, are defined as a fixed offset
+                        from UTC and don&apos;t include daylight savings time rules, the SET command doesn&apos;t support
+                        time zone abbreviations.
+                     </p><p>For more details on time zone formats, see the following.</p><p><b>Time Zone Name</b> &#x2013; The full time zone name,
+                        such as America/New_York. Full time zone names can include daylight savings
+                        rules.
+                     </p><p>The following are examples of time zone names:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>Etc/Greenwich</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>America/New_York </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>CST6CDT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>GB</p>
+                              
+                           </li>
+                        </ul>
+                     </div><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>Many time zone names, such as EST, MST, NZ, and UCT, are also
+                           abbreviations.
+                        </p>
+                     </div><p>To view a list of valid time zone names, run the following command.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select pg_timezone_names();</code></pre><p><b>INTERVAL</b> &#x2013; An offset from UTC. For example,
+                        PST is &#x2013;8:00 or &#x2013;8 hours.
+                     </p><p>The following are examples of INTERVAL time zone offsets:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>&#x2013;8:00</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>&#x2013;8 hours</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>30 minutes</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p><b>POSIX-Style Format</b> &#x2013; A time zone
+                        specification in the form <em>STDoffset</em> or
+                        <em>STDoffsetDST</em>, where <em>STD</em> is a time zone
+                        abbreviation, <em>offset</em> is the numeric offset in hours west from UTC,
+                        and <em>DST</em> is an optional daylight-savings zone abbreviation. Daylight
+                        savings time is assumed to be one hour ahead of the given offset.
+                     </p><p>POSIX-style time zone formats use positive offsets west of Greenwich, in contrast
+                        to
+                        the ISO-8601 convention, which uses positive offsets east of Greenwich.
+                     </p><p>The following are examples of POSIX-style time zones:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p> PST8</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p> PST8PDT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p> EST5</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p> EST5EDT</p>
+                              
+                           </li>
+                        </ul>
+                     </div><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>Amazon Redshift doesn&apos;t validate POSIX-style time zone specifications, so it is possible
+                           to
+                           set the time zone to an invalid value. For example, the following command doesn&apos;t
+                           return an error, even though it sets the time zone to an invalid value.
+                        </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set timezone to &#x2018;xxx36&#x2019;;</code></pre></div><p><b>ISO-8601 Offset</b> &#x2013; The offset from UTC in the
+                        form <code class="code">&#xB1;[hh]:[mm]</code>.
+                     </p><p>The following are examples of ISO-8601 offsets:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>-8:00</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>+7:30</p>
+                              
+                           </li>
+                        </ul>
+                     </div><h2 id="r_timezone_config-examples">Examples</h2><p>The following example sets the time zone for the current session to New York.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set timezone = &apos;America/New_York&apos;;</code></pre><p>The following example sets the time zone for the current session to UTC&#x2013;8
+                        (PST).
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set timezone to &apos;-8:00&apos;;</code></pre><p>The following example uses INTERVAL to set the time zone to PST.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set timezone interval &apos;-8 hours&apos;</code></pre><p>The following example resets the time zone for the current session to the system
+                        default time zone (UTC).
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set timezone to default;</code></pre><p>To set the time zone for database user, use an ALTER USER &#x2026; SET statement. The
+                        following example sets the time zone for dbuser to New York. The new value persists
+                        for
+                        the user for all subsequent sessions. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">ALTER USER dbuser SET timezone to &apos;America/New_York&apos;;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

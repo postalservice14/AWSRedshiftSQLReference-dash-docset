@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="PG_BACKEND_PID">PG_BACKEND_PID</h1><p>Returns the process ID (PID) of the server process handling the current
+                        session.
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>The PID is not globally unique. It can be reused over time.</p>
+                     </div><h2 id="PG_BACKEND_PID-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">pg_backend_pid()</code></pre><h2 id="PG_BACKEND_PID-return-type">Return Type</h2><p>Returns an integer.</p><h2 id="PG_BACKEND_PID-example">Example</h2><p>You can correlate PG_BACKEND_PID() with log tables to retrieve information for the
+                        current session. For example, the following query returns the query ID and a portion
+                        of the query text for queries executed in the current session.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select query, substring(text,1,40)
+from stl_querytext
+where pid =  PG_BACKEND_PID()
+order by query desc;
+
+ query |                substring
+-------+------------------------------------------
+ 14831 | select query, substring(text,1,40) from
+ 14827 | select query, substring(path,0,80) as pa
+ 14826 | copy category from &apos;s3://dw-tickit/manif
+ 14825 | Count rows in target table
+ 14824 | unload (&apos;select * from category&apos;) to &apos;s3
+(5 rows)</code></pre><p>You can correlate PG_BACKEND_PID() with the pid column in the following log tables
+                        (exceptions are noted in parentheses):
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_CONNECTION_LOG.html">STL_CONNECTION_LOG</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_DDLTEXT.html">STL_DDLTEXT</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_ERROR.html">STL_ERROR</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_QUERY.html">STL_QUERY</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_QUERYTEXT.html">STL_QUERYTEXT</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_SESSIONS.html">STL_SESSIONS</a>
+                                 (process)
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_TR_CONFLICT.html">STL_TR_CONFLICT</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_UTILITYTEXT.html">STL_UTILITYTEXT</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_ACTIVE_CURSORS.html">STV_ACTIVE_CURSORS</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_INFLIGHT.html">STV_INFLIGHT</a></p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_LOCKS.html">STV_LOCKS</a>
+                                 (lock_owner_pid)
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_RECENTS.html">STV_RECENTS</a>
+                                 (process_id)
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

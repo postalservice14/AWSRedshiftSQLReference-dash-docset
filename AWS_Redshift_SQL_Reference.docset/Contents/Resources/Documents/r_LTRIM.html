@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_LTRIM">LTRIM Function</h1><p>The LTRIM function trims a specified set of characters from the beginning of a
+                        string. 
+                     </p><h2 id="r_LTRIM-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">LTRIM( <em>string</em>, <em>&apos;trim_chars&apos;</em> )</code></pre><h2 id="r_LTRIM-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The string column or expression to be trimmed.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>trim_chars</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A string column or expression representing the characters to be trimmed
+                                 from the beginning of <em>string</em>.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_LTRIM-return-type">Return Type</h2><p>The LTRIM function returns a character string that is the same data type as the
+                        input string (CHAR or VARCHAR). 
+                     </p><h2 id="r_LTRIM-example">Example</h2><p>The following example trims the year from LISTTIME: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select listid, listtime, ltrim(listtime, &apos;2008-&apos;)
+from listing
+order by 1, 2, 3
+limit 10;
+
+listid |      listtime       |     ltrim
+-------+---------------------+----------------
+     1 | 2008-01-24 06:43:29 | 1-24 06:43:29
+     2 | 2008-03-05 12:25:29 | 3-05 12:25:29
+     3 | 2008-11-01 07:35:33 | 11-01 07:35:33
+     4 | 2008-05-24 01:18:37 | 5-24 01:18:37
+     5 | 2008-05-17 02:29:11 | 5-17 02:29:11
+     6 | 2008-08-15 02:08:13 | 15 02:08:13
+     7 | 2008-11-15 09:38:15 | 11-15 09:38:15
+     8 | 2008-11-09 05:07:30 | 11-09 05:07:30
+     9 | 2008-09-09 08:03:36 | 9-09 08:03:36
+    10 | 2008-06-17 09:44:54 | 6-17 09:44:54
+(10 rows)</code></pre><p>LTRIM removes any of the characters in <em>trim_chars</em> when they
+                        appear at the beginning of <em>string</em>. The following example trims
+                        the characters &apos;C&apos;, &apos;D&apos;, and &apos;G&apos; when they appear at the beginning of VENUENAME. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select venueid, venuename, trim(venuename, &apos;CDG&apos;)
+from venue
+where venuename like &apos;%Park&apos;
+order by 2
+limit 7;
+
+venueid | venuename                  | btrim                    
+--------+----------------------------+--------------------------
+    121 | ATT Park                   | ATT Park                
+    109 | Citizens Bank Park         | itizens Bank Park        
+    102 | Comerica Park              | omerica Park             
+      9 | Dick&apos;s Sporting Goods Park | ick&apos;s Sporting Goods Park
+     97 | Fenway Park                | Fenway Park              
+    112 | Great American Ball Park   | reat American Ball Park  
+    114 | Miller Park                | Miller Park              
+
+            </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

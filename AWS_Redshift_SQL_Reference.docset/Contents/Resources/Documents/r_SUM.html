@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SUM">SUM Function</h1><p> The SUM function returns the sum of the input column or expression values. The SUM
+                        function works with numeric values and ignores NULL values. 
+                     </p><h2 id="r_SUM-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SUM ( [ DISTINCT | ALL ] <em>expression</em> )</code></pre><h2 id="r_SUM-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression </em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The target column or expression that the function operates on. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DISTINCT | ALL </span></dt>
+                           
+                           <dd>
+                              
+                              <p>With the argument DISTINCT, the function eliminates all duplicate values
+                                 from the specified expression before calculating the sum. With the argument
+                                 ALL, the function retains all duplicate values from the expression for
+                                 calculating the sum. ALL is the default. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="c_Supported_data_types_sum">Data Types</h2><p>The argument types supported by the SUM function are SMALLINT, INTEGER, BIGINT,
+                        NUMERIC, DECIMAL, REAL, and DOUBLE PRECISION.
+                     </p><p>The return types supported by the SUM function are </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>BIGINT for BIGINT, SMALLINT, and INTEGER arguments</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>NUMERIC for NUMERIC arguments</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>DOUBLE PRECISION for floating point arguments</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>The default precision for a SUM function result with a 64-bit NUMERIC or DECIMAL
+                        argument is 19. The default precision for a result with a 128-bit NUMERIC or DECIMAL
+                        argument is 38. The scale of the result is the same as the scale of the argument.
+                        For
+                        example, a SUM of a DEC(5,2) column returns a DEC(19,2) data type.
+                     </p><h2 id="r_SUM-examples">Examples</h2><p> Find the sum of all commissions paid from the SALES table: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select sum(commission) from sales;
+
+sum
+-------------
+16614814.65
+(1 row)</code></pre><p>Find the number of seats in all venues in the state of Florida: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select sum(venueseats) from venue
+where venuestate = &apos;FL&apos;;
+
+sum
+--------
+250411
+(1 row)</code></pre><p>Find the number of seats sold in May: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select sum(qtysold) from sales, date
+where sales.dateid = date.dateid and date.month = &apos;MAY&apos;;
+
+sum
+-------
+32291
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

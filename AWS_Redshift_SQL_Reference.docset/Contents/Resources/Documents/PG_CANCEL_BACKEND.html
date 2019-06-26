@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="PG_CANCEL_BACKEND">PG_CANCEL_BACKEND</h1><p>Cancels a query. PG_CANCEL_BACKEND is functionally equivalent to the <a href="r_CANCEL.html">CANCEL</a> command. You can cancel queries
+                        currently being run by your user. Superusers can cancel any query.
+                     </p><h2 id="PG_CANCEL_BACKEND-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">pg_cancel_backend( <em>pid</em> )</code></pre><h2 id="PG_CANCEL_BACKEND-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>pid</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The process ID (PID) of the query to be canceled. You cannot cancel a
+                                 query by specifying a query ID; you must specify the query&apos;s process ID.
+                                 Requires an integer value.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="PG_CANCEL_BACKEND-return-type">Return Type</h2><p>None</p><h2 id="PG_CANCEL_BACKEND-usage-notes">Usage Notes</h2><p>If queries in multiple sessions hold locks on the same table, you can use the
+                        <a href="PG_TERMINATE_BACKEND.html">PG_TERMINATE_BACKEND</a>
+                        function to terminate one of the sessions, which forces any currently running
+                        transactions in the terminated session to release all locks and roll back the
+                        transaction. Query the PG__LOCKS catalog table to view currently held locks. If you
+                        cannot cancel a query because it is in transaction block (BEGIN &#x2026; END), you can
+                        terminate the session in which the query is running by using the PG_TERMINATE_BACKEND
+                        function. 
+                     </p><h2 id="PG_CANCEL_BACKEND-example">Examples</h2><p>To cancel a currently running query, first retrieve the process ID for the query
+                        that you want to cancel. To determine the process IDs for all currently running
+                        queries, execute the following command: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select pid, trim(starttime) as start, 
+duration, trim(user_name) as user,
+substring (query,1,40) as querytxt
+from stv_recents
+where status = &apos;Running&apos;;
+
+ pid |       starttime        | duration |   user   |    querytxt
+-----+------------------------+----------+----------+--------------------------
+ 802 | 2013-10-14 09:19:03.55 |      132 | dwuser | select venuename from venue 
+ 834 | 2013-10-14 08:33:49.47 |  1250414 | dwuser | select * from listing;
+ 964 | 2013-10-14 08:30:43.29 |   326179 | dwuser | select sellerid from sales </code></pre><p>The following statement cancels the query with process ID 802:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select pg_cancel_backend(802);</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

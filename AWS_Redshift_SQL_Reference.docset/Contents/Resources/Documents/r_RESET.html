@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_RESET">RESET</h1><p>Restores the value of a configuration parameter to its default value.</p><p>You can reset either a single specified parameter or all parameters at once. To set
+                        a
+                        parameter to a specific value, use the <a href="r_SET.html">SET</a>
+                        command. To display the current value of a parameter, use the <a href="r_SHOW.html">SHOW</a> command.
+                     </p><h2 id="r_RESET-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">RESET { <em>parameter_name</em> | ALL }</code></pre><h2 id="r_RESET-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>parameter_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the parameter to reset. See <a href="t_Modifying_the_default_settings.html">Modifying the Server
+                                    Configuration</a> for more documentation
+                                 about parameters.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ALL </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Resets all runtime parameters.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_RESET-examples">Examples</h2><p>The following example resets the <code class="code">query_group</code> parameter to its default
+                        value: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">reset query_group;
+</code></pre><p>The following example resets all runtime parameters to their default values. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">reset all;
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

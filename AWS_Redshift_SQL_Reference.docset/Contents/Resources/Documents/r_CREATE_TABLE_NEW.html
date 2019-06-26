@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CREATE_TABLE_NEW">CREATE TABLE</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#r_CREATE_TABLE_NEW-synopsis">Syntax</a></li>
+                           <li><a href="#r_CREATE_TABLE_NEW-parameters">Parameters</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CREATE_TABLE_usage.html">Usage Notes</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CREATE_TABLE_examples.html">Examples</a></li>
+                        </ul>
+                     </div><p>Creates a new table in the current database. The owner of this table is the issuer
+                        of
+                        the CREATE TABLE command.
+                     </p><h2 id="r_CREATE_TABLE_NEW-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CREATE [ [LOCAL ] { TEMPORARY | TEMP } ] TABLE 
+[ IF NOT EXISTS ] <em>table_name</em>
+( { <em>column_name data_type</em> [<em>column_attributes</em>] [ <em>column_constraints</em> ] 
+  | <em>table_constraints</em>
+  | LIKE <em>parent_table</em> [ { INCLUDING | EXCLUDING } DEFAULTS ] } 
+  [, ... ]  )
+[ BACKUP { YES | NO } ]
+[<em>table_attribute</em>]
+
+where <em>column_attributes</em> are:
+  [ DEFAULT <em>default_expr</em> ]
+  [ IDENTITY ( <em>seed</em>, <em>step</em> ) ] 
+  [ ENCODE <em>encoding</em> ] 
+  [ DISTKEY ]
+  [ SORTKEY ]
+
+and <em>column_constraints</em> are:
+  [ { NOT NULL | NULL } ]
+  [ { UNIQUE  |  PRIMARY KEY } ]
+  [ REFERENCES <em>reftable</em> [ ( <em>refcolumn</em> ) ] ] 
+
+and <em>table_constraints</em>  are:
+  [ UNIQUE ( <em>column_name</em> [, ... ] ) ]
+  [ PRIMARY KEY ( <em>column_name</em> [, ... ] )  ]
+  [ FOREIGN KEY (<em>column_name</em> [, ... ] ) REFERENCES <em>reftable</em> [ ( <em>refcolumn</em> ) ] 
+
+
+and <em>table_attributes</em> are:
+  [ DISTSTYLE { AUTO | EVEN | KEY | ALL } ] 
+  [ DISTKEY ( <em>column_name</em> ) ]
+  [ [COMPOUND | INTERLEAVED ] SORTKEY ( column_name [, ...] ) ]
+         </code></pre><h2 id="r_CREATE_TABLE_NEW-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">LOCAL </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional. Although this keyword is accepted in the statement, it has no
+                                 effect in Amazon Redshift.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">TEMPORARY | TEMP </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Keyword that creates a temporary table that is visible only within the
+                                 current session. The table is automatically dropped at the end of the session
+                                 in which it is created. The temporary table can have the same name as a
+                                 permanent table. The temporary table is created in a separate, session-specific
+                                 schema. (You can&apos;t specify a name for this schema.) This temporary schema
+                                 becomes the first schema in the search path, so the temporary table will take
+                                 precedence over the permanent table unless you qualify the table name with the
+                                 schema name to access the permanent table. For more information about schemas
+                                 and precedence, see <a href="r_search_path.html">search_path</a>.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>By default, users have permission to create temporary tables by their
+                                    automatic membership in the PUBLIC group. To deny this privilege to a user,
+                                    revoke the TEMP privilege from the PUBLIC group, and then explicitly grant
+                                    the TEMP privilege only to specific users or groups of users.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">IF NOT EXISTS</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that indicates that if the specified table already exists, the
+                                 command should make no changes and return a message that the table exists,
+                                 rather than terminating with an error. Note that the existing table might be
+                                 nothing like the one that would have been created; only the table name is used
+                                 for comparison.
+                              </p>
+                              
+                              <p>This clause is useful when scripting, so the script doesn&#x2019;t fail if CREATE
+                                 TABLE tries to create a table that already exists.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>table_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the table to be created.</p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p>If you specify a table name that begins with &apos;# &apos;, the table is created
+                                    as a temporary table. The following is an example:
+                                 </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table #newtable (id int);</code></pre></div>
+                              
+                              <p>The maximum length for the table name is 127 bytes; longer names are
+                                 truncated to 127 bytes. You can use UTF-8 multibyte characters up to a maximum
+                                 of four bytes. Amazon Redshift enforces a limit of 20,000 tables per cluster,
+                                 including user-defined temporary tables and temporary tables created by Amazon Redshift
+                                 during query processing or system maintenance. Optionally, the table name can
+                                 be qualified with the database and schema name. In the following example, the
+                                 database name is <code class="code">tickit</code> , the schema name is <code class="code">public</code>,
+                                 and the table name is <code class="code">test</code>. 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table tickit.public.test (c1 int);
+</code></pre>
+                              <p>If the database or schema does not exist, the table is not created, and the
+                                 statement returns an error. You can&apos;t create tables or views in the system
+                                 databases <code class="code">template0</code>, <code class="code">template1</code>, and
+                                 <code class="code">padb_harvest</code>.
+                              </p>
+                              
+                              <p>If a schema name is given, the new table is created in that schema (assuming
+                                 the creator has access to the schema). The table name must be a unique name for
+                                 that schema. If no schema is specified, the table is created by using the
+                                 current database schema. If you are creating a temporary table, you can&apos;t
+                                 specify a schema name, because temporary tables exist in a special
+                                 schema.
+                              </p>
+                              
+                              <p>Multiple temporary tables with the same name can exist at the same time in
+                                 the same database if they are created in separate sessions because the tables
+                                 are assigned to different schemas. For more information about valid names, see
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>column_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of a column to be created in the new table. The maximum length for the
+                                 column name is 127 bytes; longer names are truncated to 127 bytes. You can use
+                                 UTF-8 multibyte characters up to a maximum of four bytes. The maximum number of
+                                 columns you can define in a single table is 1,600. For more information about
+                                 valid names, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>If you are creating a &quot;wide table,&quot; take care that your list of columns
+                                    does not exceed row-width boundaries for intermediate results during loads
+                                    and query processing. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CREATE_TABLE_usage.html">Usage Notes</a>.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>data_type</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The data type of the column being created. For CHAR and VARCHAR columns, you
+                                 can use the MAX keyword instead of declaring a maximum length. MAX sets the
+                                 maximum length to 4096 bytes for CHAR or 65535 bytes for VARCHAR. The following
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html">data types</a> are supported:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>SMALLINT (INT2)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>INTEGER (INT, INT4)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>BIGINT (INT8)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>DECIMAL (NUMERIC)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>REAL (FLOAT4)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>DOUBLE PRECISION (FLOAT8)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>BOOLEAN (BOOL)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>CHAR (CHARACTER)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>VARCHAR (CHARACTER VARYING)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>DATE</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>TIMESTAMP</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>TIMESTAMPTZ</p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="create-table-default"></a><span class="term">DEFAULT <em>default_expr</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that assigns a default data value for the column. The data type of
+                                 <em>default_expr</em> must match the data type of the column.
+                                 The DEFAULT value must be a variable-free expression. Subqueries,
+                                 cross-references to other columns in the current table, and user-defined
+                                 functions are not allowed.
+                              </p>
+                              
+                              <p>The <em>default_expr</em> expression is used in any INSERT
+                                 operation that does not specify a value for the column. If no default value is
+                                 specified, the default value for the column is null.
+                              </p>
+                              
+                              <p>If a COPY operation with a defined column list omits a column that has a
+                                 DEFAULT value, the COPY command inserts the value of
+                                 <em>default_expr</em>.
+                              </p>
+                              
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="identity-clause"></a><span class="term">IDENTITY(<em>seed</em>, <em>step</em>) </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that specifies that the column is an IDENTITY column. An IDENTITY
+                                 column contains unique auto-generated values. The data type for an IDENTITY
+                                 column must be either INT or BIGINT. When you add rows using an INSERT
+                                 statement, these values start with the value specified as
+                                 <em>seed</em> and increment by the number specified as
+                                 <em>step.</em> When you load the table using a COPY statement,
+                                 an IDENTITY column might not be useful. With a COPY operation, the data is
+                                 loaded in parallel and distributed to the node slices. To be sure that the
+                                 identity values are unique, Amazon Redshift skips a number of values when creating
+                                 the
+                                 identity values. As a result, identity values are unique and sequential, but
+                                 not consecutive, and the order might not match the order in the source files.
+                                 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ENCODE<em>encoding</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Compression encoding for a column. If no compression is selected, Amazon Redshift
+                                 automatically assigns compression encoding as follows:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>All columns in temporary tables are assigned RAW compression by
+                                          default.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>Columns that are defined as sort keys are assigned RAW
+                                          compression.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>Columns that are defined as BOOLEAN, REAL, or DOUBLE PRECISION data
+                                          types are assigned RAW compression.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>All other columns are assigned LZO compression.</p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>If you don&apos;t want a column to be compressed, explicitly specify RAW
+                                    encoding.
+                                 </p>
+                              </div>
+                              
+                              <p> The following <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Compression_encodings.html#compression-encoding-list">compression encodings</a> are
+                                 supported:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>BYTEDICT</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>DELTA</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>DELTA32K</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>LZO</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>MOSTLY8</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>MOSTLY16</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>MOSTLY32</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>RAW (no compression)</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>RUNLENGTH</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>TEXT255</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>TEXT32K</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>ZSTD</p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DISTKEY</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Keyword that specifies that the column is the distribution key for the
+                                 table. Only one column in a table can be the distribution key. You can use the
+                                 DISTKEY keyword after a column name or as part of the table definition by using
+                                 the DISTKEY (<em>column_name</em>) syntax. Either method has the
+                                 same effect. For more information, see the DISTSTYLE parameter later in this
+                                 topic.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">SORTKEY</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Keyword that specifies that the column is the sort key for the table. When
+                                 data is loaded into the table, the data is sorted by one or more columns that
+                                 are designated as sort keys. You can use the SORTKEY keyword after a column
+                                 name to specify a single-column sort key, or you can specify one or more
+                                 columns as sort key columns for the table by using the SORTKEY
+                                 (<em>column_name</em> [, ...]) syntax. Only compound sort keys
+                                 are created with this syntax.
+                              </p>
+                              
+                              <p>If you do not specify any sort keys, the table is not sorted. You can define
+                                 a maximum of 400 SORTKEY columns per table.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">NOT NULL | NULL </span></dt>
+                           
+                           <dd>
+                              
+                              <p>NOT NULL specifies that the column is not allowed to contain null values.
+                                 NULL, the default, specifies that the column accepts null values. IDENTITY
+                                 columns are declared NOT NULL by default.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">UNIQUE</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Keyword that specifies that the column can contain only unique values. The
+                                 behavior of the unique table constraint is the same as that for column
+                                 constraints, with the additional capability to span multiple columns. To define
+                                 a unique table constraint, use the UNIQUE ( <em>column_name</em> [,
+                                 ... ] ) syntax.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p>Unique constraints are informational and are not enforced by the
+                                    system.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">PRIMARY KEY</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Keyword that specifies that the column is the primary key for the table.
+                                 Only one column can be defined as the primary key by using a column definition.
+                                 To define a table constraint with a multiple-column primary key, use the
+                                 PRIMARY KEY ( <em>column_name</em> [, ... ] ) syntax.
+                              </p>
+                              
+                              <p>Identifying a column as the primary key provides metadata about the design
+                                 of the schema. A primary key implies that other tables can rely on this set of
+                                 columns as a unique identifier for rows. One primary key can be specified for a
+                                 table, whether as a column constraint or a table constraint. The primary key
+                                 constraint should name a set of columns that is different from other sets of
+                                 columns named by any unique constraint defined for the same table.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p>Primary key constraints are informational only. They are not enforced by
+                                    the system, but they are used by the planner.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">References <em>reftable</em> [ ( <em>refcolumn</em> )
+                                 ]</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that specifies a foreign key constraint, which implies that the
+                                 column must contain only values that match values in the referenced column of
+                                 some row of the referenced table. The referenced columns should be the columns
+                                 of a unique or primary key constraint in the referenced table. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p> Foreign key constraints are informational only. They are not enforced by
+                                    the system, but they are used by the planner. 
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="create-table-like"></a><span class="term">LIKE <em>parent_table</em> [ { INCLUDING | EXCLUDING } DEFAULTS ] </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that specifies an existing table from which the new table
+                                 automatically copies column names, data types, and NOT NULL constraints. The
+                                 new table and the parent table are decoupled, and any changes made to the
+                                 parent table are not applied to the new table. Default expressions for the
+                                 copied column definitions are copied only if INCLUDING DEFAULTS is specified.
+                                 The default behavior is to exclude default expressions, so that all columns of
+                                 the new table have null defaults. 
+                              </p>
+                              
+                              <p>Tables created with the LIKE option don&apos;t inherit primary and foreign key
+                                 constraints. Distribution style, sort keys,BACKUP, and NULL properties are
+                                 inherited by LIKE tables, but you can&apos;t explicitly set them in the CREATE TABLE
+                                 ... LIKE statement.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="create-table-backup"></a><span class="term">BACKUP { YES | NO } </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that specifies whether the table should be included in automated
+                                 and manual cluster snapshots. For tables, such as staging tables, that don&apos;t
+                                 contain critical data, specify BACKUP NO to save processing time when creating
+                                 snapshots and restoring from snapshots and to reduce storage space on Amazon Simple
+                                 Storage Service.
+                                 The BACKUP NO setting has no effect on automatic replication of data to other
+                                 nodes within the cluster, so tables with BACKUP NO specified are restored in a
+                                 node failure. The default is BACKUP YES.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DISTSTYLE { AUTO | EVEN | KEY | ALL }</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Keyword that defines the data distribution style for the whole table.
+                                 Amazon Redshift distributes the rows of a table to the compute nodes according to
+                                 the
+                                 distribution style specified for the table. The default is AUTO.
+                              </p>
+                              
+                              
+                              <p>The distribution style that you select for tables affects the overall
+                                 performance of your database. For more information, see <a href="t_Distributing_data.html">Choosing a Data Distribution Style</a>.
+                                 Possible distribution styles are as follows:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       
+                                       <p>AUTO: Amazon Redshift assigns an optimal distribution style based on the table
+                                          data. For example, if AUTO distribution style is specified, Amazon Redshift
+                                          initially assigns ALL distribution to a small table, then changes the
+                                          table to EVEN distribution when the table grows larger. The change in
+                                          distribution occurs in the background, in a few seconds. Amazon Redshift never
+                                          changes the distribution style from EVEN to ALL. To view the distribution
+                                          style applied to a table, query the PG_CLASS system catalog table. For
+                                          more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/viewing-distribution-styles.html">Viewing Distribution Styles</a>. 
+                                       </p>
+                                       
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>EVEN: The data in the table is spread evenly across the nodes in a
+                                          cluster in a round-robin distribution. Row IDs are used to determine the
+                                          distribution, and roughly the same number of rows are distributed to each
+                                          node. 
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>KEY: The data is distributed by the values in the DISTKEY column. When
+                                          you set the joining columns of joining tables as distribution keys, the
+                                          joining rows from both tables are collocated on the compute nodes. When
+                                          data is collocated, the optimizer can perform joins more efficiently. If
+                                          you specify DISTSTYLE KEY, you must name a DISTKEY column, either for the
+                                          table or as part of the column definition. For more information, see the
+                                          DISTKEY parameter earlier in this topic.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p> ALL: A copy of the entire table is distributed to every node. This
+                                          distribution style ensures that all the rows required for any join are
+                                          available on every node, but it multiplies storage requirements and
+                                          increases the load and maintenance times for the table. ALL distribution
+                                          can improve execution time when used with certain dimension tables where
+                                          KEY distribution is not appropriate, but performance improvements must be
+                                          weighed against maintenance costs. 
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DISTKEY ( <em>column_name</em> )</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Constraint that specifies the column to be used as the distribution key for
+                                 the table. You can use the DISTKEY keyword after a column name or as part of
+                                 the table definition, by using the DISTKEY (<em>column_name</em>)
+                                 syntax. Either method has the same effect. For more information, see the
+                                 DISTSTYLE parameter earlier in this topic.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           
+                           <dt><span class="term">[ { COMPOUND | INTERLEAVED } ] SORTKEY (<em> column_name</em> [,...
+                                 ] )</span></dt>
+                           
+                           
+                           <dd>
+                              
+                              
+                              
+                              <p>Specifies one or more sort keys for the table. When data is loaded into the
+                                 table, the data is sorted by the columns that are designated as sort keys. You
+                                 can use the SORTKEY keyword after a column name to specify a single-column sort
+                                 key, or you can specify one or more columns as sort key columns for the table
+                                 by using the <code class="code">SORTKEY (column_name [ , ... ] )</code> syntax. 
+                              </p>
+                              
+                              <p>You can optionally specify COMPOUND or INTERLEAVED sort style. The default
+                                 is COMPOUND. For more information, see <a href="t_Sorting_data.html">Choosing Sort Keys</a>.
+                              </p>
+                              
+                              <p>If you do not specify any sort keys, the table is not sorted by default. You
+                                 can define a maximum of 400 COMPOUND SORTKEY columns or 8 INTERLEAVED SORTKEY
+                                 columns per table. 
+                              </p>
+                              
+                              <div class="variablelist">
+                                 
+                                 
+                                 
+                                 <dl>
+                                    
+                                    <dt><span class="term">COMPOUND</span></dt>
+                                    
+                                    <dd>
+                                       
+                                       <p>Specifies that the data is sorted using a compound key made up of
+                                          all of the listed columns, in the order they are listed. A compound
+                                          sort key is most useful when a query scans rows according to the order
+                                          of the sort columns. The performance benefits of sorting with a
+                                          compound key decrease when queries rely on secondary sort columns. You
+                                          can define a maximum of 400 COMPOUND SORTKEY columns per table.
+                                          
+                                       </p>
+                                       
+                                    </dd>
+                                    
+                                    
+                                    <dt><span class="term">INTERLEAVED</span></dt>
+                                    
+                                    <dd>
+                                       
+                                       <p>Specifies that the data is sorted using an interleaved sort key. A
+                                          maximum of eight columns can be specified for an interleaved sort key. 
+                                       </p>
+                                       
+                                       <p>An interleaved sort gives equal weight to each column, or subset of
+                                          columns, in the sort key, so queries do not depend on the order of the
+                                          columns in the sort key. When a query uses one or more secondary sort
+                                          columns, interleaved sorting significantly improves query performance.
+                                          Interleaved sorting carries a small overhead cost for data loading and
+                                          vacuuming operations. 
+                                       </p>
+                                       
+                                       <div class="aws-note">
+                                          <p class="aws-note">Important</p>
+                                          <p>Don&#x2019;t use an interleaved sort key on columns with monotonically
+                                             increasing attributes, such as identity columns, dates, or
+                                             timestamps.
+                                          </p>
+                                       </div>
+                                       
+                                    </dd>
+                                    
+                                 </dl>
+                              </div>
+                              
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">UNIQUE ( <em>column_name</em> [,...] )</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Constraint that specifies that a group of one or more columns of a table can
+                                 contain only unique values. The behavior of the unique table constraint is the
+                                 same as that for column constraints, with the additional capability to span
+                                 multiple columns. In the context of unique constraints, null values are not
+                                 considered equal. Each unique table constraint must name a set of columns that
+                                 is different from the set of columns named by any other unique or primary key
+                                 constraint defined for the table. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p> Unique constraints are informational and are not enforced by the system.
+                                    
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">PRIMARY KEY ( <em>column_name</em> [,...] )</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Constraint that specifies that a column or a number of columns of a table
+                                 can contain only unique (nonduplicate) non-null values. Identifying a set of
+                                 columns as the primary key also provides metadata about the design of the
+                                 schema. A primary key implies that other tables can rely on this set of columns
+                                 as a unique identifier for rows. One primary key can be specified for a table,
+                                 whether as a single column constraint or a table constraint. The primary key
+                                 constraint should name a set of columns that is different from other sets of
+                                 columns named by any unique constraint defined for the same table. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p> Primary key constraints are informational only. They are not enforced by
+                                    the system, but they are used by the planner. 
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">FOREIGN KEY ( <em>column_name</em> [, ... ] ) REFERENCES
+                                 <em>reftable</em> [ ( <em>refcolumn</em> ) ] </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Constraint that specifies a foreign key constraint, which requires that a
+                                 group of one or more columns of the new table must only contain values that
+                                 match values in the referenced column(s) of some row of the referenced table.
+                                 If <em>refcolumn</em> is omitted, the primary key of
+                                 <em>reftable</em> is used. The referenced columns must be the
+                                 columns of a unique or primary key constraint in the referenced table.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p>Foreign key constraints are informational only. They are not enforced by
+                                    the system, but they are used by the planner.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

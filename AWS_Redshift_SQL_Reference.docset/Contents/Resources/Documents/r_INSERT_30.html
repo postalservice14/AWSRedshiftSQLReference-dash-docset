@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_INSERT_30">INSERT</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#r_INSERT_30-synopsis">Syntax</a></li>
+                           <li><a href="#r_INSERT_30-parameters">Parameters</a></li>
+                           <li><a href="#r_INSERT_30_usage_notes">Usage Notes</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Examples_of_INSERT_30.html">INSERT Examples</a></li>
+                        </ul>
+                     </div><p>Inserts new rows into a table. You can insert a single row with the VALUES syntax,
+                        multiple rows with the VALUES syntax, or one or more rows defined by the results of
+                        a query
+                        (INSERT INTO...SELECT).
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>We strongly encourage you to use the <a href="r_COPY.html">COPY</a>
+                           command to load large amounts of data. Using individual INSERT statements to populate
+                           a
+                           table might be prohibitively slow. Alternatively, if your data already exists in other
+                           Amazon Redshift database tables, use INSERT INTO SELECT or <a href="r_CREATE_TABLE_AS.html">CREATE TABLE AS</a> to improve performance. For more information
+                           about using the COPY command to load tables, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Loading_data.html">Loading Data</a>.
+                        </p>
+                     </div><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>The maximum size for a single SQL statement is 16 MB.</p>
+                     </div><h2 id="r_INSERT_30-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">INSERT INTO <em>table_name</em> [ ( <em>column</em> [, ...] ) ]
+{DEFAULT VALUES |
+VALUES ( { <em>expression</em> | DEFAULT } [, ...] )
+[, ( { <em>expression</em> | DEFAULT } [, ...] )
+[, ...] ] |
+<em>query</em> }</code></pre><h2 id="r_INSERT_30-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>table_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A temporary or persistent table. Only the owner of the table or a user with
+                                 INSERT privilege on the table can insert rows. If you use the
+                                 <em>query</em> clause to insert rows, you must have SELECT
+                                 privilege on the tables named in the query. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>Amazon Redshift Spectrum external tables are read-only. You can&apos;t INSERT to an
+                                    external table.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>column</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>You can insert values into one or more columns of the table. You can list
+                                 the target column names in any order. If you do not specify a column list, the
+                                 values to be inserted must correspond to the table columns in the order in
+                                 which they were declared in the CREATE TABLE statement. If the number of values
+                                 to be inserted is less than the number of columns in the table, the first
+                                 <em>n</em> columns are loaded. 
+                              </p>
+                              
+                              <p>Either the declared default value or a null value is loaded into any column
+                                 that is not listed (implicitly or explicitly) in the INSERT statement. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DEFAULT VALUES </span></dt>
+                           
+                           <dd>
+                              
+                              <p>If the columns in the table were assigned default values when the table was
+                                 created, use these keywords to insert a row that consists entirely of default
+                                 values. If any of the columns do not have default values, nulls are inserted
+                                 into those columns. If any of the columns are declared NOT NULL, the INSERT
+                                 statement returns an error. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">VALUES </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Use this keyword to insert one or more rows, each row consisting of one or
+                                 more values. The VALUES list for each row must align with the column list. To
+                                 insert multiple rows, use a comma delimiter between each list of expressions.
+                                 Do not repeat the VALUES keyword. All VALUES lists for a multiple-row INSERT
+                                 statement must contain the same number of values. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A single value or an expression that evaluates to a single value. Each value
+                                 must be compatible with the data type of the column where it is being inserted.
+                                 If possible, a value whose data type does not match the column&apos;s declared data
+                                 type is automatically converted to a compatible data type. For example: 
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>A decimal value <code class="code">1.1</code> is inserted into an INT column as
+                                          <code class="code">1</code>. 
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>A decimal value <code class="code">100.8976</code> is inserted into a DEC(5,2)
+                                          column as <code class="code">100.90</code>. 
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              <p>You can explicitly convert a value to a compatible data type by including
+                                 type cast syntax in the expression. For example, if column COL1 in table T1 is
+                                 a CHAR(3) column: 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">insert into t1(col1) values(&apos;Incomplete&apos;::char(3));</code></pre>
+                              <p>This statement inserts the value <code class="code">Inc</code> into the column. 
+                              </p>
+                              
+                              <p>For a single-row INSERT VALUES statement, you can use a scalar subquery as
+                                 an expression. The result of the subquery is inserted into the appropriate
+                                 column. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>Subqueries are not supported as expressions for multiple-row INSERT
+                                    VALUES statements. 
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DEFAULT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Use this keyword to insert the default value for a column, as defined when
+                                 the table was created. If no default value exists for a column, a null is
+                                 inserted. You can&apos;t insert a default value into a column that has a NOT NULL
+                                 constraint if that column does not have an explicit default value assigned to
+                                 it in the CREATE TABLE statement. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>query</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Insert one or more rows into the table by defining any query. All of the
+                                 rows that the query produces are inserted into the table. The query must return
+                                 a column list that is compatible with the columns in the table, but the column
+                                 names do not have to match. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_INSERT_30_usage_notes">Usage Notes</h2><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>We strongly encourage you to use the <a href="r_COPY.html">COPY</a> command to load large amounts of data. Using individual INSERT statements to
+                           populate a table might be prohibitively slow. Alternatively, if your data already
+                           exists in other Amazon Redshift database tables, use INSERT INTO SELECT or <a href="r_CREATE_TABLE_AS.html">CREATE TABLE AS</a> to improve
+                           performance. For more information about using the COPY command to load tables, see
+                           <a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Loading_data.html">Loading Data</a>.
+                        </p>
+                     </div><p>The data format for the inserted values must match the data format specified by the
+                        CREATE TABLE definition. 
+                     </p><p> After inserting a large number of new rows into a table: </p><div class="itemizedlist">
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>Vacuum the table to reclaim storage space and resort rows. </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>Analyze the table to update statistics for the query planner. </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>When values are inserted into DECIMAL columns and they exceed the specified scale,
+                        the loaded values are rounded up as appropriate. For example, when a value of
+                        <code class="code">20.259</code> is inserted into a DECIMAL(8,2) column, the value that is stored
+                        is <code class="code">20.26</code>. 
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

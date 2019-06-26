@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="t_Distributing_data">Choosing a Data Distribution Style</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#t_data_distribution_concepts">Data Distribution Concepts</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_choosing_dist_sort.html">Distribution Styles</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/viewing-distribution-styles.html">Viewing Distribution Styles</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_evaluating_query_patterns.html">Evaluating Query Patterns</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_designating_distribution_styles.html">Designating Distribution
+                                 Styles</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_data_redistribution.html">Evaluating the Query Plan</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_explain_plan_example.html">Query Plan Example</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Distribution_examples.html">Distribution Examples</a></li>
+                        </ul>
+                     </div><p>When you load data into a table, Amazon Redshift distributes the rows of the table
+                        to each of
+                        the compute nodes according to the table&apos;s distribution style. When you run a query,
+                        the
+                        query optimizer redistributes the rows to the compute nodes as needed to perform any
+                        joins and aggregations. The goal in selecting a table distribution style is to minimize
+                        the impact of the redistribution step by locating the data where it needs to be before
+                        the query is executed.
+                     </p><p>This section will introduce you to the principles of data distribution in an Amazon
+                        Redshift
+                        database and give you a methodology to choose the best distribution style for each
+                        of
+                        your tables.
+                     </p><h2 id="t_data_distribution_concepts">Data Distribution Concepts</h2><p>
+                        <b>Nodes and slices</b>
+                        
+                     </p><p> An Amazon Redshift cluster is a set of nodes. Each node in the cluster has its own
+                        operating system, dedicated memory, and dedicated disk storage. One node is the
+                        <em>leader node</em>, which manages the distribution of data and
+                        query processing tasks to the <em>compute nodes</em>. 
+                     </p><p> The disk storage for a compute node is divided into a number of
+                        <em>slices</em>. The number of slices per node depends on the node
+                        size of the cluster. For example, each DS1.XL compute node has two slices, and each
+                        DS1.8XL compute node has 16 slices. The nodes all participate in parallel query
+                        execution, working on data that is distributed as evenly as possible across the
+                        slices. For more information about the number of slices that each node size has, go
+                        to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html#rs-about-clusters-and-nodes">About Clusters and Nodes</a> in the
+                        <em>Amazon Redshift Cluster Management Guide</em>.
+                     </p><p>
+                        <b>Data redistribution</b>
+                        
+                     </p><p> When you load data into a table, Amazon Redshift distributes the rows of the table
+                        to
+                        each of the node slices according to the table&apos;s distribution style. As part of a
+                        query plan, the optimizer determines where blocks of data need to be located to best
+                        execute the query. The data is then physically moved, or redistributed, during
+                        execution. Redistribution might involve either sending specific rows to nodes for
+                        joining or broadcasting an entire table to all of the nodes. 
+                     </p><p> Data redistribution can account for a substantial portion of the cost of a query
+                        plan, and the network traffic it generates can affect other database operations and
+                        slow overall system performance. To the extent that you anticipate where best to
+                        locate data initially, you can minimize the impact of data redistribution. 
+                     </p><p>
+                        <b>Data distribution goals</b>
+                        
+                     </p><p> When you load data into a table, Amazon Redshift distributes the table&apos;s rows to
+                        the
+                        compute nodes and slices according to the distribution style that you chose when you
+                        created the table. Data distribution has two primary goals: 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>To distribute the workload uniformly among the nodes in the cluster.
+                                 Uneven distribution, or data distribution skew, forces some nodes to do more
+                                 work than others, which impairs query performance.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>To minimize data movement during query execution. If the rows that
+                                 participate in joins or aggregates are already collocated on the nodes with
+                                 their joining rows in other tables, the optimizer does not need to
+                                 redistribute as much data during query execution.
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>The distribution strategy that you choose for your database has important
+                        consequences for query performance, storage requirements, data loading, and
+                        maintenance. By choosing the best distribution style for each table, you can balance
+                        your data distribution and significantly improve overall system performance.
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="c_bitwise_aggregate_functions">Bit-Wise Aggregate Functions</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#c_bitwise_aggregate_functions-bit_and-and-bit_or">BIT_AND and
+                                 BIT_OR</a></li>
+                           <li><a href="#c_bitwise_aggregate_functions-bool_and-and-bool_or">BOOL_AND and
+                                 BOOL_OR</a></li>
+                           <li><a href="#c_bitwise_aggregate_functions-nulls-in-bit-wise-aggregations">NULLs in
+                                 Bit-Wise Aggregations</a></li>
+                           <li><a href="#distinct-support-for-bit-wise-aggregations">DISTINCT Support for
+                                 Bit-Wise Aggregations</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_BIT_AND.html">BIT_AND Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_BIT_OR.html">BIT_OR Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_BOOL_AND.html">BOOL_AND Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_BOOL_OR.html">BOOL_OR Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_bitwise_examples.html">Bit-Wise Function Examples</a></li>
+                        </ul>
+                     </div><p>Amazon Redshift supports the following bit-wise aggregate functions:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>BIT_AND</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>BIT_OR</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>BOOL_AND</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>BOOL_OR</p>
+                              
+                           </li>
+                        </ul>
+                     </div><h2 id="c_bitwise_aggregate_functions-bit_and-and-bit_or">BIT_AND and
+                        BIT_OR
+                     </h2><p>The BIT_AND and BIT_OR functions run bit-wise AND and OR operations on all of the
+                        values in a single integer column or expression. These functions aggregate each bit
+                        of
+                        each binary value that corresponds to each integer value in the expression.
+                     </p><p>The BIT_AND function returns a result of <code class="code">0</code> if none of the bits is set to
+                        1 across all of the values. If one or more bits is set to 1 across all values, the
+                        function returns an integer value. This integer is the number that corresponds to
+                        the
+                        binary value for the those bits.
+                     </p><p>For example, a table contains four integer values in a column: 3, 7, 10, and 22.
+                        These integers are represented in binary form as follows:
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c15b9b9">
+                              
+                              <tr>
+                                 
+                                 <th>Integer</th>
+                                 
+                                 <th>Binary value</th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>3</td>
+                                 
+                                 <td align="right" style="text-align: right;"> 11</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>7</td>
+                                 
+                                 <td align="right" style="text-align: right;">111</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>10</td>
+                                 
+                                 <td align="right" style="text-align: right;">1010</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>22</td>
+                                 
+                                 <td align="right" style="text-align: right;">10110</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><p>A BIT_AND operation on this dataset finds that all bits are set to <code class="code">1</code> in
+                        the second-to-last position only. The result is a binary value of <code class="code">00000010</code>,
+                        which represents the integer value <code class="code">2</code>; therefore, the BIT_AND function
+                        returns <code class="code">2</code>.
+                     </p><p>If you apply the BIT_OR function to the same set of integer values, the operation
+                        looks for <em>any</em> value in which a <code class="code">1</code> is found in each
+                        position. In this case, a <code class="code">1</code> exists in the last five positions for at least
+                        one of the values, yielding a binary result of <code class="code">00011111</code>; therefore, the
+                        function returns <code class="code">31</code> (or <code class="code">16 + 8 + 4 + 2 + 1</code>).
+                     </p><h2 id="c_bitwise_aggregate_functions-bool_and-and-bool_or">BOOL_AND and
+                        BOOL_OR
+                     </h2><p>The BOOL_AND and BOOL_OR functions operate on a single Boolean or integer column or
+                        expression. These functions apply similar logic to the BIT_AND and BIT_OR functions.
+                        For
+                        these functions, the return type is a Boolean value (<code class="code">true</code> or
+                        <code class="code">false</code>):
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>If all values in a set are true, the BOOL_AND function returns
+                                 <code class="code">true</code> (<code class="code">t</code>). If any value is false, the function returns
+                                 <code class="code">false</code> (<code class="code">f</code>).
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>If any value in a set is <code class="code">true</code>, the BOOL_OR function returns
+                                 <code class="code">true</code> (<code class="code">t</code>). If no value in a set is <code class="code">true</code>,
+                                 the function returns <code class="code">false</code> (<code class="code">f</code>).
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><h2 id="c_bitwise_aggregate_functions-nulls-in-bit-wise-aggregations">NULLs in
+                        Bit-Wise Aggregations
+                     </h2><p>When a bit-wise function is applied to a column that is nullable, any NULL values
+                        are
+                        eliminated before the function result is calculated. If no rows qualify for aggregation,
+                        the bit-wise function returns NULL. The same behavior applies to regular aggregate
+                        functions. For example:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select sum(venueseats), bit_and(venueseats) from venue
+where venueseats is null;
+
+sum  | bit_and
+------+---------
+null |    null
+(1 row)</code></pre><h2 id="distinct-support-for-bit-wise-aggregations">DISTINCT Support for
+                        Bit-Wise Aggregations
+                     </h2><p>Like other aggregate functions, bit-wise functions support the DISTINCT keyword.
+                        However, using DISTINCT with these functions has no impact on the results. The first
+                        instance of a value is sufficient to satisfy bitwise AND or OR operations, and it
+                        makes
+                        no difference if duplicate values are present in the expression being evaluated. Because
+                        the DISTINCT processing is likely to incur some query execution overhead, do not use
+                        DISTINCT with these functions.
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="Date_functions_header">Date and Time Functions</h1><p>In this section, you can find information about the date and time scalar functions
+                        that
+                        Amazon Redshift supports.
+                     </p><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#date-functions-summary">Summary of Date and Time Functions</a></li>
+                           <li><a href="#date-functions-transactions">Date and Time Functions in Transactions</a></li>
+                           <li><a href="#date-functions-deprecated">Deprecated Leader Node-Only Functions</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_ADD_MONTHS.html">ADD_MONTHS Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_AT_TIME_ZONE.html">AT TIME ZONE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/CONVERT_TIMEZONE.html">CONVERT_TIMEZONE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CURRENT_DATE_function.html">CURRENT_DATE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_CMP.html">DATE_CMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_CMP_TIMESTAMP.html">DATE_CMP_TIMESTAMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_CMP_TIMESTAMPTZ.html">DATE_CMP_TIMESTAMPTZ Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_PART_YEAR.html">DATE_PART_YEAR Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATEADD_function.html">DATEADD Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATEDIFF_function.html">DATEDIFF Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_PART_function.html">DATE_PART Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_TRUNC.html">DATE_TRUNC Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_EXTRACT_function.html"> EXTRACT Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html">GETDATE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_INTERVAL_CMP.html">INTERVAL_CMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LAST_DAY.html">LAST_DAY Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_MONTHS_BETWEEN_function.html">MONTHS_BETWEEN Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_NEXT_DAY.html">NEXT_DAY Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SYSDATE.html">SYSDATE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMEOFDAY_function.html">TIMEOFDAY Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMP_CMP.html">TIMESTAMP_CMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMP_CMP_DATE.html">TIMESTAMP_CMP_DATE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMP_CMP_TIMESTAMPTZ.html">TIMESTAMP_CMP_TIMESTAMPTZ Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMPTZ_CMP.html">TIMESTAMPTZ_CMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMPTZ_CMP_DATE.html">TIMESTAMPTZ_CMP_DATE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMPTZ_CMP_TIMESTAMP.html">TIMESTAMPTZ_CMP_TIMESTAMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMEZONE.html">TIMEZONE Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TO_TIMESTAMP.html">TO_TIMESTAMP Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TRUNC_date.html">TRUNC Date Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Dateparts_for_datetime_functions.html">Dateparts for Date or Time Stamp
+                                 Functions</a></li>
+                        </ul>
+                     </div><h2 id="date-functions-summary">Summary of Date and Time Functions</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c23b7b4">
+                              
+                              <tr>
+                                 
+                                 <th>Function</th>
+                                 
+                                 <th>Syntax</th>
+                                 
+                                 <th>Returns</th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_ADD_MONTHS.html">ADD_MONTHS</a></td>
+                                 
+                                 <td> ADD_MONTHS
+                                    ({<em>date</em>|<em>timestamp</em>},
+                                    <em>integer</em>)
+                                 </td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>Adds the specified number of months to a date or time
+                                    stamp.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_AT_TIME_ZONE.html">AT TIME ZONE</a></td>
+                                 
+                                 <td> AT TIME ZONE &apos;<em>timezone</em>&apos;
+                                 </td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>Specifies which time zone to use with a TIMESTAMP or
+                                    TIMESTAMPTZ expression.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/CONVERT_TIMEZONE.html">CONVERT_TIMEZONE</a></td>
+                                 
+                                 <td>CONVERT_TIMEZONE ([&apos;<em>timezone</em>&apos;,]
+                                    &apos;<em>timezone</em>&apos;, <em>timestamp</em>)
+                                 </td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>Converts a time stamp from one time zone to another.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CURRENT_DATE_function.html">CURRENT_DATE</a></td>
+                                 
+                                 <td>CURRENT_DATE</td>
+                                 
+                                 <td>DATE</td>
+                                 
+                                 <td>Returns a date in the current session time zone (UTC by
+                                    default) for the start of the current transaction.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_CMP.html">DATE_CMP</a></td>
+                                 
+                                 <td>DATE_CMP (<em>date1</em>,
+                                    <em>date2</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares two dates and returns <code class="code">0</code> if the dates
+                                    are identical, <code class="code">1</code> if <em>date1</em> is greater, and
+                                    <code class="code">-1</code> if <em>date2</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_CMP_TIMESTAMP.html">DATE_CMP_TIMESTAMP</a></td>
+                                 
+                                 <td>DATE_CMP_TIMESTAMP (<em>date</em>,
+                                    <em>timestamp</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares a date to a time and returns <code class="code">0</code> if the
+                                    values are identical, <code class="code">1</code> if <em>date</em> is greater
+                                    and <code class="code">-1</code> if <em>timestamp</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_CMP_TIMESTAMPTZ.html">DATE_CMP_TIMESTAMPTZ</a></td>
+                                 
+                                 <td>DATE_CMP_TIMESTAMPTZ (<em>date</em>,
+                                    <em>timestamptz</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares a date and a time stamp with time zone and returns
+                                    <code class="code">0</code> if the values are identical, <code class="code">1</code> if
+                                    <em>date</em> is greater and <code class="code">-1</code> if
+                                    <em>timestamptz</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_PART_YEAR.html">DATE_PART_YEAR</a></td>
+                                 
+                                 <td>DATE_PART_YEAR (<em>date</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Extracts the year from a date.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATEADD_function.html">DATEADD</a></td>
+                                 
+                                 <td>DATEADD (<em>datepart</em>,
+                                    <em>interval</em>,
+                                    {<em>date</em>|<em>timestamp</em>})
+                                 </td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>Increments a date or time by a specified interval.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATEDIFF_function.html">DATEDIFF</a></td>
+                                 
+                                 <td>DATEDIFF (<em>datepart</em>,
+                                    {<em>date</em>|<em>time</em>}<code class="code">,
+                                       </code>{<em>date</em>|<em>timestamp</em>})
+                                 </td>
+                                 
+                                 <td>BIGINT</td>
+                                 
+                                 <td>Returns the difference between two dates or times for a
+                                    given date part, such as a day or month.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_PART_function.html">DATE_PART</a></td>
+                                 
+                                 <td>DATE_PART (<em>datepart</em>,
+                                    {<em>date</em>|<em>time</em>})
+                                 </td>
+                                 
+                                 <td>DOUBLE</td>
+                                 
+                                 <td>Extracts a date part value from date or time.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATE_TRUNC.html">DATE_TRUNC</a></td>
+                                 
+                                 <td>DATE_TRUNC (<em>&apos;datepart&apos;</em>,
+                                    <em>timestamp</em>)
+                                 </td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>Truncates a time stamp based on a date part.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_EXTRACT_function.html">EXTRACT</a></td>
+                                 
+                                 <td>EXTRACT (<em>datepart</em> FROM {TIMESTAMP
+                                    &apos;<em>literal</em>&apos; | <em>timestamp</em>})
+                                 </td>
+                                 
+                                 <td>DOUBLE</td>
+                                 
+                                 <td>Extracts a date part from a timestamp or literal.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html">GETDATE</a></td>
+                                 
+                                 <td>GETDATE()</td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>Returns the current date and time in the current session
+                                    time zone (UTC by default). The parentheses are required.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_INTERVAL_CMP.html">INTERVAL_CMP</a></td>
+                                 
+                                 <td>INTERVAL_CMP (<em>interval1</em>,
+                                    <em>interval2</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares two intervals and returns <code class="code">0</code> if the intervals are
+                                    equal, <code class="code">1</code> if <em>interval1</em> is greater, and
+                                    <code class="code">-1</code> if <em>interval2</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LAST_DAY.html">LAST_DAY</a></td>
+                                 
+                                 <td>LAST_DAY(<em>date</em>)
+                                 </td>
+                                 
+                                 <td>DATE</td>
+                                 
+                                 <td>Returns the date of the last day of the month that contains
+                                    <em>date</em>.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_MONTHS_BETWEEN_function.html">MONTHS_BETWEEN</a></td>
+                                 
+                                 <td>MONTHS_BETWEEN (<em>date</em>,
+                                    <em>date</em>)
+                                 </td>
+                                 
+                                 <td>FLOAT8</td>
+                                 
+                                 <td>Returns the number of months between two dates.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_NEXT_DAY.html">NEXT_DAY</a></td>
+                                 
+                                 <td>NEXT_DAY (<em>date</em>,
+                                    <em>day</em>)
+                                 </td>
+                                 
+                                 <td>DATE</td>
+                                 
+                                 <td>Returns the date of the first instance of
+                                    <em>day</em> that is later than
+                                    <em>date</em>.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SYSDATE.html">SYSDATE</a></td>
+                                 
+                                 <td>SYSDATE</td>
+                                 
+                                 <td>TIMESTAMP</td>
+                                 
+                                 <td>Returns the date and time in the current session time zone
+                                    (UTC by default) for the start of the current transaction.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMEOFDAY_function.html">TIMEOFDAY</a></td>
+                                 
+                                 <td>TIMEOFDAY()</td>
+                                 
+                                 <td>VARCHAR</td>
+                                 
+                                 <td>Returns the current weekday, date, and time in the current
+                                    session time zone (UTC by default)  as a string value. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMP_CMP.html">TIMESTAMP_CMP</a></td>
+                                 
+                                 <td>TIMESTAMP_CMP (<em>timestamp1</em>,
+                                    <em>timestamp2</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares two timestamps and returns <code class="code">0</code> if the
+                                    timestamps are equal, <code class="code">1</code> if <em>timestamp1</em> is
+                                    greater, and <code class="code">-1</code> if <em>timestamp2</em> is
+                                    greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMP_CMP_DATE.html">TIMESTAMP_CMP_DATE</a></td>
+                                 
+                                 <td>TIMESTAMP_CMP_DATE (<em>timestamp</em>,
+                                    <em>date</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares a timestamp to a date and returns <code class="code">0</code> if
+                                    the values are equal, <code class="code">1</code> if <em>timestamp</em> is
+                                    greater, and <code class="code">-1</code> if <em>date</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMP_CMP_TIMESTAMPTZ.html">TIMESTAMP_CMP_TIMESTAMPTZ</a></td>
+                                 
+                                 <td>TIMESTAMP_CMP_TIMESTAMPTZ (<em>timestamp</em>,
+                                    <em>timestamptz</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares a timestamp with a time stamp with time zone and
+                                    returns <code class="code">0</code> if the values are equal, <code class="code">1</code> if
+                                    <em>timestamp</em> is greater, and <code class="code">-1</code> if
+                                    <em>timestamptz</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMPTZ_CMP.html">TIMESTAMPTZ_CMP</a></td>
+                                 
+                                 <td>TIMESTAMPTZ_CMP (<em>timestamptz1</em>,
+                                    <em>timestamptz2</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares two timestamp with time zone values and returns
+                                    <code class="code">0</code> if the values are equal, <code class="code">1</code> if
+                                    <em>timestamptz1</em> is greater, and <code class="code">-1</code> if
+                                    <em>timestamptz2</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMPTZ_CMP_DATE.html">TIMESTAMPTZ_CMP_DATE</a></td>
+                                 
+                                 <td>TIMESTAMPTZ_CMP_DATE (<em>timestamptz</em>,
+                                    <em>date</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares the value of a time stamp with time zone and a date
+                                    and returns <code class="code">0</code> if the values are equal, <code class="code">1</code> if
+                                    <em>timestamptz</em> is greater, and <code class="code">-1</code> if
+                                    <em>date</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMESTAMPTZ_CMP_TIMESTAMP.html">TIMESTAMPTZ_CMP_TIMESTAMP</a></td>
+                                 
+                                 <td>TIMESTAMPTZ_CMP_TIMESTAMP (<em>timestamptz</em>,
+                                    <em>timestamp</em>)
+                                 </td>
+                                 
+                                 <td>INTEGER</td>
+                                 
+                                 <td>Compares a timestamp with time zone with a time stamp and returns
+                                    <code class="code">0</code> if the values are equal, <code class="code">1</code> if
+                                    <em>timestamptz</em> is greater, and <code class="code">-1</code> if
+                                    <em>timestamp</em> is greater.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TIMEZONE.html">TIMEZONE</a></td>
+                                 
+                                 <td>TIMEZONE (&apos;<em>timezone</em>&apos;, {
+                                    <em>timestamp</em> | <em>timestamptz</em> )
+                                 </td>
+                                 
+                                 <td>TIMESTAMP or TIMESTAMPTZ </td>
+                                 
+                                 <td>Returns a time stamp or time stamp with time zone for the
+                                    specified time zone and time stamp value.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TO_TIMESTAMP.html">TO_TIMESTAMP</a></td>
+                                 
+                                 <td>TO_TIMESTAMP (&apos;<em>timestamp</em>&apos;,
+                                    &apos;<em>format</em>&apos;)
+                                 </td>
+                                 
+                                 <td>TIMESTAMPTZ</td>
+                                 
+                                 <td>Returns a time stamp with time zone for the specified time
+                                    stamp and time zone format.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_TRUNC_date.html">TRUNC</a></td>
+                                 
+                                 <td>TRUNC(<em>timestamp</em>)
+                                 </td>
+                                 
+                                 <td>DATE</td>
+                                 
+                                 <td>Truncates a time stamp and returns a date.</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>Leap seconds are not considered in elapsed-time calculations.</p>
+                     </div><h2 id="date-functions-transactions">Date and Time Functions in Transactions</h2><p>When you execute the following functions within a transaction block (BEGIN &#x2026; END),
+                        the
+                        function returns the start date or time of the current transaction, not the start
+                        of the
+                        current statement.
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>SYSDATE</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>TIMESTAMP</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>CURRENT_DATE</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>The following functions always return the start date or time of the current statement,
+                        even when they are within a transaction block.
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>GETDATE</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>TIMEOFDAY</p>
+                              
+                           </li>
+                        </ul>
+                     </div><h2 id="date-functions-deprecated">Deprecated Leader Node-Only Functions</h2><p>The following date functions are deprecated because they execute only on the leader
+                        node. For more information, see <a href="c_SQL_functions_leader_node_only.html">Leader Node&#x2013;Only
+                           Functions</a>.
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>AGE. Use <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_DATEDIFF_function.html">DATEDIFF Function</a> instead.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>CURRENT_TIME. Use <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html">GETDATE Function</a> or
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SYSDATE.html">SYSDATE</a> instead. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>CURRENT_TIMESTAMP. Use <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html">GETDATE Function</a> or
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SYSDATE.html">SYSDATE</a> instead.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>LOCALTIME. Use <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html">GETDATE Function</a> or <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SYSDATE.html">SYSDATE</a> instead.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>LOCALTIMESTAMP. Use <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html">GETDATE Function</a> or
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SYSDATE.html">SYSDATE</a> instead.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>ISFINITE </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>NOW. Use <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_GETDATE.html">GETDATE Function</a> or <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SYSDATE.html">SYSDATE</a> instead.
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

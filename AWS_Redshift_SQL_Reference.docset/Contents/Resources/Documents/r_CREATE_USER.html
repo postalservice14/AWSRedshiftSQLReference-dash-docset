@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CREATE_USER">CREATE USER</h1><p>Creates a new database user account. You must be a database superuser to execute this
+                        command.
+                     </p><h2 id="r_CREATE_USER-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CREATE USER <em>name</em> [ WITH ] 
+PASSWORD { &apos;<em>password</em>&apos; | &apos;<em>md5hash</em>&apos; | DISABLE }
+[ <em>option</em> [ ... ] ]
+
+where <em>option</em> can be:
+
+CREATEDB | NOCREATEDB
+| CREATEUSER | NOCREATEUSER
+| SYSLOG ACCESS { RESTRICTED | UNRESTRICTED }
+| IN GROUP <em>groupname</em> [, ... ]
+| VALID UNTIL &apos;<em>abstime</em>&apos;
+| CONNECTION LIMIT { <em>limit</em> | UNLIMITED }</code></pre><h2 id="r_CREATE_USER-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the user account to create. The user name can&apos;t be
+                                 <code class="code">PUBLIC</code>. For more information about valid names, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">WITH</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional keyword. WITH is ignored by Amazon Redshift</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">PASSWORD { &apos;<em>password</em>&apos; | &apos;<em>md5hash</em>&apos; |
+                                 DISABLE }</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Sets the user&apos;s password. </p>
+                              
+                              <p>By default, users can change their own passwords, unless the password is
+                                 disabled. To disable a user&apos;s password, specify DISABLE. When a user&apos;s password
+                                 is disabled, the password is deleted from the system and the user can log on
+                                 only using temporary IAM user credentials. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/generating-user-credentials.html">Using IAM Authentication
+                                    to Generate Database User Credentials</a>. Only a superuser can enable
+                                 or disable passwords. You can&apos;t disable a superuser&apos;s password. To enable a
+                                 password, run <a href="r_ALTER_USER.html">ALTER USER</a> and
+                                 specify a password.
+                              </p>
+                              
+                              
+                              <p>You can specify the password in clear text or as an MD5 hash string. </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p> When you launch a new cluster using the AWS Management Console, AWS CLI,
+                                    or Amazon Redshift API, you must supply a clear text password for the master database
+                                    user. You can change the password later by using <a href="r_ALTER_USER.html">ALTER USER</a>. 
+                                 </p>
+                              </div>
+                              
+                              <p>For clear text, the password must meet the following constraints:</p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>It must be 8 to 64 characters in length.</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>It must contain at least one uppercase letter, one lowercase letter,
+                                          and one number.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>It can use any printable ASCII characters (ASCII code 33 to 126)
+                                          except &apos; (single quote), &quot; (double quote), :, \, /, @, or space.
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              
+                              <p>As a more secure alternative to passing the CREATE USER password parameter
+                                 as clear text, you can specify an MD5 hash of a string that includes the
+                                 password and user name. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>When you specify an MD5 hash string, the CREATE USER command checks for a
+                                    valid MD5 hash string, but it doesn&apos;t validate the password portion of the
+                                    string. It is possible in this case to create a password, such as an empty
+                                    string, that you can&apos;t use to log on to the database.
+                                 </p>
+                              </div>
+                              
+                              <p>To specify an MD5 password, follow these steps: </p>
+                              
+                              <ol>
+                                 <li>
+                                    
+                                    <p>Concatenate the password and user name. </p>
+                                    
+                                    <p>For example, for password <code class="code">ez</code> and user <code class="code">user1</code>,
+                                       the concatenated string is <code class="code">ezuser1</code>. 
+                                    </p>
+                                    
+                                 </li>
+                                 <li>
+                                    
+                                    <p>Convert the concatenated string into a 32-character MD5 hash string.
+                                       You can use any MD5 utility to create the hash string. The following
+                                       example uses the Amazon Redshift <a href="r_MD5.html">MD5 Function</a> and
+                                       the concatenation operator ( || ) to return a 32-character MD5-hash
+                                       string. 
+                                    </p>
+                                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select md5(&apos;ez&apos; || &apos;user1&apos;);
+md5                             
+--------------------------------
+153c434b4b77c89e6b94f12c5393af5b</code></pre>
+                                    </li>
+                                 <li>
+                                    
+                                    <p>Concatenate &apos;<code class="code">md5</code>&apos; in front of the MD5 hash string and
+                                       provide the concatenated string as the <em>md5hash</em>
+                                       argument.
+                                    </p>
+                                    <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user user1 password &apos;md5153c434b4b77c89e6b94f12c5393af5b&apos;;</code></pre>
+                                    </li>
+                                 <li>
+                                    
+                                    <p>Log on to the database using the user name and password. </p>
+                                    
+                                    <p>For this example, log on as <code class="code">user1</code> with password
+                                       <code class="code">ez</code>. 
+                                    </p>
+                                    
+                                 </li>
+                              </ol>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">CREATEDB | NOCREATEDB </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The CREATEDB option allows the new user account to create databases. The
+                                 default is NOCREATEDB.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">CREATEUSER | NOCREATEUSER </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The CREATEUSER option creates a superuser with all database privileges,
+                                 including CREATE USER. The default is NOCREATEUSER. For more information, see
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_superusers.html">superuser</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="create-user-syslog-access"></a><span class="term">SYSLOG ACCESS { RESTRICTED | UNRESTRICTED }</span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that specifies the level of access the user has to the Amazon Redshift system
+                                 tables and views. 
+                              </p>
+                              
+                              <p>If RESTRICTED is specified, the user can see only the rows generated by that
+                                 user in user-visible system tables and views. The default is RESTRICTED. 
+                              </p>
+                              
+                              <p>If UNRESTRICTED is specified, the user can see all rows in user-visible
+                                 system tables and views, including rows generated by another user. UNRESTRICTED
+                                 doesn&apos;t give a regular user access to superuser-visible tables. Only superusers
+                                 can see superuser-visible tables. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>Giving a user unrestricted access to system tables gives the user
+                                    visibility to data generated by other users. For example, STL_QUERY and
+                                    STL_QUERYTEXT contain the full text of INSERT, UPDATE, and DELETE
+                                    statements, which might contain sensitive user-generated data. 
+                                 </p>
+                              </div>
+                              
+                              <p>All rows in STV_RECENTS and SVV_TRANSACTIONS are visible to all users. </p>
+                              
+                              <p>For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                                    Views</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">IN GROUP <em>groupname</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Specifies the name of an existing group that the user belongs to. Multiple
+                                 group names may be listed.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">VALID UNTIL <em>abstime</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The VALID UNTIL option sets an absolute time after which the user account
+                                 password is no longer valid. By default the password has no time limit.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">CONNECTION LIMIT { <em>limit</em> | UNLIMITED } </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The maximum number of database connections the user is permitted to have
+                                 open concurrently. The limit is not enforced for super users. Use the UNLIMITED
+                                 keyword to permit the maximum number of concurrent connections. 
+                                                       
+                                 A limit on the number of
+                                 connections for each database might also apply. For more information, see <a href="r_CREATE_DATABASE.html">CREATE DATABASE</a>. The default
+                                 is UNLIMITED. To view current connections, query the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_SESSIONS.html">STV_SESSIONS</a> system
+                                 view.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>If both user and database connection limits apply, an unused connection
+                                    slot must be available that is within both limits when a user attempts to
+                                    connect.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h3 id="create_user-usage-notes">Usage Notes</h3><p>By default, all users have CREATE and USAGE privileges on the PUBLIC schema. To
+                        disallow users from creating objects in the PUBLIC schema of a database, use the
+                        REVOKE command to remove that privilege.
+                     </p><p>When using IAM authentication to create database user credentials, you might want
+                        to create a superuser that is able to log on only using temporary credentials. You
+                        can&apos;t disable a superuser&apos;s password, but you can create an unknown password using
+                        a
+                        randomly generated MD5 hash string.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user iam_superuser password &apos;md5A1234567890123456780123456789012&apos; createuser;</code></pre><h2 id="r_CREATE_USER-examples">Examples</h2><p>The following command creates a user account named dbuser, with the password
+                        &quot;abcD1234&quot;, database creation privileges, and a connection limit of 30.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user dbuser with password &apos;abcD1234&apos; createdb connection limit 30;</code></pre><p> Query the PG_USER_INFO catalog table to view details about a database user. </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select * from pg_user_info;
+ usename   | usesysid | usecreatedb | usesuper | usecatupd | passwd   | valuntil | useconfig | useconnlimit
+-----------+----------+-------------+----------+-----------+----------+----------+-----------+-------------
+ rdsdb     |        1 | true        | true     | true      | ******** | infinity |           |             
+ adminuser |      100 | true        | true     | false     | ******** |          |           | UNLIMITED   
+ dbuser    |      102 | true        | false    | false     | ******** |          |           | 30          </code></pre><p>In the following example, the account password is valid until June 10, 2017.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user dbuser with password &apos;abcD1234&apos; valid until &apos;2017-06-10&apos;;</code></pre><p> The following example creates a user with a case-sensitive password that contains
+                        special characters.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user newman with password &apos;@AbC4321!&apos;;</code></pre><p> To use a backslash (&apos;\&apos;) in your MD5 password, escape the backslash with a backslash
+                        in your source string. The following example creates a user named <code class="code">slashpass</code>
+                        with a single backslash ( &apos;<code class="code">\</code>&apos;) as the password. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select md5(&apos;\\&apos;||&apos;slashpass&apos;);
+md5                             
+--------------------------------
+0c983d1a624280812631c5389e60d48c
+ 
+create user slashpass password &apos;md50c983d1a624280812631c5389e60d48c&apos;;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

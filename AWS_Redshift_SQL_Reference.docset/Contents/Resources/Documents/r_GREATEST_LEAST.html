@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_GREATEST_LEAST">GREATEST and LEAST</h1><p>Returns the largest or smallest value from a list of any number of
+                        expressions.
+                     </p><h2 id="r_GREATEST_LEAST-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">GREATEST (value [, ...])
+LEAST (value [, ...])</code></pre><h2 id="r_GREATEST_LEAST-arguments">Parameters</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term"><em>expression_list</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A comma-separated list of expressions, such as column names. The
+                                 expressions must all be convertible to a common data type. NULL values in
+                                 the list are ignored. If all of the expressions evaluate to NULL, the result
+                                 is NULL.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_GREATEST_LEAST-returns">Returns</h2><p>Returns the data type of the expressions.</p><h2 id="r_GREATEST_LEAST-examples">Example</h2><p>The following example returns the highest value alphabetically for
+                        <code class="code">firstname</code> or <code class="code">lastname</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select firstname, lastname, greatest(firstname,lastname) from users
+where userid &lt; 10
+order by 3;
+
+ firstname | lastname  | greatest
+-----------+-----------+-----------
+ Lars      | Ratliff   | Ratliff
+ Reagan    | Hodge     | Reagan
+ Colton    | Roy       | Roy
+ Barry     | Roy       | Roy
+ Tamekah   | Juarez    | Tamekah
+ Rafael    | Taylor    | Taylor
+ Victor    | Hernandez | Victor
+ Vladimir  | Humphrey  | Vladimir
+ Mufutau   | Watkins   | Watkins
+(9 rows)           </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

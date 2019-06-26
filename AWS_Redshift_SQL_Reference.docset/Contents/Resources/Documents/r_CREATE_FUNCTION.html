@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CREATE_FUNCTION">CREATE FUNCTION</h1><p>Creates a new scalar user-defined function (UDF) using either a SQL SELECT clause
+                        or a
+                        Python program.
+                     </p><h2 id="r_CREATE_FUNCTION-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CREATE [ OR REPLACE ] FUNCTION <em>f_function_name</em> 
+( { [<em>py_arg_name</em> <em> py_arg_data_type</em> |
+<em>sql_arg_data_type</em> } [ , ... ] ] )
+RETURNS <em>data_type</em>
+{ VOLATILE | STABLE | IMMUTABLE }   
+AS $$
+  { <em>python_program</em> | <em>SELECT_clause</em> }
+$$ LANGUAGE { plpythonu | sql }</code></pre><h2 id="r_CREATE_FUNCTION-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">OR REPLACE</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Specifies that if a function with the same name and input argument data
+                                 types, or <em>signature</em>, as this one already exists, the
+                                 existing function is replaced. You can only replace a function with a new
+                                 function that defines an identical set of data types. You must be a superuser
+                                 to replace a function.
+                              </p>
+                              
+                              <p>If you define a function with the same name as an existing function but a
+                                 different signature, you create a new function. In other words, the function
+                                 name is overloaded. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-naming-udfs.html#udf-naming-overloading-function-names">Overloading Function
+                                    Names</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>f_function_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the function. If you specify a schema name (such as
+                                 <code class="code">myschema.myfunction</code>), the function is created using the
+                                 specified schema. Otherwise, the function is created in the current schema. For
+                                 more information about valid names, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>.
+                              </p>
+                              
+                              <p>We recommend that you prefix all UDF names with <code class="code">f_</code>. Amazon Redshift
+                                 reserves the <code class="code">f_</code> prefix for UDF names, so by using the
+                                 <code class="code">f_</code> prefix, you ensure that your UDF name will not conflict with
+                                 any existing or future Amazon Redshift built-in SQL function names. For more
+                                 information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-naming-udfs.html">Naming UDFs</a>.
+                              </p>
+                              
+                              <p>You can define more than one function with the same function name if the
+                                 data types for the input arguments are different. In other words, the function
+                                 name is overloaded. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-naming-udfs.html#udf-naming-overloading-function-names">Overloading Function
+                                    Names</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>py_arg_name py_arg_data_type | sql_arg_data type</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>For a Python UDF, a list of input argument names and data types. For a SQL
+                                 UDF, a list of data types, without argument names. In a Python UDF, refer to
+                                 arguments using the argument names. In a SQL UDF, refer to arguments using $1,
+                                 $2, and so on, based on the order of the arguments in the argument list. 
+                              </p>
+                              
+                              <p>For a SQL UDF, the input and return data types can be any standard Amazon
+                                 Redshift data type. For a Python UDF, the input and return data types can be
+                                 any standard Amazon Redshift data type except TIMESTAMP WITH TIME ZONE (TIMESTAMPTZ).
+                                 In
+                                 addition, Python UDFs support a data type of ANYELEMENT. This is automatically
+                                 converted to a standard data type based on the data type of the corresponding
+                                 argument supplied at runtime. If multiple arguments use ANYELEMENT, they will
+                                 all resolve to the same data type at runtime, based on the first ANYELEMENT
+                                 argument in the list. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-data-types.html">Python UDF Data Types</a> and <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html">Data Types</a>.
+                              </p>
+                              
+                              
+                              <p>You can specify a maximum of 32 arguments.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"> RETURNS <em>data_type</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The data type of the value returned by the function. The RETURNS data type
+                                 can be any standard Amazon Redshift data type. In addition, Python UDFs can use a
+                                 data
+                                 type of ANYELEMENT, which is automatically converted to a standard data type
+                                 based on the argument supplied at runtime. If you specify ANYELEMENT for the
+                                 return data type, at least one argument must use ANYELEMENT. The actual return
+                                 data type matches the data type supplied for the ANYELEMENT argument when the
+                                 function is called. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-data-types.html">Python UDF Data Types</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"> VOLATILE | STABLE | IMMUTABLE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Informs the query optimizer about the volatility of the function. </p>
+                              
+                              <p>You will get the best optimization if you label your function with the
+                                 strictest volatility category that is valid for it. However, if the category is
+                                 too strict, there is a risk that the optimizer will erroneously skip some
+                                 calls, resulting in an incorrect result set. In order of strictness, beginning
+                                 with the least strict, the volatility categories are as follows:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>VOLATILE</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>STABLE</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>IMMUTABLE</p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              
+                              
+                              <p>VOLATILE</p>
+                              
+                              <p>Given the same arguments, the function can return different results on
+                                 successive calls, even for the rows in a single statement. The query optimizer
+                                 can&apos;t make any assumptions about the behavior of a volatile function, so a
+                                 query that uses a volatile function must reevaluate the function for every
+                                 input row.
+                              </p>
+                              
+                              <p>STABLE</p>
+                              
+                              <p>Given the same arguments, the function is guaranteed to return the same
+                                 results for all rows processed within a single statement. The function can
+                                 return different results when called in different statements. This category
+                                 allows the optimizer to optimize multiple calls of the function within a single
+                                 statement to a single call for the statement. 
+                              </p>
+                              
+                              <p>IMMUTABLE</p>
+                              
+                              <p>Given the same arguments, the function always returns the same result,
+                                 forever. When a query calls an <code class="code">IMMUTABLE</code> function with constant
+                                 arguments, the optimizer pre-evaluates the function.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">AS $$ <em>statement</em> $$</span></dt>
+                           
+                           <dd>
+                              
+                              <p> A construct that encloses the statement to be executed. The literal
+                                 keywords <code class="code">AS $$</code> and <code class="code">$$</code> are required. 
+                              </p>
+                              
+                              <p>Amazon Redshift requires you to enclose the statement in your function by using a
+                                 format called dollar quoting. Anything within the
+                                 enclosure is passed exactly as is. You don&apos;t need to escape any special
+                                 characters because the contents of the string are written literally. 
+                              </p>
+                              
+                              <p> With <em>dollar quoting, </em>you use a pair of
+                                 dollar signs ($$) to signify the start and the end of the
+                                 statement to execute, as shown in the following example. 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">$$ <em class="replaceable"><code>my statement</code></em> $$</code></pre>
+                              <p> Optionally, between the dollar signs in each pair, you can specify a string
+                                 to help identify the statement. The string that you use must be the same in
+                                 both the start and the end of the enclosure pairs. This string is
+                                 case-sensitive, and it follows the same constraints as an unquoted identifier
+                                 except that it can&apos;t contain dollar signs. The following example uses the
+                                 string <code class="code">test</code>. 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">$test$ <em class="replaceable"><code>my statement</code></em> $test$</code></pre>
+                              <p>For more information about dollar quoting, see &quot;Dollar-quoted
+                                 String Constants&quot; under <a href="https://www.postgresql.org/docs/9.4/static/sql-syntax-lexical.html" target="_blank">
+                                    Lexical Structure</a> in the PostgreSQL documentation. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"><em>python_program</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A valid executable Python program that returns a value. The statement that
+                                 you pass in with the function must conform to indentation requirements as
+                                 specified in the <a href="https://www.python.org/dev/peps/pep-0008/#indentation" target="_blank">Style Guide for
+                                    Python Code</a> on the Python website. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-python-language-support.html">Python Language Support for UDFs</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"><em>SQL_clause</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A SQL SELECT clause.</p>
+                              
+                              <p>The SELECT clause can&apos;t include any of the following types of
+                                 clauses:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>FROM</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>INTO</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>WHERE</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>GROUP BY</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>ORDER BY</p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>LIMIT</p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">LANGUAGE { plpythonu | sql } </span></dt>
+                           
+                           <dd>
+                              
+                              <p>For Python, specify <code class="code">plpythonu</code>. For SQL, specify
+                                 <code class="code">sql</code>. You must have permission for usage on language for SQL or
+                                 plpythonu. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-security-and-privileges.html">UDF Security and Privileges</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CREATE_FUNCTION-usage-notes">Usage Notes</h2><h3 id="r_CREATE_FUNCTION-usage-notes-nested-functions">Nested
+                        Functions
+                     </h3><p>You can call another SQL user-defined function (UDF) from within a SQL UDF. The nested
+                        function must exist
+                        when you run the CREATE FUNCTION command. Amazon Redshift doesn&apos;t track dependencies
+                        for UDFs,
+                        so if you drop the nested function, Amazon Redshift doesn&apos;t return an error. However,
+                        the UDF
+                        will fail if the nested function doesn&apos;t exist. For example, the following function
+                        calls the <code class="code">f_sql_greater </code>function in the SELECT clause.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create function f_sql_commission (float, float )
+  returns float
+stable
+as $$
+  select f_sql_greater ($1, $2)  
+$$ language sql;</code></pre><h3 id="r_CREATE_FUNCTION-usage-notes-security-and-privileges">UDF Security
+                        and Privileges
+                     </h3><p>To create a UDF, you must have permission for usage on language for SQL or
+                        plpythonu (Python). By default, USAGE ON LANGUAGE SQL is granted to PUBLIC, However,
+                        you must explicitly grant USAGE ON LANGUAGE PLPYTHONU to specific users or groups.
+                        
+                     </p><p>To revoke usage for SQL, first revoke usage from PUBLIC. Then grant usage on SQL
+                        only to the specific users or groups permitted to create SQL UDFs. The following
+                        example revokes usage on SQL from PUBLIC then grants usage to the user group
+                        <code class="code">udf_devs</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">revoke usage on language sql from PUBLIC;
+grant usage on language sql to group udf_devs;</code></pre><p>To execute a UDF, you must have execute permission for each function. By default,
+                        execute permission for new UDFs is granted to PUBLIC. To restrict usage, revoke
+                        execute from PUBLIC for the function. Then grant the privilege to specific
+                        individuals or groups. 
+                     </p><p>The following example revokes execution on function <code class="code">f_py_greater</code> from
+                        PUBLIC then grants usage to the user group <code class="code">udf_devs</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">revoke execute on function f_py_greater(a float, b float) from PUBLIC;
+grant execute on function f_py_greater(a float, b float) to group udf_devs;</code></pre><p>Superusers have all privileges by default. </p><p>For more information, see <a href="r_GRANT.html">GRANT</a> and
+                        <a href="r_REVOKE.html">REVOKE</a>.
+                     </p><h2 id="r_CREATE_FUNCTION-examples">Examples</h2><h3 id="r_CREATE_FUNCTION-python-example">Scalar Python UDF Example</h3><p>The following example creates a Python UDF that compares two integers and returns
+                        the larger value.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create function f_py_greater (a float, b float)
+  returns float
+stable
+as $$
+  if a &gt; b:
+    return a
+  return b
+$$ language plpythonu;</code></pre><p>The following example queries the SALES table and calls the new
+                        <code class="code">f_py_greater</code> function to return either COMMISSION or 20 percent of
+                        PRICEPAID, whichever is greater.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select f_py_greater (commission, pricepaid*0.20) from sales;</code></pre><h3 id="r_CREATE_FUNCTION-sql-example">Scalar SQL UDF Example</h3><p>The following example creates a function that compares two numbers and returns the
+                        larger value. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create function f_sql_greater (float, float)
+  returns float
+stable
+as $$
+  select case when $1 &gt; $2 then $1
+    else $2
+  end
+$$ language sql;</code></pre><p>The following query calls the new <code class="code">f_sql_greater</code> function to query the
+                        SALES table and returns either COMMISSION or 20 percent of PRICEPAID, whichever is
+                        greater.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select f_sql_greater (commission, pricepaid*0.20) from sales;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

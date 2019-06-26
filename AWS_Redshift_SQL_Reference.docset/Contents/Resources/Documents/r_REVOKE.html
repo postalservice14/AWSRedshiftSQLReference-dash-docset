@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_REVOKE">REVOKE</h1><p>Removes access privileges, such as privileges to create or update tables, from a user
+                        or
+                        user group. 
+                     </p><p>You can&apos;t GRANT or REVOKE permissions on an external table. Instead, grant or revoke
+                        the
+                        permissions on the external schema.
+                     </p><p>For stored procedures, USAGE ON LANGUAGE plpgsql is granted to PUBLIC by default.
+                        EXECUTE ON PROCEDURE is granted only to the owner and superusers by default.
+                     </p><p>Specify in the REVOKE statement the privileges that you want to remove. To give
+                        privileges, use the <a href="r_GRANT.html">GRANT</a> command. 
+                     </p><h2 id="r_REVOKE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">REVOKE [ GRANT OPTION FOR ]
+{ { SELECT | INSERT | UPDATE | DELETE | REFERENCES } [,...] | ALL [ PRIVILEGES ] }
+ON { [ TABLE ] <em>table_name</em> [, ...] | ALL TABLES IN SCHEMA <em>schema_name</em> [, ...] }
+FROM { <em>username</em> | GROUP <em>group_name</em> | PUBLIC } [, ...]
+[ CASCADE | RESTRICT ]
+
+REVOKE [ GRANT OPTION FOR ]
+{ { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
+ON DATABASE <em>db_name</em> [, ...]
+FROM { <em>username</em> | GROUP <em>group_name</em> | PUBLIC } [, ...]
+[ CASCADE | RESTRICT ]
+
+REVOKE [ GRANT OPTION FOR ]
+{ { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
+ON SCHEMA <em>schema_name</em> [, ...]
+FROM { <em>username</em> | GROUP <em>group_name</em> | PUBLIC } [, ...]
+[ CASCADE | RESTRICT ]
+
+REVOKE [ GRANT OPTION FOR ]
+EXECUTE 
+    ON FUNCTION <em>function_name</em> ( [ [ <em>argname</em> ] <em>argtype</em> [, ...] ] ) [, ...]
+    FROM { <em>username</em> | GROUP <em>group_name</em> | PUBLIC } [, ...]
+[ CASCADE | RESTRICT ]
+
+REVOKE [ GRANT OPTION FOR ]
+{ { EXECUTE } [,...] | ALL [ PRIVILEGES ] }
+    ON PROCEDURE <em>procedure_name</em> ( [ [ <em>argname</em> ] <em>argtype</em> [, ...] ] ) [, ...]
+    FROM { <em>username</em> | GROUP <em>group_name</em> | PUBLIC } [, ...]
+[ CASCADE | RESTRICT ]
+
+REVOKE [ GRANT OPTION FOR ]
+USAGE 
+    ON LANGUAGE <em>language_name</em> [, ...]
+    FROM { <em>username</em> | GROUP <em>group_name</em> | PUBLIC } [, ...]
+[ CASCADE | RESTRICT ]
+</code></pre><h2 id="r_REVOKE-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                          
+                                     
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">GRANT OPTION FOR </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes only the option to grant a specified privilege to other users and
+                                 does not revoke the privilege itself. GRANT OPTION can not be revoked from a
+                                 group or from PUBLIC.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">SELECT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privilege to select data from a table or a view using a SELECT
+                                 statement.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">INSERT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privilege to load data into a table using an INSERT statement or
+                                 a COPY statement. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">UPDATE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privilege to update a table column using an UPDATE statement.
+                                 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DELETE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privilege to delete a data row from a table.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">REFERENCES </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privilege to create a foreign key constraint. You should revoke
+                                 this privilege on both the referenced table and the referencing table.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ALL [ PRIVILEGES ] </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes all available privileges at once from the specified user or group.
+                                 The PRIVILEGES keyword is optional.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ON [ TABLE ] <em>table_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the specified privileges on a table or a view. The TABLE keyword is
+                                 optional.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ON ALL TABLES IN SCHEMA <em>schema_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the specified privileges on all tables in the referenced
+                                 schema.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">GROUP <em>group_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privileges from the specified user group.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">PUBLIC </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the specified privileges from all users. PUBLIC represents a group
+                                 that always includes all users. An individual user&apos;s privileges consist of the
+                                 sum of privileges granted to PUBLIC, privileges granted to any groups that the
+                                 user belongs to, and any privileges granted to the user individually.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">CREATE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Depending on the database object, revokes the following privileges from the
+                                 user or group:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>For databases, using the CREATE clause for REVOKE prevents users from
+                                          creating schemas within the database.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>For schemas, using the CREATE clause for REVOKE prevents users from
+                                          creating objects within a schema. To rename an object, the user must have
+                                          the CREATE privilege and own the object to be renamed. 
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>By default, all users have CREATE and USAGE privileges on the PUBLIC
+                                    schema.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">TEMPORARY | TEMP </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privilege to create temporary tables in the specified
+                                 database.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>By default, users are granted permission to create temporary tables by
+                                    their automatic membership in the PUBLIC group. To remove the privilege for
+                                    any users to create temporary tables, revoke the TEMP permission from the
+                                    PUBLIC group and then explicitly grant the permission to create temporary
+                                    tables to specific users or groups of users.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ON DATABASE <em>db_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privileges on the specified database.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">USAGE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes USAGE privileges on objects within a specific schema, which makes
+                                 these objects inaccessible to users. Specific actions on these objects must be
+                                 revoked separately (such as the EXECUTE privilege on functions).
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>By default, all users have CREATE and USAGE privileges on the PUBLIC
+                                    schema.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ON SCHEMA <em>schema_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the privileges on the specified schema. You can use schema
+                                 privileges to control the creation of tables; the CREATE privilege for a
+                                 database only controls the creation of schemas.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">CASCADE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>If a user holds a privilege with grant option and has granted the privilege
+                                 to other users, the privileges held by those other users are
+                                 <em>dependent privileges</em>. If the privilege or the grant
+                                 option held by the first user is being revoked and dependent privileges exist,
+                                 those dependent privileges are also revoked if CASCADE is specified; otherwise,
+                                 the revoke action fails.
+                              </p>
+                              
+                              <p>For example, if user A has granted a privilege with grant option to user B,
+                                 and user B has granted the privilege to user C, user A can revoke the grant
+                                 option from user B and use the CASCADE option to in turn revoke the privilege
+                                 from user C.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">RESTRICT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes only those privileges that the user directly granted. This behavior
+                                 is the default.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">EXECUTE ON FUNCTION <em>function_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the EXECUTE privilege on a specific function. Because function names
+                                 can be overloaded, you must include the argument list for the function. For
+                                 more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-naming-udfs.html">Naming UDFs</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">EXECUTE ON PROCEDURE <em>procedure_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the EXECUTE privilege on a specific stored procedure. Because stored procedure
+                                 names
+                                 can be overloaded, you must include the argument list for the procedure. For
+                                 more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/stored-procedure-naming.html">Naming Stored Procedures</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">EXECUTE ON ALL PROCEDURES IN SCHEMA <em>procedure_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the specified privileges on all procedures in the referenced schema.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">USAGE ON LANGUAGE <em>language_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Revokes the USAGE privilege on a language. For Python user-defined functions
+                                 (UDFs), use <code class="code">plpythonu</code>. For SQL UDFs, use <code class="code">sql</code>. For
+                                 stored procedures, use <code class="code">plpgsql</code>. 
+                              </p>
+                              
+                              <p>To create a UDF, you must have permission for usage on language for SQL or
+                                 <code class="code">plpythonu</code> (Python). By default, USAGE ON LANGUAGE SQL is
+                                 granted to PUBLIC. However, you must explicitly grant USAGE ON LANGUAGE
+                                 PLPYTHONU to specific users or groups. 
+                              </p>
+                              
+                              <p>To revoke usage for SQL, first revoke usage from PUBLIC. Then grant usage on
+                                 SQL only to the specific users or groups permitted to create SQL UDFs. The
+                                 following example revokes usage on SQL from PUBLIC then grants usage to the
+                                 user group <code class="code">udf_devs</code>. 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">revoke usage on language sql from PUBLIC;
+grant usage on language sql to group udf_devs;</code></pre>
+                              <p>For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-security-and-privileges.html">UDF Security and Privileges</a>. 
+                              </p>
+                              
+                              <p>To revoke usage for stored procedures, first revoke usage from PUBLIC. Then
+                                 grant usage on <code class="code">plpgsql</code> only to the specific users or groups
+                                 permitted to create stored procedures. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/stored-procedure-security-and-privileges.html">Security and Privileges for
+                                    Stored Procedures </a>. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_REVOKE-usage-notes">Usage Notes</h2><p>To revoke privileges from an object, you must meet one of the following
+                        criteria:
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>Be the object owner.</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>Be a superuser.</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>Have a grant privilege for that object and privilege.</p>
+                              
+                              <p>For example, the following command enables the user HR both to perform SELECT
+                                 commands on the employees table and to grant and revoke the same privilege for
+                                 other users.
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">grant select on table employees to HR with grant option;</code></pre>
+                              <p>HR can&apos;t revoke privileges for any operation other than SELECT, or on any other
+                                 table than employees. 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>Superusers can access all objects regardless of GRANT and REVOKE commands that set
+                        object privileges.
+                     </p><p>PUBLIC represents a group that always includes all users. By default all members of
+                        PUBLIC have CREATE and USAGE privileges on the PUBLIC schema. To restrict any user&apos;s
+                        permissions on the PUBLIC schema, you must first revoke all permissions from PUBLIC
+                        on
+                        the PUBLIC schema, then grant privileges to specific users or groups. The following
+                        example controls table creation privileges in the PUBLIC schema.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">revoke create on schema public from public;</code></pre><h2 id="r_REVOKE-examples">Examples</h2><p>The following example revokes INSERT privileges on the SALES table from the GUESTS
+                        user group. This command prevents members of GUESTS from being able to load data into
+                        the SALES table by using the INSERT command: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">revoke insert on table sales from group guests;
+</code></pre><p>The following example revokes the SELECT privilege on all tables in the QA_TICKIT
+                        schema from the user <code class="code">fred</code>: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">revoke select on all tables in schema qa_tickit from fred;
+</code></pre><p>The following example revokes the privilege to select from a view for user
+                        <code class="code">bobr</code>: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">revoke select on table eventview from bobr;
+</code></pre><p>The following example revokes the privilege to create temporary tables in the TICKIT
+                        database from all users: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">revoke temporary on database tickit from public;
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CREATE_EXTERNAL_SCHEMA">CREATE EXTERNAL SCHEMA</h1><p>Creates a new external schema in the current database. The owner of this schema is
+                        the
+                        issuer of the CREATE EXTERNAL SCHEMA command. To transfer ownership of an external
+                        schema,
+                        use <a href="r_ALTER_SCHEMA.html">ALTER SCHEMA</a> to change the owner.
+                        Use the <a href="r_GRANT.html">GRANT</a> command to grant access to the
+                        schema to other users or groups. 
+                     </p><p>You can&apos;t use the GRANT or REVOKE commands for permissions on an external table.
+                        Instead, grant or revoke the permissions on the external schema. 
+                     </p><p>An Amazon Redshift external schema references a database in an external Data Catalog
+                        in AWS Glue or in
+                        Amazon Athena or a database in an Apache Hive metastore, such as Amazon EMR. 
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>If you currently have Redshift Spectrum external tables in the Athena data catalog,
+                           you can migrate your Athena data catalog to an AWS Glue Data Catalog. To use the AWS
+                           Glue Data
+                           Catalog with Redshift Spectrum, you might need to change your IAM policies. For more
+                           information, see <a href="https://docs.aws.amazon.com/athena/latest/ug/glue-athena.html#glue-upgrade">Upgrading to the
+                              AWS Glue Data Catalog</a> in the <em>Athena User Guide</em>.
+                        </p>
+                     </div><p>All external tables must be created in an external schema. You can&apos;t create local
+                        tables
+                        in external schemas. For more information, see <a href="r_CREATE_EXTERNAL_TABLE.html">CREATE EXTERNAL TABLE</a>. 
+                     </p><p>External schemas do not support search paths.</p><p>To view details for external schemas, query the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SVV_EXTERNAL_SCHEMAS.html">SVV_EXTERNAL_SCHEMAS</a> system view. 
+                     </p><h2 id="r_CREATE_EXTERNAL_SCHEMA-synopsis">Syntax</h2><pre class="screen">CREATE EXTERNAL SCHEMA [IF NOT EXISTS] <em>schema_name</em>
+FROM { [ DATA CATALOG ] |  HIVE METASTORE }
+DATABASE &apos;<em>database_name</em>&apos;
+[ REGION &apos;<em>aws-region</em>&apos; ]
+[ URI &apos;<em>hive_metastore_uri</em>&apos; [ PORT <em>port_number</em> ] ]
+IAM_ROLE &apos;<em>iam-role-arn-string</em>&apos; ] 
+[ CATALOG_ROLE &apos;<em>catalog-role-arn-string</em>&apos; ] 
+[ CREATE EXTERNAL DATABASE IF NOT EXISTS ]</pre><h2 id="r_CREATE_EXTERNAL_SCHEMA-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">IF NOT EXISTS</span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that indicates that if the specified schema already exists, the
+                                 command should make no changes and return a message that the schema exists,
+                                 rather than terminating with an error. This clause is useful when scripting, so
+                                 the script doesn&#x2019;t fail if CREATE EXTERNAL SCHEMA tries to create a schema that
+                                 already exists. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>schema_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the new external schema. For more information about valid names,
+                                 see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">FROM [ DATA CATALOG ] | HIVE METASTORE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A keyword that indicates where the external database is located. </p>
+                              
+                              <p>DATA CATALOG indicates that the external database is defined in the Athena
+                                 data catalog or the AWS Glue Data Catalog. 
+                              </p>
+                              
+                              <p>If the external database is defined in an external Data Catalog in a different
+                                 AWS Region, the REGION parameter is required. DATA CATALOG is the
+                                 default.
+                              </p>
+                              
+                              <p>HIVE METASTORE indicates that the external database is defined in a Hive
+                                 metastore. If HIVE METASTORE, is specified, URI is required. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">REGION &apos;<em>aws-region</em>&apos;</span></dt>
+                           
+                           <dd>
+                              
+                              <p>If the external database is defined in an Athena data catalog or or the AWS Glue Data
+                                 Catalog, the AWS Region
+                                 in which the database is located. This parameter is required if the database is
+                                 defined in an external Data Catalog. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">URI &apos;<em>hive_metastore_uri</em>&apos; [ PORT port_number ]</span></dt>
+                           
+                           <dd>
+                              
+                              <p>If the database is in a Hive metastore, specify the URI and optionally the
+                                 port number for the metastore. The default port number is 9083. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">IAM_ROLE &apos;<em>iam-role-arn-string</em>&apos;</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The Amazon Resource Name (ARN) for an IAM role that your cluster uses for
+                                 authentication and authorization. As a minimum, the IAM role must have
+                                 permission to perform a LIST operation on the Amazon S3 bucket to be accessed and
+                                 a
+                                 GET operation on the Amazon S3 objects the bucket contains. If the external database
+                                 is defined in an Amazon Athena data catalog or the AWS Glue Data Catalog, the IAM
+                                 role must have permission to
+                                 access Athena unless CATALOG_ROLE is specified. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c-spectrum-iam-policies.html">IAM Policies for Amazon Redshift Spectrum</a>.
+                                 The following shows the syntax for the IAM_ROLE parameter string for a single
+                                 ARN.
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">IAM_ROLE &apos;arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;role-name&gt;</code></em>&apos;</code></pre>
+                              <p>You can chain roles so that your cluster can assume another IAM role,
+                                 possibly belonging to another account. You can chain up to 10 roles. For more
+                                 information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c-spectrum-iam-policies.html#c-spectrum-chaining-roles">Chaining IAM Roles in Amazon Redshift Spectrum</a>. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>The list of chained roles must not include spaces.</p>
+                              </div>
+                              
+                              <p>The following shows the syntax for chaining three roles.</p>
+                              
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">IAM_ROLE &apos;arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;role-1-name&gt;</code></em>,arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;role-2-name&gt;</code></em>,arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;role-3-name&gt;</code></em>&apos;</code></pre>
+                              </dd>
+                           
+                           
+                           
+                           <dt><span class="term">CATALOG_ROLE &apos;<em>catalog-role-arn-string</em>&apos;</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The Amazon Resource Name (ARN) for an IAM role that your cluster uses for
+                                 authentication and authorization for the data catalog. If CATALOG_ROLE isn&apos;t
+                                 specified, Amazon Redshift uses the specified IAM_ROLE. The catalog role must have
+                                 permission to access the Data Catalog in AWS Glue or Athena. For more information,
+                                 see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c-spectrum-iam-policies.html">IAM Policies for Amazon Redshift Spectrum</a>. The following shows the syntax
+                                 for the CATALOG_ROLE parameter string for a single ARN.
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CATALOG_ROLE &apos;arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;catalog-role&gt;</code></em>&apos;</code></pre>
+                              <p>You can chain roles so that your cluster can assume another IAM role,
+                                 possibly belonging to another account. You can chain up to 10 roles. For more
+                                 information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c-spectrum-iam-policies.html#c-spectrum-chaining-roles">Chaining IAM Roles in Amazon Redshift Spectrum</a>. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>The list of chained roles must not include spaces.</p>
+                              </div>
+                              
+                              <p>The following shows the syntax for chaining three roles.</p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CATALOG_ROLE &apos;arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;catalog-role-1-name&gt;</code></em>,arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;catalog-role-2-name&gt;</code></em>,arn:aws:iam::<em class="replaceable"><code>&lt;aws-account-id&gt;</code></em>:role/<em class="replaceable"><code>&lt;catalog-role-3-name&gt;</code></em>&apos;</code></pre>
+                              </dd>
+                           
+                           
+                           
+                           <dt><span class="term">CREATE EXTERNAL DATABASE IF NOT EXISTS</span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that creates an external database with the name specified by the
+                                 DATABASE argument, if the specified external database doesn&apos;t exist. If the
+                                 specified external database exists, the command makes no changes. In this case,
+                                 the command returns a message that the external database exists, rather than
+                                 terminating with an error.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>CREATE EXTERNAL DATABASE IF NOT EXISTS can&apos;t be used with HIVE
+                                    METASTORE.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CREATE_EXTERNAL_SCHEMA_usage">Usage Notes</h2><p>For limits when using the Athena data catalog, see <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html#amazon-athena-limits">Athena
+                           Limits</a> in the AWS General Reference.
+                     </p><p>For limits when using the AWS Glue Data Catalog, see <a href="https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html#limits_glue">AWS Glue Limits</a> in the AWS General Reference.
+                     </p><p>These limits don&#x2019;t apply to a Hive metastore.</p><h2 id="r_CREATE_EXTERNAL_SCHEMA_examples">Examples</h2><p>The following example creates an external schema using a database in an Athena data
+                        catalog named <code class="code">sampledb</code> in the US West (Oregon) Region.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create external schema spectrum_schema
+from data catalog
+database &apos;sampledb&apos;
+region &apos;us-west-2&apos; 
+iam_role &apos;arn:aws:iam::123456789012:role/MySpectrumRole&apos;;</code></pre><p>The following example creates an external schema and creates a new external database
+                        named <code class="code">spectrum_db</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create external schema spectrum_schema
+from data catalog
+database &apos;spectrum_db&apos;
+iam_role &apos;arn:aws:iam::123456789012:role/MySpectrumRole&apos;
+create external database if not exists;</code></pre><p>The following example creates an external schema using a Hive metastore database
+                        named <code class="code">hive_db</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create external schema hive_schema
+from hive metastore
+database &apos;hive_db&apos;
+uri &apos;172.10.10.10&apos; port 99
+iam_role &apos;arn:aws:iam::123456789012:role/MySpectrumRole&apos;;</code></pre><p>The following example chains roles to use the role <code class="code">myS3Role</code> for
+                        accessing Amazon S3 and uses <code class="code">myAthenaRole</code> for data catalog access. For more
+                        information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c-spectrum-iam-policies.html#c-spectrum-chaining-roles">Chaining IAM Roles in Amazon Redshift Spectrum</a>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create external schema spectrum_schema
+from data catalog
+database &apos;spectrum_db&apos;
+iam_role &apos;arn:aws:iam::123456789012:role/myRedshiftRole,arn:aws:iam::123456789012:role/myS3Role&apos;
+catalog_role &apos;arn:aws:iam::123456789012:role/myAthenaRole&apos;
+create external database if not exists;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

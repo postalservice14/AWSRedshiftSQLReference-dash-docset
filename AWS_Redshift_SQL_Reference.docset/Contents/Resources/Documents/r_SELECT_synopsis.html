@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SELECT_synopsis">SELECT</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#r_SELECT_synopsis-synopsis">Syntax</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WITH_clause.html">WITH Clause</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SELECT_list.html">SELECT List</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_FROM_clause30.html">FROM Clause</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WHERE_clause.html">WHERE Clause</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_GROUP_BY_clause.html">GROUP BY Clause</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_HAVING_clause.html">HAVING Clause</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_UNION.html">UNION, INTERSECT, and EXCEPT</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_ORDER_BY_clause.html">ORDER BY Clause</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Join_examples.html">Join Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Subquery_examples.html">Subquery Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_correlated_subqueries.html">Correlated Subqueries</a></li>
+                        </ul>
+                     </div><p>Returns rows from tables, views, and user-defined functions. </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>The maximum size for a single SQL statement is 16 MB.</p>
+                     </div><h2 id="r_SELECT_synopsis-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">[ WITH <em>with_subquery</em> [, ...] ]
+SELECT
+[ TOP <em>number</em> | [ ALL | DISTINCT ]
+* | <em>expression</em> [ AS <em>output_name</em> ] [, ...] ]
+[ FROM <em>table_reference</em> [, ...] ]
+[ WHERE <em>condition</em> ]
+[ GROUP BY <em>expression</em> [, ...] ]
+[ HAVING <em>condition</em> ]
+[ { UNION | ALL | INTERSECT | EXCEPT | MINUS } <em>query</em> ]
+[ ORDER BY <em>expression</em>
+[ ASC | DESC ]
+[ LIMIT { <em>number</em> | ALL } ]
+[ OFFSET <em>start</em> ]</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

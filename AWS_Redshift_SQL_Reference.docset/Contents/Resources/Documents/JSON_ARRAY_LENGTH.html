@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="JSON_ARRAY_LENGTH">JSON_ARRAY_LENGTH Function</h1><p>JSON_ARRAY_LENGTH returns the number of elements in the outer array of a JSON string.
+                        If the <em>null_if_invalid</em> argument is set to <code class="code">true</code> and the
+                        JSON string is invalid, the function returns NULL instead of returning an error.
+                     </p><p>For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/json-functions.html">JSON Functions</a>. 
+                     </p><h2 id="JSON_ARRAY_LENGTH-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">json_array_length(&apos;<em>json_array</em>&apos; [, <em>null_if_invalid</em> ] ) </code></pre><h2 id="JSON_ARRAY_LENGTH-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>json_array</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A properly formatted JSON array.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>null_if_invalid</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A Boolean value that specifies whether to return NULL if the input JSON
+                                 string is invalid instead of returning an error. To return NULL if the JSON
+                                 is invalid, specify <code class="code">true</code> (<code class="code">t</code>). To return an error
+                                 if the JSON is invalid, specify <code class="code">false</code> (<code class="code">f</code>). The
+                                 default is <code class="code">false</code>.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="JSON_ARRAY_LENGTH-return">Return Type</h2><p>INTEGER</p><h2 id="JSON_ARRAY_LENGTH-examples">Example</h2><p>The following example returns the number of elements in the array: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select json_array_length(&apos;[11,12,13,{&quot;f1&quot;:21,&quot;f2&quot;:[25,26]},14]&apos;); 
+
+json_array_length 
+-----------------
+5</code></pre><p>The following example returns an error because the JSON is invalid.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select json_array_length(&apos;[11,12,13,{&quot;f1&quot;:21,&quot;f2&quot;:[25,26]},14&apos;);
+ 
+An error occurred when executing the SQL command:
+select json_array_length(&apos;[11,12,13,{&quot;f1&quot;:21,&quot;f2&quot;:[25,26]},14&apos;)</code></pre><p>The following example sets <em>null_if_invalid</em> to
+                        <em>true</em>, so the statement the returns NULL instead of returning
+                        an error for invalid JSON.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select json_array_length(&apos;[11,12,13,{&quot;f1&quot;:21,&quot;f2&quot;:[25,26]},14&apos;,true);
+
+json_array_length
+-----------------
+
+            </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

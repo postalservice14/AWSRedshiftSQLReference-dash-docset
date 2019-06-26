@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_FORMAT_strings">Datetime Format Strings</h1><p>You can find a reference for datetime format strings following. </p><p>The following format strings apply to functions such as TO_CHAR. These strings can
+                        contain datetime separators (such as &apos;<code class="code">-</code>&apos;, &apos;<code class="code">/</code>&apos;, or
+                        &apos;<code class="code">:</code>&apos;) and the following &quot;dateparts&quot; and &quot;timeparts&quot;. 
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c31c15b7">
+                              
+                              <tr>
+                                 
+                                 <th>Datepart or Timepart </th>
+                                 
+                                 <th>Meaning </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>BC or B.C., AD or A.D., b.c. or bc, ad or a.d. </td>
+                                 
+                                 <td>Upper and lowercase era indicators </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>CC </td>
+                                 
+                                 <td>Two-digit century number</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>YYYY, YYY, YY, Y </td>
+                                 
+                                 <td>4-digit, 3-digit, 2-digit, 1-digit year number</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>Y,YYY </td>
+                                 
+                                 <td>4-digit year number with comma </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>IYYY, IYY, IY, I </td>
+                                 
+                                 <td>4-digit, 3-digit, 2-digit, 1-digit International
+                                    Organization for Standardization (ISO) year number
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>Q </td>
+                                 
+                                 <td>Quarter number (1 to 4) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>MONTH, Month, month </td>
+                                 
+                                 <td>Month name (uppercase, mixed-case, lowercase,
+                                    blank-padded to 9 characters) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>MON, Mon, mon </td>
+                                 
+                                 <td>Abbreviated month name (uppercase, mixed-case, lowercase,
+                                    blank-padded to 9 characters) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>MM </td>
+                                 
+                                 <td>Month number (01-12) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>RM, rm </td>
+                                 
+                                 <td>Month number in Roman numerals (I&#x2013;XII, with I
+                                    being January, uppercase or lowercase) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>W </td>
+                                 
+                                 <td>Week of month (1&#x2013;5; the first week starts on the
+                                    first day of the month.) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>WW </td>
+                                 
+                                 <td>Week number of year (1&#x2013;53; the first week starts
+                                    on the first day of the year.) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>IW </td>
+                                 
+                                 <td>ISO week number of year (the first Thursday of the new
+                                    year is in week 1.) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>DAY, Day, day </td>
+                                 
+                                 <td>Day name (uppercase, mixed-case, lowercase, blank-padded
+                                    to 9 characters) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>DY, Dy, dy </td>
+                                 
+                                 <td>Abbreviated day name (uppercase, mixed-case, lowercase,
+                                    blank-padded to 9 characters) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>DDD </td>
+                                 
+                                 <td>Day of year (001&#x2013;366) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>IDDD </td>
+                                 
+                                 <td>Day of ISO 8601 week-numbering year (001-371; day 1 of the year is Monday of the first
+                                    ISO week) 
+                                 </td>
+                                 
+                              </tr>                      
+                              
+                              <tr>
+                                 
+                                 <td>DD </td>
+                                 
+                                 <td>Day of month as a number (01&#x2013;31) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>D </td>
+                                 
+                                 <td>Day of week (1&#x2013;7; Sunday is 1) 
+                                    <div class="aws-note">
+                                       <p class="aws-note">Note</p>
+                                       <p>The D datepart behaves differently from the day of week (DOW)
+                                          datepart used for the datetime functions DATE_PART and EXTRACT. DOW is
+                                          based on integers 0&#x2013;6, where Sunday is 0. For more information,
+                                          see <a href="r_Dateparts_for_datetime_functions.html">Dateparts for Date or Time Stamp
+                                             Functions</a>. 
+                                       </p>
+                                    </div>
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>ID </td>
+                                 
+                                 <td>ISO 8601 day of the week, Monday (1) to Sunday (7) </td>
+                                 
+                              </tr>              
+                              
+                              <tr>
+                                 
+                                 <td>J </td>
+                                 
+                                 <td>Julian day (days since January 1, 4712 BC) </td>
+                                 
+                              </tr>                  
+                              
+                              <tr>
+                                 
+                                 <td>HH24 </td>
+                                 
+                                 <td>Hour (24-hour clock, 00&#x2013;23) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>HH or HH12 </td>
+                                 
+                                 <td>Hour (12-hour clock, 01&#x2013;12) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>MI </td>
+                                 
+                                 <td>Minutes (00&#x2013;59) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>SS </td>
+                                 
+                                 <td>Seconds (00&#x2013;59) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>MS</td>
+                                 
+                                 <td>Milliseconds (.000) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>US</td>
+                                 
+                                 <td>Microseconds (.000000) </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>AM or PM, A.M. or P.M., a.m. or p.m., am or pm </td>
+                                 
+                                 <td>Upper and lowercase meridian indicators (for 12-hour
+                                    clock) 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>TZ, tz</td>
+                                 
+                                 <td>Upper and lowercase time zone abbreviation; valid for
+                                    TIMESTAMPTZ only
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>OF</td>
+                                 
+                                 <td>Offset from UTC; valid for TIMESTAMPTZ only</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>You must surround datetime separators (such as &apos;-&apos;, &apos;/&apos; or &apos;:&apos;) with single quotation
+                           marks, but you must surround the &quot;dateparts&quot; and &quot;timeparts&quot; listed in the preceding
+                           table with double quotation marks.
+                        </p>
+                     </div><p>The following example shows formatting for seconds, milliseconds, and
+                        microseconds.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select sysdate,
+to_char(sysdate, &apos;HH24:MI:SS&apos;) as seconds,
+to_char(sysdate, &apos;HH24:MI:SS.MS&apos;) as milliseconds,
+to_char(sysdate, &apos;HH24:MI:SS:US&apos;) as microseconds;
+
+timestamp           | seconds  | milliseconds | microseconds   
+--------------------+----------+--------------+----------------
+2015-04-10 18:45:09 | 18:45:09 | 18:45:09.325 | 18:45:09:325143</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

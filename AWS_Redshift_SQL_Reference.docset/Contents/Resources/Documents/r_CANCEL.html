@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CANCEL">CANCEL</h1><p>Cancels a database query that is currently running.</p><p>The CANCEL command requires the process ID of the running query and displays a
+                        confirmation message to verify that the query was cancelled.
+                     </p><h2 id="r_CANCEL-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CANCEL <em>process_id</em> [ &apos;<em>message</em>&apos; ]</code></pre><h2 id="r_CANCEL-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>process_id</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Process ID corresponding to the query that you want to cancel.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">&apos;<em>message</em>&apos; </span></dt>
+                           
+                           <dd>
+                              
+                              <p>An optional confirmation message that displays when the query cancellation
+                                 completes. If you do not specify a message, Amazon Redshift displays the default
+                                 message as verification. You must enclose the message in single quotes.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CANCEL-usage-notes">Usage Notes</h2><p>You can&apos;t cancel a query by specifying a <em>query ID</em>; you must
+                        specify the query&apos;s <em>process ID</em> (PID). You can only cancel queries
+                        currently being run by your user. Superusers can cancel all queries.
+                     </p><p>If queries in multiple sessions hold locks on the same table, you can use the <a href="PG_TERMINATE_BACKEND.html">PG_TERMINATE_BACKEND</a> function to
+                        terminate one of the sessions, which forces any currently running transactions in
+                        the
+                        terminated session to release all locks and roll back the transaction. Query the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_LOCKS.html">STV_LOCKS</a> system table to view currently
+                        held locks. 
+                     </p><p>Following certain internal events, Amazon Redshift might restart an active session
+                        and assign a
+                        new PID. If the PID has changed, you might receive the following error message:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">Session &lt;PID&gt; does not exist. The session PID might have changed. Check the stl_restarted_sessions system table for details.</code></pre><p>To find the new PID, query the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_RESTARTED_SESSIONS.html">STL_RESTARTED_SESSIONS</a> system table and filter on the
+                        <code class="code">oldpid</code> column.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select oldpid, newpid from stl_restarted_sessions where oldpid = 1234;</code></pre><h2 id="r_CANCEL-examples">Examples</h2><p>To cancel a currently running query, first retrieve the process ID for the query that
+                        you want to cancel. To determine the process IDs for all currently running queries,
+                        type
+                        the following command: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select pid, starttime, duration,
+trim(user_name) as user,
+trim (query) as querytxt
+from stv_recents
+where status = &apos;Running&apos;;
+
+pid |         starttime          | duration |   user   |    querytxt
+-----+----------------------------+----------+----------+-----------------
+802 | 2008-10-14 09:19:03.550885 |      132 | dwuser | select
+venuename from venue where venuestate=&apos;FL&apos;, where venuecity not in
+(&apos;Miami&apos; , &apos;Orlando&apos;);
+834 | 2008-10-14 08:33:49.473585 |  1250414 | dwuser | select *
+from listing;
+964 | 2008-10-14 08:30:43.290527 |   326179 | dwuser | select
+sellerid from sales where qtysold in (8, 10);</code></pre><p>Check the query text to determine which process id (PID) corresponds to the query
+                        that you want to cancel.
+                     </p><p>Type the following command to use PID 802 to cancel that query: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">cancel 802;
+</code></pre><p>The session where the query was running displays the following message: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">ERROR:  Query (168) cancelled on user&apos;s request</code></pre><p>where <code class="code">168</code> is the query ID (not the process ID used to cancel the
+                        query).
+                     </p><p>Alternatively, you can specify a custom confirmation message to display instead of
+                        the default message. To specify a custom message, include your message in quotes at
+                        the
+                        end of the CANCEL command: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">cancel 802 &apos;Long-running query&apos;;
+</code></pre><p>The session where the query was running displays the following message: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">ERROR:  Long-running query</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

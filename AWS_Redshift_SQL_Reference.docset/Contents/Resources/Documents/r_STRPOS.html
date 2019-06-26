@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_STRPOS">STRPOS Function</h1><p>Returns the position of a substring within a specified string. </p><p>Synonym of <a href="r_CHARINDEX.html">CHARINDEX Function</a> and <a href="r_POSITION.html">POSITION Function</a>. 
+                     </p><h2 id="r_STRPOS-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">STRPOS(<em>string</em>, <em>substring</em> )</code></pre><h2 id="r_STRPOS-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The first input parameter is the string to be searched. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>substring</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The second parameter is the substring to search for within the
+                                 <em>string</em>. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_STRPOS-return-type">Return Type</h2><p>The STRPOS function returns an integer corresponding to the position of the
+                        substring (one-based, not zero-based). The position is based on the number of
+                        characters, not bytes, so that multi-byte characters are counted as single
+                        characters.
+                     </p><h2 id="r_STRPOS_usage_notes">Usage Notes</h2><p>STRPOS returns 0 if the <em>substring</em> is not found within the
+                        <em>string</em>: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select strpos(&apos;dogfish&apos;, &apos;fist&apos;);
+strpos
+--------
+0
+(1 row)</code></pre><h2 id="r_STRPOS-examples">Examples</h2><p>The following example shows the position of the string <code class="code">fish</code> within
+                        the word <code class="code">dogfish</code>: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select strpos(&apos;dogfish&apos;, &apos;fish&apos;);
+strpos
+--------
+4
+(1 row)</code></pre><p>The following example returns the number of sales transactions with a COMMISSION
+                        over 999.00 from the SALES table: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select distinct strpos(commission, &apos;.&apos;),
+count (strpos(commission, &apos;.&apos;))
+from sales
+where strpos(commission, &apos;.&apos;) &gt; 4
+group by strpos(commission, &apos;.&apos;)
+order by 1, 2;
+
+strpos | count
+--------+-------
+5 |   629
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

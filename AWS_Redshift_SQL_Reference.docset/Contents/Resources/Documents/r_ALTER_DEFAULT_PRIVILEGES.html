@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_ALTER_DEFAULT_PRIVILEGES">ALTER DEFAULT PRIVILEGES</h1><p>Defines the default set of access privileges to be applied to objects that are created
+                        in the future by the specified user. By default, users can change only their own default
+                        access privileges. Only a superuser can specify default privileges for other users.
+                     </p><p>You can apply default privileges to users or user groups. You can set default privileges
+                        globally for all objects created in the current database, or for objects created only
+                        in
+                        the specified schemas. 
+                     </p><p>Default privileges apply only to new objects. Running ALTER DEFAULT PRIVILEGES doesn&#x2019;t
+                        change privileges on existing objects.
+                     </p><p>For more information about privileges, see <a href="r_GRANT.html">GRANT</a>.
+                     </p><p>To view information about the default privileges for database users, query the <a href="r_PG_DEFAULT_ACL.html">PG_DEFAULT_ACL</a> system catalog table. 
+                     </p><h2 id="r_ALTER_DEFAULT_PRIVILEGES-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ALTER DEFAULT PRIVILEGES
+    [ FOR USER <em>target_user</em> [, ...] ]
+    [ IN SCHEMA <em>schema_name</em> [, ...] ]
+    <em>grant_or_revoke_clause</em>
+
+where <em>grant_or_revoke_clause</em> is one of:
+
+GRANT { { SELECT | INSERT | UPDATE | DELETE | REFERENCES } [,...] | ALL [ PRIVILEGES ] } 
+	ON TABLES 
+	TO { <em>user_name</em> [ WITH GRANT OPTION ]| GROUP <em>group_name</em> | PUBLIC } [, ...]	 
+
+GRANT { EXECUTE | ALL [ PRIVILEGES ] } 
+	ON FUNCTIONS 
+	TO { <em>user_name</em> [ WITH GRANT OPTION ] | GROUP <em>group_name</em> | PUBLIC } [, ...]
+            
+GRANT { EXECUTE | ALL [ PRIVILEGES ] } 
+	ON PROCEDURES 
+	TO { <em>user_name</em> [ WITH GRANT OPTION ] | GROUP <em>group_name</em> | PUBLIC } [, ...]            
+
+REVOKE [ GRANT OPTION FOR ] { { SELECT | INSERT | UPDATE | DELETE | REFERENCES } [,...] | ALL [ PRIVILEGES ] } 
+	ON TABLES 
+	FROM <em>user_name</em> [, ...] [ CASCADE | RESTRICT ]
+
+REVOKE  { { SELECT | INSERT | UPDATE | DELETE | REFERENCES } [,...] | ALL [ PRIVILEGES ] } 
+	ON TABLES 
+	FROM { GROUP <em>group_name</em> | PUBLIC } [, ...] [ CASCADE | RESTRICT ]
+
+REVOKE [ GRANT OPTION FOR ] { EXECUTE | ALL [ PRIVILEGES ] } 
+	ON FUNCTIONS 
+	FROM <em>user_name</em> [, ...] [ CASCADE | RESTRICT ]
+
+REVOKE { EXECUTE | ALL [ PRIVILEGES ] } 
+	ON FUNCTIONS 
+	FROM { GROUP <em>group_name</em> | PUBLIC } [, ...] [ CASCADE | RESTRICT ]       
+
+REVOKE [ GRANT OPTION FOR ] { EXECUTE | ALL [ PRIVILEGES ] } 
+	ON PROCEDURES 
+	FROM <em>user_name</em> [, ...] [ CASCADE | RESTRICT ]            
+
+REVOKE { EXECUTE | ALL [ PRIVILEGES ] } 
+	ON PROCEDURES 
+	FROM { GROUP <em>group_name</em> | PUBLIC } [, ...] [ CASCADE | RESTRICT ]</code></pre><h2 id="r_ALTER_DEFAULT_PRIVILEGES-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><a id="default-for-user"></a><span class="term">FOR USER <em>target_user</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional. The name of the user for which default privileges are defined.
+                                 Only a superuser can specify default privileges for other users. The default
+                                 value is the current user.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="default-in-schema"></a><span class="term">IN SCHEMA <em>schema_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional. If an IN SCHEMA clause appears, the specified default privileges
+                                 are applied to new objects created in the specified
+                                 <em>schema_name</em>. In this case, the user or user group that
+                                 is the target of ALTER DEFAULT PRIVILEGES must have CREATE privilege for the
+                                 specified schema. Default privileges that are specific to a schema are added to
+                                 existing global default privileges. By default, default privileges are applied
+                                 globally to the entire database. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="default-grant"></a><span class="term">GRANT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The set of privileges to grant to the specified users or groups for all new
+                                 tables, functions, or stored procedures created by the specified user. You can set
+                                 the same
+                                 privileges and options with the GRANT clause that you can with the <a href="r_GRANT.html">GRANT</a> command. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="default-grant-option"></a><span class="term">WITH GRANT OPTION </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that indicates that the user receiving the privileges can in turn
+                                 grant the same privileges to others. You can&apos;t grant WITH GRANT OPTION to a
+                                 group or to PUBLIC. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="default-to"></a><span class="term">TO <em>user_name</em> | GROUP <em>group_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the user or user group to which the specified default privileges
+                                 are applied.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="default-revoke"></a><span class="term">REVOKE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The set of privileges to revoke from the specified users or groups for all
+                                 new tables, functions, or stored procedures created by the specified user. You can
+                                 set the same
+                                 privileges and options with the REVOKE clause that you can with the <a href="r_REVOKE.html">REVOKE</a> command. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="default-revoke-option"></a><span class="term">GRANT OPTION FOR</span></dt>
+                           
+                           <dd>
+                              
+                              <p> A clause that revokes only the option to grant a specified privilege to
+                                 other users and doesn&apos;t revoke the privilege itself. You can&apos;t revoke GRANT
+                                 OPTION from a group or from PUBLIC. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="default-from"></a><span class="term">FROM <em>user_name</em> | GROUP
+                                 <em>group_name</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the user or user group from which the specified privileges are
+                                 revoked by default.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_ALTER_DEFAULT_PRIVILEGES-examples">Examples</h2><p>Suppose that you want to allow any user in the user group <code class="code">report_readers</code>
+                        to view all tables created by the user <code class="code">report_admin</code>. In this case, execute
+                        the following command as a superuser. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter default privileges for user report_admin grant select on tables to group report_readers; </code></pre><p>In the following example, the first command grants SELECT privileges on all new
+                        tables you create. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter default privileges grant select on tables to public; </code></pre><p>The following example grants INSERT privilege to the <code class="code">sales_admin</code> user
+                        group for all new tables and views that you create in the <code class="code">sales</code> schema. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter default privileges in schema sales grant insert on tables to group sales_admin; </code></pre><p>The following example reverses the ALTER DEFAULT PRIVILEGES command in the preceding
+                        example. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter default privileges in schema sales revoke insert on tables from group sales_admin;</code></pre><p>By default, the PUBLIC user group has EXECUTE permission for all new user-defined
+                        functions. To revoke <code class="code">public</code> EXECUTE permissions for your new functions and
+                        then grant EXECUTE permission only to the <code class="code">dev_test</code> user group, execute the
+                        following commands. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter default privileges revoke execute on functions from public; 
+alter default privileges grant execute on functions to group dev_test; </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

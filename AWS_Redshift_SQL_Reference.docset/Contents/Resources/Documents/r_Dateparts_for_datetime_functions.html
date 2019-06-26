@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_Dateparts_for_datetime_functions">Dateparts for Date or Time Stamp
+                        Functions
+                     </h1><p>The following table identifies the datepart and timepart names and abbreviations that
+                        are accepted as arguments to the following functions: 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>DATEADD </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>DATEDIFF </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>DATE_PART </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>DATE_TRUNC </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>EXTRACT </p>
+                              
+                           </li>
+                        </ul>
+                     </div><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c23c75b5">
+                              
+                              
+                              <tr>
+                                 
+                                 <th>Datepart or Timepart </th>
+                                 
+                                 <th>Abbreviations </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>millennium, millennia </td>
+                                 
+                                 <td>mil, mils </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>century, centuries </td>
+                                 
+                                 <td>c, cent, cents </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>decade, decades </td>
+                                 
+                                 <td>dec, decs </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>epoch </td>
+                                 
+                                 <td>epoch (supported by the <a href="r_DATE_PART_function.html">DATE_PART</a> and the <a href="r_EXTRACT_function.html">EXTRACT</a>)
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>year, years </td>
+                                 
+                                 <td>y, yr, yrs </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>quarter, quarters </td>
+                                 
+                                 <td>qtr, qtrs </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>month, months </td>
+                                 
+                                 <td>mon, mons </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>week, weeks </td>
+                                 
+                                 <td>
+                                    <p>w </p>
+                                    <p>When used with the <a href="r_DATE_TRUNC.html">DATE_TRUNC</a>, returns
+                                       the date for the most recent Monday.
+                                    </p>
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>day of week </td>
+                                 
+                                 <td>
+                                    
+                                    <p>dayofweek, dow, dw, weekday (supported by the <a href="r_DATE_PART_function.html">DATE_PART</a> and the <a href="r_EXTRACT_function.html"> EXTRACT Function</a>)
+                                    </p>
+                                    
+                                    <p>Returns an integer from 0&#x2013;6, starting with Sunday. </p>
+                                    <div class="aws-note">
+                                       <p class="aws-note">Note</p>
+                                       <p>The DOW datepart behaves differently from the day of week (D)
+                                          date part used for datetime format strings. D is based on integers
+                                          1&#x2013;7, where Sunday is 1. For more information, see <a href="r_FORMAT_strings.html">Datetime Format Strings</a>.
+                                          
+                                       </p>
+                                    </div>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>day of year </td>
+                                 
+                                 <td>dayofyear, doy, dy, yearday (supported by the <a href="r_DATE_PART_function.html">DATE_PART</a> and the <a href="r_EXTRACT_function.html">EXTRACT</a>)
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>day, days </td>
+                                 
+                                 <td>d </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>hour, hours </td>
+                                 
+                                 <td>h, hr, hrs </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>minute, minutes </td>
+                                 
+                                 <td>m, min, mins </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>second, seconds </td>
+                                 
+                                 <td>s, sec, secs </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>millisecond, milliseconds </td>
+                                 
+                                 <td>ms, msec, msecs, msecond, mseconds, millisec, millisecs,
+                                    millisecon 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>microsecond, microseconds </td>
+                                 
+                                 <td>microsec, microsecs, microsecond, usecond, useconds, us,
+                                    usec, usecs 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>timezone, timezone_hour, timezone_minute </td>
+                                 
+                                 <td>Supported by the <a href="r_DATE_TRUNC.html">DATE_TRUNC</a> function and the <a href="r_EXTRACT_function.html">EXTRACT</a>
+                                    for time stamp with time zone (TIMESTAMPTZ) only.
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_Dateparts_for_datetime_functions-variations-in-results">Variations in
+                        Results with Seconds, Milliseconds, and Microseconds
+                     </h2><p>Minor differences in query results occur when different date functions specify
+                        seconds, milliseconds, or microseconds as dateparts: 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>The EXTRACT function return integers for the specified datepart only,
+                                 ignoring higher- and lower-level dateparts. If the specified datepart is
+                                 seconds, milliseconds and microseconds are not included in the result. If the
+                                 specified datepart is milliseconds, seconds and microseconds are not included.
+                                 If the specified datepart is microseconds, seconds and milliseconds are not
+                                 included. 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>The DATE_PART function returns the complete seconds portion of the time
+                                 stamp, regardless of the specified datepart, returning either a decimal value
+                                 or an integer as required. 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>For example, compare the results of the following queries:
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table seconds(micro timestamp);
+
+insert into seconds values(&apos;2009-09-21 11:10:03.189717&apos;);
+
+select extract(sec from micro) from seconds;
+date_part
+-----------
+3
+(1 row)
+
+select date_part(sec, micro) from seconds;
+pgdate_part
+-------------
+3.189717
+(1 row)</code></pre><h2 id="r_Dateparts_for_datetime_functions-century">CENTURY, EPOCH, DECADE, and
+                        MIL Notes
+                     </h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">CENTURY or CENTURIES </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Amazon Redshift interprets a CENTURY to start with year <em>###1</em>
+                                 and end with year <code class="code">###0</code>: 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select extract (century from timestamp &apos;2000-12-16 12:21:13&apos;);
+date_part
+-----------
+20
+(1 row)
+
+select extract (century from timestamp &apos;2001-12-16 12:21:13&apos;);
+date_part
+-----------
+21
+(1 row)</code></pre>
+                              </dd>
+                           
+                           
+                           <dt><span class="term">EPOCH </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The Amazon Redshift implementation of EPOCH is relative to 1970-01-01
+                                 00:00:00.000000 independent of the time zone where the cluster resides. You
+                                 might need to offset the results by the difference in hours depending on the
+                                 time zone where the cluster is located. 
+                              </p>
+                              
+                              
+                              <p> The following example demonstrates the following: </p>
+                              <div class="orderedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ol>
+                                    <li>
+                                       
+                                       <p> Creates a table called EVENT_EXAMPLE based on the EVENT table.
+                                          This CREATE AS command uses the DATE_PART function to create a date
+                                          column (called PGDATE_PART by default) to store the epoch value for
+                                          each event. 
+                                       </p>
+                                       
+                                    </li>
+                                    <li>
+                                       
+                                       <p> Selects the column and data type of EVENT_EXAMPLE from
+                                          PG_TABLE_DEF. 
+                                       </p>
+                                       
+                                    </li>
+                                    <li>
+                                       
+                                       <p> Selects EVENTNAME, STARTTIME, and PGDATE_PART from the
+                                          EVENT_EXAMPLE table to view the different date and time formats.
+                                          
+                                       </p>
+                                       
+                                    </li>
+                                    <li>
+                                       
+                                       <p> Selects EVENTNAME and STARTTIME from EVENT EXAMPLE as is. Converts
+                                          epoch values in PGDATE_PART using a 1 second interval to a timestamp
+                                          without time zone, and returns the results in a column called
+                                          CONVERTED_TIMESTAMP. 
+                                       </p>
+                                       
+                                    </li>
+                                 </ol>
+                              </div><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table event_example
+as select eventname, starttime, date_part(epoch, starttime) from event;
+
+select &quot;column&quot;, type from pg_table_def where tablename=&apos;event_example&apos;;
+
+     column    |            type
+---------------+-----------------------------
+ eventname     | character varying(200)
+ starttime     | timestamp without time zone
+ pgdate_part   | double precision
+(3 rows)</code></pre><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select eventname, starttime, pgdate_part from event_example;
+
+   eventname          |      starttime      | pgdate_part
+----------------------+---------------------+-------------
+ Mamma Mia!           | 2008-01-01 20:00:00 |  1199217600
+ Spring Awakening     | 2008-01-01 15:00:00 |  1199199600
+ Nas                  | 2008-01-01 14:30:00 |  1199197800
+ Hannah Montana       | 2008-01-01 19:30:00 |  1199215800
+ K.D. Lang            | 2008-01-01 15:00:00 |  1199199600
+ Spamalot             | 2008-01-02 20:00:00 |  1199304000
+ Macbeth              | 2008-01-02 15:00:00 |  1199286000
+ The Cherry Orchard   | 2008-01-02 14:30:00 |  1199284200
+ Macbeth              | 2008-01-02 19:30:00 |  1199302200
+ Demi Lovato          | 2008-01-02 19:30:00 |  1199302200
+
+   
+select eventname, 
+starttime, 
+timestamp with time zone &apos;epoch&apos; + pgdate_part * interval &apos;1 second&apos; AS converted_timestamp 
+from event_example;
+
+       eventname      |      starttime      | converted_timestamp
+----------------------+---------------------+---------------------
+ Mamma Mia!           | 2008-01-01 20:00:00 | 2008-01-01 20:00:00
+ Spring Awakening     | 2008-01-01 15:00:00 | 2008-01-01 15:00:00
+ Nas                  | 2008-01-01 14:30:00 | 2008-01-01 14:30:00
+ Hannah Montana       | 2008-01-01 19:30:00 | 2008-01-01 19:30:00
+ K.D. Lang            | 2008-01-01 15:00:00 | 2008-01-01 15:00:00
+ Spamalot             | 2008-01-02 20:00:00 | 2008-01-02 20:00:00
+ Macbeth              | 2008-01-02 15:00:00 | 2008-01-02 15:00:00
+ The Cherry Orchard   | 2008-01-02 14:30:00 | 2008-01-02 14:30:00
+ Macbeth              | 2008-01-02 19:30:00 | 2008-01-02 19:30:00
+ Demi Lovato          | 2008-01-02 19:30:00 | 2008-01-02 19:30:00
+ ...</code></pre>
+                              </dd>
+                           
+                           
+                           <dt><span class="term">DECADE or DECADES </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Amazon Redshift interprets the DECADE or DECADES DATEPART based on the common
+                                 calendar. For example, because the common calendar starts from the year 1, the
+                                 first decade (decade 1) is 0001-01-01 through 0009-12-31, and the second decade
+                                 (decade 2) is 0010-01-01 through 0019-12-31. For example, decade 201 spans from
+                                 2000-01-01 to 2009-12-31: 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select extract(decade from timestamp &apos;1999-02-16 20:38:40&apos;);
+date_part
+-----------
+200
+(1 row)
+
+select extract(decade from timestamp &apos;2000-02-16 20:38:40&apos;);
+date_part
+-----------
+201
+(1 row)
+
+select extract(decade from timestamp &apos;2010-02-16 20:38:40&apos;);
+date_part
+-----------
+202
+(1 row)</code></pre>
+                              </dd>
+                           
+                           
+                           <dt><span class="term">MIL or MILS </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Amazon Redshift interprets a MIL to start with the first day of year
+                                 <em>#001</em> and end with the last day of year
+                                 <code class="code">#000</code>: 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select extract (mil from timestamp &apos;2000-12-16 12:21:13&apos;);
+date_part
+-----------
+2
+(1 row)
+
+select extract (mil from timestamp &apos;2001-12-16 12:21:13&apos;);
+date_part
+-----------
+3
+(1 row)</code></pre>
+                              </dd>
+                           
+                        </dl>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

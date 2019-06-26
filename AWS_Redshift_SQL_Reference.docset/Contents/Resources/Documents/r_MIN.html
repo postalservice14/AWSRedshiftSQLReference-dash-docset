@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_MIN">MIN Function</h1><p> The MIN function returns the minimum value in a set of rows. DISTINCT or ALL may
+                        be
+                        used but do not affect the result.
+                     </p><h2 id="r_MIN-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">MIN ( [ DISTINCT | ALL ] <em>expression</em> )</code></pre><h2 id="r_MIN-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression </em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The target column or expression that the function operates on.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DISTINCT | ALL</span></dt>
+                           
+                           <dd>
+                              
+                              <p>With the argument DISTINCT, the function eliminates all duplicate values
+                                 from the specified expression before calculating the minimum. With the
+                                 argument ALL, the function retains all duplicate values from the expression
+                                 for calculating the minimum. ALL is the default.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="c_Supported_data_types_min">Data Types</h2><p>Accepts any data type except Boolean as input. Returns the same data type as
+                        <em>expression</em>. The Boolean equivalent of the MIN function is
+                        <a href="r_BOOL_AND.html">BOOL_AND Function</a>, and the Boolean
+                        equivalent of MAX is <a href="r_BOOL_OR.html">BOOL_OR Function</a>. 
+                     </p><h2 id="r_MIN-examples">Examples</h2><p>Find the lowest price paid from all sales:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select min(pricepaid)from sales;
+
+max
+-------
+20.00
+(1 row)</code></pre><p>Find the lowest price paid per ticket from all sales:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select min(pricepaid/qtysold)as min_ticket_price
+from sales;
+
+min_ticket_price
+------------------
+20.00000000
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_OCTET_LENGTH">OCTET_LENGTH Function</h1><p>Returns the length of the specified string as the number of bytes. </p><h2 id="r_OCTET_LENGTH-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">OCTET_LENGTH(<em>expression</em>)</code></pre><h2 id="r_OCTET_LENGTH-argument">Argument</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The input parameter is a CHAR or VARCHAR text string. </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_OCTET_LENGTH-return-type">Return Type</h2><p>The OCTET_LENGTH function returns an integer indicating the number of bytes in the
+                        input string. The <a href="r_LEN.html">LEN</a> function
+                        returns the actual number of characters in multi-byte strings, not the number of
+                        bytes. For example, to store three four-byte Chinese characters, you need a
+                        VARCHAR(12) column. The LEN function will return 3 for that same string.
+                     </p><h2 id="r_OCTET_LENGTH_usage_notes">Usage Notes</h2><p>Length calculations do not count trailing spaces for fixed-length character
+                        strings but do count them for variable-length strings. 
+                     </p><h2 id="r_OCTET_LENGTH-example">Example</h2><p>The following example returns the number of bytes and the number of characters in
+                        the string <code class="code">fran&#xE7;ais</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select octet_length(&apos;fran&#xE7;ais&apos;), 
+len(&apos;fran&#xE7;ais&apos;);
+
+octet_length  | len
+--------------+-----
+           9  |   8
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

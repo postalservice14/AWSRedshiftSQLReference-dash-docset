@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DROP_FUNCTION">DROP FUNCTION</h1><p>Removes a user-defined function (UDF) from the database. The function&apos;s signature,
+                        or
+                        list of argument data types, must be specified because multiple functions can exist
+                        with
+                        the same name but different signatures. You can&apos;t drop an Amazon Redshift built-in
+                        function.
+                     </p><p>This command is not reversible.</p><h2 id="r_DROP_FUNCTION-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">DROP FUNCTION <em>name</em> 
+( [<em>arg_name</em>] <em>arg_type</em>   [, ...] )
+[ CASCADE | RESTRICT ] </code></pre><h2 id="r_DROP_FUNCTION-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the function to be removed.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>arg_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of an input argument. DROP FUNCTION ignores argument names, because
+                                 only the argument data types are needed to determine the function&apos;s
+                                 identity.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>arg_type</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The data type of the input argument. You can supply a comma-separated list
+                                 with a maximum of 32 data types.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"> CASCADE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Keyword specifying to automatically drop objects that depend on the
+                                 function, such as views. 
+                              </p>
+                              
+                              <p>To create a view that is not dependent on a function, include the WITH NO
+                                 SCHEMA BINDING clause in the view definition. For more information, see <a href="r_CREATE_VIEW.html">CREATE VIEW</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"> RESTRICT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Keyword specifying that if any objects depend on depend on the function, do
+                                 not drop the function and return a message. This action is the default.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_DROP_FUNCTION-examples">Examples</h2><p>The following example drops the function named <code class="code">f_sqrt</code>:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop function f_sqrt(int);</code></pre><p>To remove a function that has dependencies, use the CASCADE option, as shown in the
+                        following example:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">drop function f_sqrt(int)cascade;</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

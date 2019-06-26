@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVL_QUERY_REPORT">SVL_QUERY_REPORT</h1><p>Amazon Redshift creates the SVL_QUERY_REPORT view from a UNION of a number of Amazon
+                        Redshift STL
+                        system tables to provide information about executed query steps.
+                     </p><p>This view breaks down the information about executed queries by slice and by step,
+                        which can help with troubleshooting node and slice issues in the Amazon Redshift
+                        cluster.
+                     </p><p>SVL_QUERY_REPORT is visible to all users. Superusers can see all rows; regular users
+                        can see only their own data. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_SVL_QUERY_REPORT-table-rows2">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c53b9b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>userid </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>ID of user who generated entry. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Query ID. Can be used to join various other system
+                                    tables and views. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>slice </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Data slice where the step executed. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>segment </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>
+                                    
+                                    <p>Segment number.</p>
+                                    
+                                    <p>A query consists of multiple segments, and each segment
+                                       consists of one or more steps. Query segments can run in
+                                       parallel. Each segment runs in a single process.
+                                    </p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>step </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Query step that executed. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>start_time </td>
+                                 
+                                 <td>timestamp</td>
+                                 
+                                 <td>Exact time in UTC when the segment started
+                                    executing, with 6 digits of precision for fractional seconds. For
+                                    example: <strong class="userinput"><code>2012-12-12 11:29:19.131358</code></strong></td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>end_time </td>
+                                 
+                                 <td>timestamp</td>
+                                 
+                                 <td>Exact time in UTC when the segment finished
+                                    executing, with 6 digits of precision for fractional seconds. For
+                                    example: <strong class="userinput"><code>2012-12-12 11:29:19.131467</code></strong>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>elapsed_time </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Time (in microseconds) that it took the segment to
+                                    execute. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>rows </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Number of rows produced by the step (per slice).
+                                    This number represents the number of rows for the slice that result
+                                    from the execution of the step, not the number of rows received or
+                                    processed by the step. In other words, this is the number of rows
+                                    that survive the step and are passed on to the next step. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>bytes </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Number of bytes produced by the step (per
+                                    slice).
+                                 </td>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 
+                                 
+                                 <td>label </td>
+                                 
+                                 <td>char(256) </td>
+                                 
+                                 <td>Step label, which consists of a query step name
+                                    and, when applicable, table ID and table name (for example,
+                                    <code class="code">scan tbl=100448 name =user</code>). Three-digit table IDs
+                                    usually refer to scans of transient tables. When you see<code class="code">
+                                       tbl=0</code>, it usually refers to a scan of a constant
+                                    value.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>is_diskbased </td>
+                                 
+                                 <td>character(1) </td>
+                                 
+                                 <td>Whether this step of the query was executed as a
+                                    disk-based operation: true (<strong class="userinput"><code>t</code></strong>) or false
+                                    (<strong class="userinput"><code>f</code></strong>). Only certain steps, such as hash,
+                                    sort, and aggregate steps, can go to disk. Many types of steps are
+                                    always executed in memory. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>workmem </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Amount of working memory (in bytes) assigned to
+                                    the query step. This value is the query_working_mem threshold
+                                    allocated for use during execution, not the amount of memory that
+                                    was actually used 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>is_rrscan </td>
+                                 
+                                 <td>character(1) </td>
+                                 
+                                 <td>If true (<strong class="userinput"><code>t</code></strong>), indicates that
+                                    range-restricted scan was used on the step. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>is_delayed_scan </td>
+                                 
+                                 <td>character(1) </td>
+                                 
+                                 <td>If true (<strong class="userinput"><code>t</code></strong>), indicates that
+                                    delayed scan was used on the step. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>rows_pre_filter</td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>For scans of permanent tables, the total number of
+                                    rows emitted before filtering rows marked for deletion (ghost rows)
+                                    and before applying user-defined query filters.
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVL_QUERY_REPORT-sample-queries2">Sample Queries</h2><p>The following query demonstrates the data skew of the returned rows for the query
+                        with query ID 279. Use this query to determine if database data is evenly
+                        distributed over the slices in the data warehouse cluster: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select query, segment, step, max(rows), min(rows),
+case when sum(rows) &gt; 0
+then ((cast(max(rows) -min(rows) as float)*count(rows))/sum(rows))
+else 0 end
+from svl_query_report
+where query = 279
+group by query, segment, step
+order by segment, step;</code></pre><p>This query should return data similar to the following sample output: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">query | segment | step |   max    |   min    |         case
+------+---------+------+----------+----------+----------------------
+279 |       0 |    0 | 19721687 | 19721687 |                    0
+279 |       0 |    1 | 19721687 | 19721687 |                    0
+279 |       1 |    0 |   986085 |   986084 | 1.01411202804304e-06
+279 |       1 |    1 |   986085 |   986084 | 1.01411202804304e-06
+279 |       1 |    4 |   986085 |   986084 | 1.01411202804304e-06
+279 |       2 |    0 |  1775517 |   788460 |     1.00098637606408
+279 |       2 |    2 |  1775517 |   788460 |     1.00098637606408
+279 |       3 |    0 |  1775517 |   788460 |     1.00098637606408
+279 |       3 |    2 |  1775517 |   788460 |     1.00098637606408
+279 |       3 |    3 |  1775517 |   788460 |     1.00098637606408
+279 |       4 |    0 |  1775517 |   788460 |     1.00098637606408
+279 |       4 |    1 |  1775517 |   788460 |     1.00098637606408
+279 |       4 |    2 |        1 |        1 |                    0
+279 |       5 |    0 |        1 |        1 |                    0
+279 |       5 |    1 |        1 |        1 |                    0
+279 |       6 |    0 |       20 |       20 |                    0
+279 |       6 |    1 |        1 |        1 |                    0
+279 |       7 |    0 |        1 |        1 |                    0
+279 |       7 |    1 |        0 |        0 |                    0
+(19 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

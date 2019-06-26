@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_Window_function_synopsis">Window Function Syntax Summary</h1><p>Standard window function syntax is as follows:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight"><em>function</em> (<em>expression</em>) OVER (
+[ PARTITION BY <em>expr_list</em> ]
+[ ORDER BY <em>order_list</em> [ <em>frame_clause</em> ] ] )</code></pre><p> where <em>function</em> is one of the functions described in this
+                        section and <em>expr_list</em> is: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight"><em>expression</em> | <em>column_name</em> [, <em>expr_list</em> ]</code></pre><p> and <em>order_list</em> is: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">
+<em>expression</em> | <em>column_name</em> [ ASC | DESC ] 
+[ NULLS FIRST | NULLS LAST ]
+[, <em>order_list</em> ]</code></pre><p> and <em>frame_clause</em> is: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ROWS
+{ UNBOUNDED PRECEDING | <em>unsigned_value</em> PRECEDING | CURRENT ROW } |
+
+{BETWEEN
+{ UNBOUNDED PRECEDING | <em>unsigned_value</em> { PRECEDING | FOLLOWING } |
+CURRENT ROW}
+AND
+{ UNBOUNDED FOLLOWING | <em>unsigned_value</em> { PRECEDING | FOLLOWING } |
+CURRENT ROW }}</code></pre><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>STDDEV_SAMP and VAR_SAMP are synonyms for STDDEV and VARIANCE, respectively.
+                           
+                        </p>
+                     </div><h2 id="r_Window_function_synopsis-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>function</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>For details, see the individual function descriptions. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">OVER </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Clause that defines the window specification. The OVER clause is
+                                 mandatory for window functions and differentiates window functions from
+                                 other SQL functions. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">PARTITION BY <em>expr_list</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional. The PARTITION BY clause subdivides the result set into
+                                 partitions, much like the GROUP BY clause. If a partition clause is present,
+                                 the function is calculated for the rows in each partition. If no partition
+                                 clause is specified, a single partition contains the entire table, and the
+                                 function is computed for that complete table. 
+                              </p>
+                              
+                              <p>The ranking functions, DENSE_RANK, NTILE, RANK, and ROW_NUMBER, require a
+                                 global comparison of all the rows in the result set. When a PARTITION BY
+                                 clause is used, the query optimizer can execute each aggregation in parallel
+                                 by spreading the workload across multiple slices according to the
+                                 partitions. If the PARTITION BY clause is not present, the aggregation step
+                                 must be executed serially on a single slice, which can have a significant
+                                 negative impact on performance, especially for large clusters.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ORDER BY <em>order_list</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional. The window function is applied to the rows within each
+                                 partition sorted according to the order specification in ORDER BY. This
+                                 ORDER BY clause is distinct from and completely unrelated to an ORDER BY
+                                 clause in a nonwindow function (outside of the OVER clause). The ORDER BY
+                                 clause can be used without the PARTITION BY clause. 
+                              </p>
+                              
+                              <p>For the ranking functions, the ORDER BY clause identifies the measures
+                                 for the ranking values. For aggregation functions, the partitioned rows must
+                                 be ordered before the aggregate function is computed for each frame. For
+                                 more about window function types, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Window_functions.html">Window Functions</a>.
+                              </p>
+                              
+                              <p>Column identifiers or expressions that evaluate to column identifiers are
+                                 required in the order list. Neither constants nor constant expressions can
+                                 be used as substitutes for column names. 
+                              </p>
+                              
+                              <p>NULLS values are treated as their own group, sorted and ranked according
+                                 to the NULLS FIRST or NULLS LAST option. By default, NULL values are sorted
+                                 and ranked last in ASC ordering, and sorted and ranked first in DESC
+                                 ordering.
+                              </p>
+                              
+                              <p> If the ORDER BY clause is omitted, the order of the rows is
+                                 nondeterministic. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>In any parallel system such as Amazon Redshift, when an ORDER BY clause does
+                                    not produce a unique and total ordering of the data, the order of the
+                                    rows is nondeterministic. That is, if the ORDER BY expression produces
+                                    duplicate values (a partial ordering), the return order of those rows
+                                    might vary from one run of Amazon Redshift to the next. In turn, window
+                                    functions might return unexpected or inconsistent results. For more
+                                    information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_order_by_WF.html">Unique Ordering of Data for Window
+                                       Functions</a>. 
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>column_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of a column to be partitioned by or ordered by. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ASC | DESC </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Option that defines the sort order for the expression, as follows: </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>ASC: ascending (for example, low to high for numeric values and &apos;A&apos;
+                                          to &apos;Z&apos; for character strings). If no option is specified, data is
+                                          sorted in ascending order by default.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>DESC: descending (high to low for numeric values; &apos;Z&apos; to &apos;A&apos; for
+                                          strings). 
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">NULLS FIRST | NULLS LAST</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Option that specifies whether NULLS should be ordered first, before
+                                 non-null values, or last, after non-null values. By default, NULLS are
+                                 sorted and ranked last in ASC ordering, and sorted and ranked first in DESC
+                                 ordering.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>frame_clause</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              
+                              <p>For aggregate functions, the frame clause further refines the set of rows
+                                 in a function&apos;s window when using ORDER BY. It provides the ability to
+                                 include or exclude sets of rows within the ordered result. The frame clause
+                                 consists of the ROWS keyword and associated
+                                 specifiers.
+                              </p>
+                              
+                              <p>The frame clause does not apply to ranking functions and is not required
+                                 when no ORDER BY clause is used in the OVER clause for an aggregate
+                                 function. If an ORDER BY clause is used for an aggregate function, an
+                                 explicit frame clause is required.
+                              </p>
+                              
+                              <p>When no ORDER BY clause is specified, the implied frame is unbounded:
+                                 equivalent to ROWS BETWEEN UNBOUNDED PRECEDING AND
+                                 UNBOUNDED FOLLOWING. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ROWS</span></dt>
+                           
+                           <dd>
+                              
+                              <p>This clause defines the window frame by specifying a
+                                 physical offset from the current
+                                 row.
+                              </p>
+                              
+                              <p>This clause specifies the rows in the current window or partition that
+                                 the value in the current row is to be combined with. It uses arguments that
+                                 specify row position, which can be before or after the current row. The
+                                 reference point for all window frames is the current row. Each row becomes
+                                 the current row in turn as the window frame slides forward in the
+                                 partition.
+                              </p>
+                              
+                              <p>The frame can be a simple set of rows up to and including the current
+                                 row:
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">{UNBOUNDED PRECEDING | <em>offset</em> PRECEDING | CURRENT ROW}</code></pre>
+                              <p> or it can be a set of rows between two boundaries: </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">BETWEEN
+{UNBOUNDED PRECEDING | <em>offset</em> { PRECEDING | FOLLOWING }
+| CURRENT ROW}
+AND
+{UNBOUNDED FOLLOWING | <em>offset</em> { PRECEDING | FOLLOWING }
+| CURRENT ROW}</code></pre>
+                              <p>UNBOUNDED PRECEDING indicates that the window starts at the first row of
+                                 the partition; <em>offset</em> PRECEDING indicates that the
+                                 window starts a number of rows equivalent to the value of offset before the
+                                 current row. UNBOUNDED PRECEDING is the default.
+                              </p>
+                              
+                              <p>CURRENT ROW indicates the window begins or ends at the current row. </p>
+                              
+                              <p>UNBOUNDED FOLLOWING indicates that the window ends at the last row of the
+                                 partition; <em>offset</em> FOLLOWING indicates that the window
+                                 ends a number of rows equivalent to the value of offset after the current
+                                 row.
+                              </p>
+                              
+                              <p><em>offset</em> identifies a physical
+                                 number of rows before or after the current row. In this case,
+                                 <em>offset</em> must be a constant that evaluates to a
+                                 positive numeric value. For example, 5 FOLLOWING will end the frame 5 rows
+                                 after the current row.
+                              </p>
+                              
+                              
+                              <p>Where BETWEEN is not specified, the frame is implicitly bounded by the
+                                 current row. For example <code class="code">ROWS 5 PRECEDING</code> is equal to
+                                 <code class="code">ROWS BETWEEN 5 PRECEDING AND CURRENT ROW</code>, and <code class="code">ROWS
+                                    UNBOUNDED FOLLOWING</code> is equal to <code class="code">ROWS BETWEEN CURRENT ROW AND
+                                    UNBOUNDED FOLLOWING</code>.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>You cannot specify a frame in which the starting boundary is greater
+                                    than the ending boundary. For example, you cannot specify any of these
+                                    frames: 
+                                 </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">between 5 following and 5 preceding
+between current row and 2 preceding
+between 3 following and current row</code></pre></div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

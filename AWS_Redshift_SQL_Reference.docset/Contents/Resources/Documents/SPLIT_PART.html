@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="SPLIT_PART">SPLIT_PART Function</h1><p>Splits a string on the specified delimiter and returns the part at the specified
+                        position.
+                     </p><h2 id="SPLIT_PART-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SPLIT_PART(<em>string</em>, <em>delimiter</em>, <em>part</em>)</code></pre><h2 id="SPLIT_PART-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The string to be split. The string can be CHAR or VARCHAR.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>delimiter</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The delimiter string. </p>
+                              
+                              <p>If <em>delimiter</em> is a literal, enclose it in single
+                                 quotes. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>part</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Position of the portion to return (counting from 1). Must be an integer
+                                 greater than 0. If <em>part</em> is larger than the number of
+                                 string portions, SPLIT_PART returns an empty string.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="SPLIT_PART-return-type">Return Type</h2><p>A CHAR or VARCHAR string, the same as the string parameter.</p><h2 id="SPLIT_PART-examples">Examples</h2><p>The following example splits the time stamp field LISTTIME into year, month, and
+                        date components.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select listtime, split_part(listtime,&apos;-&apos;,1) as year,
+split_part(listtime,&apos;-&apos;,2) as month, 
+split_part(split_part(listtime,&apos;-&apos;,3),&apos; &apos;,1) as date 
+from listing limit 5;
+
+      listtime       | year | month | date
+---------------------+------+-------+------
+ 2008-03-05 12:25:29 | 2008 | 03    | 05
+ 2008-09-09 08:03:36 | 2008 | 09    | 09
+ 2008-09-26 05:43:12 | 2008 | 09    | 26
+ 2008-10-04 02:00:30 | 2008 | 10    | 04
+ 2008-01-06 08:33:11 | 2008 | 01    | 06
+(5 rows)
+</code></pre><p>The following example selects the LISTTIME time stamp field and splits it on the
+                        <code class="code">&apos;-&apos;</code> character to get the month (the second part of the LISTTIME
+                        string), then counts the number of entries for each month:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select split_part(listtime,&apos;-&apos;,2) as month, count(*)
+from listing
+group by split_part(listtime,&apos;-&apos;,2)
+order by 1, 2;
+
+ month | count
+-------+-------
+    01 | 18543
+    02 | 16620
+    03 | 17594
+    04 | 16822
+    05 | 17618
+    06 | 17158
+    07 | 17626
+    08 | 17881
+    09 | 17378
+    10 | 17756
+    11 | 12912
+    12 | 4589
+(12 rows)
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

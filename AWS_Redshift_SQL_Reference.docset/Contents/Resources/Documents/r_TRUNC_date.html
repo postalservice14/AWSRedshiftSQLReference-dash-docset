@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_TRUNC_date">TRUNC Date Function</h1><p>Truncates a time stamp and returns a date.</p><h2 id="r_TRUNC_date-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">TRUNC(<em>timestamp</em>)</code></pre><h2 id="r_TRUNC_date-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>timestamp</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A timestamp column or an expression that implicitly converts to a time
+                                 stamp.
+                              </p>
+                              
+                              <p>To return a time stamp value with <code class="code">00:00:00</code> as the time, cast
+                                 the function result to a TIMESTAMP.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_TRUNC_date-return-type">Return Type</h2><p>DATE</p><h2 id="r_TRUNC_date-examples">Examples</h2><p>Return the date portion from the result of the SYSDATE function (which returns a time
+                        stamp):
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select sysdate;
+
+timestamp
+----------------------------
+2011-07-21 10:32:38.248109
+(1 row)
+
+select trunc(sysdate);
+
+trunc
+------------
+2011-07-21
+(1 row)</code></pre><p>Apply the TRUNC function to a TIMESTAMP column. The return type is a date.
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select trunc(starttime) from event
+order by eventid limit 1;
+
+trunc
+------------
+2008-01-25
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

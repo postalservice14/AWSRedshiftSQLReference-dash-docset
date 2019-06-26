@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_concat_op">|| (Concatenation) Operator</h1><p>Concatenates two strings on either side of the || symbol and returns the concatenated
+                        string. 
+                     </p><p>Similar to <a href="r_CONCAT.html">CONCAT (Oracle Compatibility Function)</a>. 
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>For both the CONCAT function and the concatenation operator, if one or both
+                           strings is null, the result of the concatenation is null. 
+                        </p>
+                     </div><h2 id="r_concat_op-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight"><em>string1</em> || <em>string2</em>
+                     </code></pre><h2 id="r_concat_op-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string1</em>, <em>string2</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Both arguments can be fixed-length or variable-length character strings
+                                 or expressions. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_concat_op-return-type">Return Type</h2><p> The || operator returns a string. The type of string is the same as the input
+                        arguments. 
+                     </p><h2 id="r_concat_op-example">Example</h2><p>The following example concatenates the FIRSTNAME and LASTNAME fields from the
+                        USERS table: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select firstname || &apos; &apos; || lastname
+from users
+order by 1
+limit 10;
+
+?column?
+-----------------
+Aaron Banks
+Aaron Booth
+Aaron Browning
+Aaron Burnett
+Aaron Casey
+Aaron Cash
+Aaron Castro
+Aaron Dickerson
+Aaron Dixon
+Aaron Dotson
+(10 rows)</code></pre><p> To concatenate columns that might contain nulls, use the <a href="r_NVL_function.html">NVL Expression</a> expression. The
+                        following example uses NVL to return a 0 whenever NULL is encountered. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select venuename || &apos; seats &apos; || nvl(venueseats, 0) 
+from venue where venuestate = &apos;NV&apos; or venuestate = &apos;NC&apos;
+order by 1
+limit 10;
+
+seating                            
+-----------------------------------
+Ballys Hotel seats 0               
+Bank of America Stadium seats 73298
+Bellagio Hotel seats 0             
+Caesars Palace seats 0             
+Harrahs Hotel seats 0              
+Hilton Hotel seats 0               
+Luxor Hotel seats 0                
+Mandalay Bay Hotel seats 0         
+Mirage Hotel seats 0               
+New York New York seats 0          </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

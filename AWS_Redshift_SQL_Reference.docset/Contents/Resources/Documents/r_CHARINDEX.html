@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CHARINDEX">CHARINDEX Function</h1><p>Returns the location of the specified substring within a string. Synonym of the
+                        STRPOS function.
+                     </p><h2 id="r_CHARINDEX-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CHARINDEX( <em>substring</em>, <em>string</em> )</code></pre><h2 id="charindex-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>substring</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The substring to search for within the
+                                 <em>string</em>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The string or column to be searched.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="charindex-return-type">Return Type</h2><p>The CHARINDEX function returns an integer corresponding to the position of the
+                        substring (one-based, not zerobased). The position is based on the number of
+                        characters, not bytes, so that multi-byte characters are counted as single
+                        characters.
+                     </p><h2 id="charindex-usage_notes">Usage Notes</h2><p>CHARINDEX returns 0 if the substring is not found within the
+                        <code class="code">string</code>:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select charindex(&apos;dog&apos;, &apos;fish&apos;);
+
+charindex
+----------
+0
+(1 row)
+</code></pre><h2 id="sub-charindex-usage-notes-examples">Examples</h2><p>The following example shows the position of the string <code class="code">fish</code> within
+                        the word <code class="code">dogfish</code>: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select charindex(&apos;fish&apos;, &apos;dogfish&apos;);
+ charindex 
+---------- 
+         4 
+(1 row)</code></pre><p>The following example returns the number of sales transactions with a COMMISSION
+                        over 999.00 from the SALES table: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select distinct charindex(&apos;.&apos;, commission), count (charindex(&apos;.&apos;, commission))
+from sales where charindex(&apos;.&apos;, commission) &gt; 4 group by charindex(&apos;.&apos;, commission)
+order by 1,2;
+
+charindex | count
+----------+-------
+5 |	629
+(1 row)
+</code></pre><p>See <a href="r_STRPOS.html">STRPOS Function</a> for details. 
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

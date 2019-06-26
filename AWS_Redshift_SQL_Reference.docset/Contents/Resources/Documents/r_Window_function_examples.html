@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_Window_function_examples">Window Function Examples</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_avg_WF.html"> AVG Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_count_WF.html">COUNT Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_CUME_DIST_WF.html">CUME_DIST Window Function
+                                 Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_dense_rank_WF.html">DENSE_RANK Window Function
+                                 Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_firstlast_WF.html">FIRST_VALUE and LAST_VALUE Window
+                                 Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_LAG_WF.html">LAG Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_LEAD_WF.html">LEAD Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_LISTAGG_WF.html">LISTAGG Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_max_WF.html">MAX Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_median_WF.html">MEDIAN Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_min_WF.html">MIN Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_NTH_WF.html">NTH_VALUE Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_NTILE_WF.html">NTILE Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_PERCENT_RANK_WF.html">PERCENT_RANK Window Function
+                                 Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_PERCENTILE_CONT_WF.html">PERCENTILE_CONT Window Function
+                                 Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_PERCENTILE_DISC_WF.html">PERCENTILE_DISC Window Function
+                                 Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_rank_WF.html">RANK Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_RATIO_TO_REPORT_WF.html">RATIO_TO_REPORT Window Function
+                                 Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_WF_ROW_NUMBER_WF.html">ROW_NUMBER Window Function
+                                 Example</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_stddev_variance_WF.html">STDDEV_POP and VAR_POP Window
+                                 Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_sum_WF.html">SUM Window Function Examples</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_order_by_WF.html">Unique Ordering of Data for Window
+                                 Functions</a></li>
+                        </ul>
+                     </div><p> This section provides examples for using the window functions. </p><p>Some of the window function examples in this section use a table named WINSALES,
+                        which contains 11 rows: 
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c17c73b9">
+                              
+                              <tr>
+                                 
+                                 <th>SALESID </th>
+                                 
+                                 <th>DATEID </th>
+                                 
+                                 <th>SELLERID </th>
+                                 
+                                 <th>BUYERID </th>
+                                 
+                                 <th>QTY </th>
+                                 
+                                 <th>QTY_SHIPPED </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td> 30001 </td>
+                                 
+                                 <td> 8/2/2003 </td>
+                                 
+                                 <td> 3 </td>
+                                 
+                                 <td> B </td>
+                                 
+                                 <td> 10 </td>
+                                 
+                                 <td>10 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 10001 </td>
+                                 
+                                 <td> 12/24/2003 </td>
+                                 
+                                 <td> 1 </td>
+                                 
+                                 <td> C </td>
+                                 
+                                 <td> 10 </td>
+                                 
+                                 <td>10 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 10005 </td>
+                                 
+                                 <td> 12/24/2003 </td>
+                                 
+                                 <td> 1 </td>
+                                 
+                                 <td> A </td>
+                                 
+                                 <td> 30 </td>
+                                 
+                                 <td> </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 40001 </td>
+                                 
+                                 <td> 1/9/2004 </td>
+                                 
+                                 <td> 4 </td>
+                                 
+                                 <td> A </td>
+                                 
+                                 <td> 40 </td>
+                                 
+                                 <td> </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 10006 </td>
+                                 
+                                 <td> 1/18/2004 </td>
+                                 
+                                 <td> 1 </td>
+                                 
+                                 <td> C </td>
+                                 
+                                 <td> 10 </td>
+                                 
+                                 <td> </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 20001 </td>
+                                 
+                                 <td> 2/12/2004 </td>
+                                 
+                                 <td> 2 </td>
+                                 
+                                 <td> B </td>
+                                 
+                                 <td> 20 </td>
+                                 
+                                 <td>20 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 40005 </td>
+                                 
+                                 <td> 2/12/2004 </td>
+                                 
+                                 <td> 4 </td>
+                                 
+                                 <td> A </td>
+                                 
+                                 <td> 10 </td>
+                                 
+                                 <td>10 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 20002 </td>
+                                 
+                                 <td> 2/16/2004 </td>
+                                 
+                                 <td> 2 </td>
+                                 
+                                 <td> C </td>
+                                 
+                                 <td> 20 </td>
+                                 
+                                 <td>20 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 30003 </td>
+                                 
+                                 <td> 4/18/2004 </td>
+                                 
+                                 <td> 3 </td>
+                                 
+                                 <td> B </td>
+                                 
+                                 <td> 15 </td>
+                                 
+                                 <td> </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 30004 </td>
+                                 
+                                 <td> 4/18/2004 </td>
+                                 
+                                 <td> 3 </td>
+                                 
+                                 <td> B </td>
+                                 
+                                 <td> 20 </td>
+                                 
+                                 <td> </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td> 30007 </td>
+                                 
+                                 <td> 9/7/2004 </td>
+                                 
+                                 <td> 3 </td>
+                                 
+                                 <td> C </td>
+                                 
+                                 <td> 30 </td>
+                                 
+                                 <td> </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><p>The following script creates and populates the sample WINSALES table.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create table winsales(
+salesid int,
+dateid date,
+sellerid int,
+buyerid char(10),
+qty int,
+qty_shipped int);
+
+insert into winsales values
+(30001, &apos;8/2/2003&apos;, 3, &apos;b&apos;, 10, 10),
+(10001, &apos;12/24/2003&apos;, 1, &apos;c&apos;, 10, 10),
+(10005, &apos;12/24/2003&apos;, 1, &apos;a&apos;, 30, null),	
+(40001, &apos;1/9/2004&apos;, 4, &apos;a&apos;, 40, null),	
+(10006, &apos;1/18/2004&apos;, 1, &apos;c&apos;, 10, null),	
+(20001, &apos;2/12/2004&apos;, 2, &apos;b&apos;, 20, 20),
+(40005, &apos;2/12/2004&apos;, 4, &apos;a&apos;, 10, 10),
+(20002, &apos;2/16/2004&apos;, 2, &apos;c&apos;, 20, 20),
+(30003, &apos;4/18/2004&apos;, 3, &apos;b&apos;, 15, null),
+(30004, &apos;4/18/2004&apos;, 3, &apos;b&apos;, 20, null),	
+(30007, &apos;9/7/2004&apos;, 3, &apos;c&apos;, 30, null);	 
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

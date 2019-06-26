@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_wlm_query_slot_count">wlm_query_slot_count</h1><h2 id="r_wlm_query_slot_count-values-">Values (Default in Bold)</h2><p>
+                        <b>1</b>, 1 to 50 (cannot exceed number of available slots
+                        (concurrency level) for the service class)
+                     </p><h2 id="r_wlm_query_slot_count-description">Description</h2><p>Sets the number of query slots a query uses.</p><p>Workload management (WLM) reserves slots in a service class according to the
+                        concurrency level set for the queue (for example, if concurrency level is set to 5,
+                        then
+                        the service class has 5 slots). WLM allocates the available memory for a service class
+                        equally to each slot. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/cm-c-implementing-workload-management.html">Implementing Workload
+                           Management</a>. 
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>If the value of wlm_query_slot_count is larger than the number of available slots
+                           (concurrency level) for the service class, the query fails. If you encounter an
+                           error, decrease wlm_query_slot_count to an allowable value.
+                        </p>
+                     </div><p> For operations where performance is heavily affected by the amount of memory
+                        allocated, such as Vacuum, increasing the value of wlm_query_slot_count can improve
+                        performance. In particular, for slow Vacuum commands, inspect the corresponding record
+                        in the SVV_VACUUM_SUMMARY view. If you see high values (close to or higher than 100)
+                        for
+                        sort_partitions and merge_increments in the SVV_VACUUM_SUMMARY view, consider increasing
+                        the value for wlm_query_slot_count the next time you run Vacuum against that
+                        table.
+                     </p><p>Increasing the value of wlm_query_slot_count limits the number of concurrent queries
+                        that can be run. For example, suppose the service class has a concurrency level of
+                        5 and
+                        wlm_query_slot_count is set to 3. While a query is running within the session with
+                        wlm_query_slot_count set to 3, a maximum of 2 more concurrent queries can be executed
+                        within the same service class. Subsequent queries wait in the queue until currently
+                        executing queries complete and slots are freed.
+                     </p><h2 id="r_wlm_query_slot_count-examples">Examples</h2><p>Use the SET command to set the value of wlm_query_slot_count for the duration of the
+                        current session. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">set wlm_query_slot_count to 3; </code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

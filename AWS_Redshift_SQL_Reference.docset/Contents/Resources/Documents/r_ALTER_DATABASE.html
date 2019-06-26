@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_ALTER_DATABASE">ALTER DATABASE</h1><p>Changes the attributes of a database.</p><h2 id="r_ALTER_DATABASE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ALTER DATABASE <em>database_name</em>
+| RENAME TO <em>new_name</em> 
+| OWNER TO <em>new_owner</em>
+| CONNECTION LIMIT { <em>limit</em> | UNLIMITED } ]</code></pre><h2 id="r_ALTER_DATABASE-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>database_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Name of the database to alter. Typically, you alter a database that you are
+                                 not currently connected to; in any case, the changes take effect only in
+                                 subsequent sessions. You can change the owner of the current database, but you
+                                 can&apos;t rename it:
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter database tickit rename to newtickit;
+ERROR:  current database may not be renamed</code></pre>
+                              </dd>
+                           
+                           
+                           <dt><span class="term">RENAME TO </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Renames the specified database. For more information about valid names, see
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>. You can&apos;t rename the dev,
+                                 padb_harvest, template0, or template1 databases, and you can&apos;t rename the
+                                 current database. Only the database owner or a <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_superusers.html#def_superusers">superuser</a> can rename a
+                                 database; non-superuser owners must also have the CREATEDB privilege.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>new_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>New database name.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">OWNER TO </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Changes the owner of the specified database. You can change the owner of the
+                                 current database or some other database. Only a superuser can change the
+                                 owner.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>new_owner</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>New database owner. The new owner must be an existing database user with
+                                 write privileges. See <a href="r_GRANT.html">GRANT</a> for
+                                 more information about user privileges.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">CONNECTION LIMIT { <em>limit</em> | UNLIMITED } </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The maximum number of database connections users are permitted to have open
+                                 concurrently. The limit is not enforced for super users. Use the UNLIMITED
+                                 keyword to permit the maximum number of concurrent connections. 
+                                  
+                                 A limit on the number of
+                                 connections for each user might also apply. For more information, see <a href="r_CREATE_USER.html">CREATE USER</a>. The default is
+                                 UNLIMITED. To view current connections, query the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_SESSIONS.html">STV_SESSIONS</a> system
+                                 view.
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>If both user and database connection limits apply, an unused connection
+                                    slot must be available that is within both limits when a user attempts to
+                                    connect.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_ALTER_DATABASE-usage-notes">Usage Notes</h2><p>ALTER DATABASE commands apply to subsequent sessions not current sessions. You need
+                        to reconnect to the altered database to see the effect of the change.
+                     </p><h2 id="r_ALTER_DATABASE-examples">Examples</h2><p>The following example renames a database named TICKIT_SANDBOX to TICKIT_TEST: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter database tickit_sandbox rename to tickit_test;
+</code></pre><p>The following example changes the owner of the TICKIT database (the current database)
+                        to DWUSER: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">alter database tickit owner to dwuser;
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

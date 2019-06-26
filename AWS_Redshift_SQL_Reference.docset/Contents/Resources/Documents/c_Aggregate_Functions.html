@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="c_Aggregate_Functions">Aggregate Functions</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_APPROXIMATE_PERCENTILE_DISC.html">APPROXIMATE PERCENTILE_DISC
+                                 Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_AVG.html">AVG Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_COUNT.html">COUNT Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_LISTAGG.html">LISTAGG Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_MAX.html">MAX Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_MEDIAN.html">MEDIAN Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_MIN.html">MIN Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_PERCENTILE_CONT.html">PERCENTILE_CONT Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STDDEV_functions.html">STDDEV_SAMP and STDDEV_POP Functions</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SUM.html">SUM Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_VARIANCE_functions.html">VAR_SAMP and VAR_POP Functions</a></li>
+                        </ul>
+                     </div><p>Aggregate functions compute a single result value from a set of input values. </p><p>SELECT statements using aggregate functions can include two optional clauses: GROUP
+                        BY
+                        and HAVING. The syntax for these clauses is as follows (using the COUNT function as
+                        an
+                        example): 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SELECT count (*) <em>expression</em> FROM <em>table_reference</em>
+WHERE <em>condition</em> [GROUP BY <em>expression</em> ] [ HAVING <em>condition</em>]</code></pre><p>The GROUP BY clause aggregates and groups results by the unique values in a specified
+                        column or columns. The HAVING clause restricts the results returned to rows where
+                        a
+                        particular aggregate condition is true, such as count (*) &gt; 1. The HAVING clause is
+                        used
+                        in the same way as WHERE to restrict rows based on the value of a column. See the
+                        <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_COUNT.html">COUNT</a> function description for an example of
+                        these additional clauses.
+                     </p><p>Aggregate functions don&apos;t accept nested aggregate functions or window functions as
+                        arguments.
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

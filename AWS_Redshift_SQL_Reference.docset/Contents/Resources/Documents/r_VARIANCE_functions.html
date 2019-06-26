@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_VARIANCE_functions">VAR_SAMP and VAR_POP Functions</h1><p> The VAR_SAMP and VAR_POP functions return the sample and population variance of a
+                        set of numeric values (integer, decimal, or floating-point). The result of the VAR_SAMP
+                        function is equivalent to the squared sample standard deviation of the same set of
+                        values. 
+                     </p><p>VAR_SAMP and VARIANCE are synonyms for the same function. </p><h2 id="r_VARIANCE_functions-syntax">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">VAR_SAMP | VARIANCE ( [ DISTINCT | ALL ] <em>expression</em>)
+VAR_POP ( [ DISTINCT | ALL ] <em>expression</em>)</code></pre><p>The expression must have an integer, decimal, or floating-point data type.
+                        Regardless of the data type of the expression, the return type of this function is
+                        a
+                        double precision number. 
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>The results of these functions might vary across data warehouse clusters,
+                           depending on the configuration of the cluster in each case. 
+                        </p>
+                     </div><h2 id="r_VARIANCE_usage_notes">Usage Notes</h2><p>When the sample variance (VARIANCE or VAR_SAMP) is calculated for an expression
+                        that consists of a single value, the result of the function is NULL not 0. 
+                     </p><h2 id="r_VARIANCE_functions-examples">Examples</h2><p>The following query returns the rounded sample and population variance of the
+                        NUMTICKETS column in the LISTING table. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select avg(numtickets),
+round(var_samp(numtickets)) varsamp,
+round(var_pop(numtickets)) varpop
+from listing;
+
+avg | varsamp | varpop
+-----+---------+--------
+10 |      54 |     54
+(1 row)</code></pre><p>The following query runs the same calculations but casts the results to decimal
+                        values. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select avg(numtickets),
+cast(var_samp(numtickets) as dec(10,4)) varsamp,
+cast(var_pop(numtickets) as dec(10,4)) varpop
+from listing;
+
+avg | varsamp | varpop
+-----+---------+---------
+10 | 53.6291 | 53.6288
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

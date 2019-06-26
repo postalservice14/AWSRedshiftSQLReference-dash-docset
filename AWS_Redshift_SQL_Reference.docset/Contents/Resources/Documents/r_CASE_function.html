@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CASE_function">CASE Expression</h1><h2 id="r_CASE_function-syntax">Syntax</h2><p>The CASE expression is a conditional expression, similar to if/then/else
+                        statements found in other languages. CASE is used to specify a result when there are
+                        multiple conditions.
+                     </p><p>There are two types of CASE expressions: simple and searched.</p><p> In simple CASE expressions, an expression is compared with a value. When a match
+                        is found, the specified action in the THEN clause is applied. If no match is found,
+                        the action in the ELSE clause is applied.
+                     </p><p>In searched CASE expressions, each CASE is evaluated based on a Boolean
+                        expression, and the CASE statement returns the first matching CASE. If no matching
+                        CASEs are found among the WHEN clauses, the action in the ELSE clause is
+                        returned.
+                     </p><p>Simple CASE statement used to match conditions:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CASE <em>expression</em>
+WHEN <em>value</em> THEN <em>result</em>
+[WHEN...]
+[ELSE <em>result]</em>
+END</code></pre><p>Searched CASE statement used to evaluate each condition:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CASE
+WHEN <em>boolean condition</em> THEN <em>result</em>
+[WHEN ...]
+[ELSE <em>result]</em>
+END</code></pre><h2 id="r_CASE_function-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A column name or any valid expression.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>value</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Value that the expression is compared with, such as a numeric constant or
+                                 a character string.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>result</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The target value or expression that is returned when an expression or
+                                 Boolean condition is evaluated.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>Boolean condition</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A Boolean condition is valid or true when the value is equal to the
+                                 constant. When true, the result specified following the THEN clause is
+                                 returned. If a condition is false, the result following the ELSE clause is
+                                 returned. If the ELSE clause is omitted and no condition matches, the result
+                                 is null.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CASE_function-examples">Examples</h2><p>Use a simple CASE expression is used to replace <code class="code">New York City</code> with
+                        <code class="code">Big Apple</code> in a query against the VENUE table. Replace all other city
+                        names with <code class="code">other</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select venuecity,
+case venuecity
+when &apos;New York City&apos;
+then &apos;Big Apple&apos; else &apos;other&apos;
+end from venue
+order by venueid desc;
+
+venuecity        |   case
+-----------------+-----------
+Los Angeles      | other
+New York City    | Big Apple
+San Francisco    | other
+Baltimore        | other
+...
+(202 rows)</code></pre><p>Use a searched CASE expression to assign group numbers based on the PRICEPAID
+                        value for individual ticket sales:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select pricepaid,
+case when pricepaid &lt;10000 then &apos;group 1&apos;
+when pricepaid &gt;10000 then &apos;group 2&apos;
+else &apos;group 3&apos;
+end from sales
+order by 1 desc;
+
+pricepaid |  case
+-----------+---------
+12624.00 | group 2
+10000.00 | group 3
+10000.00 | group 3
+9996.00 | group 1
+9988.00 | group 1
+...
+(172456 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

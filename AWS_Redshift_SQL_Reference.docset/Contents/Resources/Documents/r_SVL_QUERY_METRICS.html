@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVL_QUERY_METRICS">SVL_QUERY_METRICS</h1><p>The SVL_QUERY_METRICS view shows the metrics for completed queries. This view is
+                        derived from the <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STL_QUERY_METRICS.html">STL_QUERY_METRICS</a> system table. Use the values in this view as an aid to determine threshold values
+                        for
+                        defining query monitoring rules. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/cm-c-wlm-query-monitoring-rules.html">WLM Query Monitoring Rules</a>.
+                     </p><p>This view is visible to all users. Superusers can see all rows; regular users can
+                        see only their own data. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_SVL_QUERY_METRICS-table-rows2">Table Rows</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c47b7b3">
+                              
+                              <tr>
+                                 
+                                 <th>Row Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>userid </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>ID of the user that ran the query that generated
+                                    the entry. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query</td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Query ID. The query column can be used to join
+                                    other system tables and views.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>service_class </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>ID for the WLM query queue (service class). Query
+                                    queues are defined in the WLM configuration. Metrics are reported
+                                    only for user-defined queues. For a list of service class IDs, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/cm-c-wlm-system-tables-and-views.html#wlm-service-class-ids">WLM Service Class IDs</a>.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>dimension </td>
+                                 
+                                 <td>varchar(24)</td>
+                                 
+                                 <td>Dimension on which the metric is reported.
+                                    Possible values are query, segment, step. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>segment </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Segment number. A query consists of multiple
+                                    segments, and each segment consists of one or more steps. Query
+                                    segments can run in parallel. Each segment runs in a single process.
+                                    If the segment value is 0, metrics segment values are rolled up to
+                                    the query level.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>step</td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>ID for the type of step that executed. The
+                                    description for the step type is shown in the
+                                    <code class="code">step_label</code> column. . 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>step_label</td>
+                                 
+                                 <td> varchar(30)</td>
+                                 
+                                 <td>Type of step that executed. </td>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>query_cpu_time </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>CPU time used by the query, in seconds. CPU time
+                                    is distinct from query run time. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query_blocks_read</td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Number of 1 MB blocks read by the query. </td>
+                                 
+                              </tr>
+                              
+                              
+                              
+                              <tr>
+                                 
+                                 <td>query_execution_time</td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Elapsed execution time for a query, in seconds.
+                                    Execution time doesn&#x2019;t include time spent waiting in a
+                                    queue.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query_cpu_usage_percent</td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Percent of CPU capacity used by the query.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>query_temp_blocks_to_disk </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>The amount of disk space used by a query to write
+                                    intermediate results, in MB.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>segment_execution_time</td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Elapsed execution time for a single segment, in
+                                    seconds.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>cpu_skew</td>
+                                 
+                                 <td>numeric(38,2)</td>
+                                 
+                                 <td>The ratio of maximum CPU usage for any slice to
+                                    average CPU usage for all slices. This metric is defined at the
+                                    segment level.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>io_skew</td>
+                                 
+                                 <td>numeric(38,2)</td>
+                                 
+                                 <td>The ratio of maximum blocks read (I/O) for any
+                                    slice to average blocks read for all slices. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>scan_row_count</td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>The number of rows in a scan step. The row count
+                                    is the total number of rows emitted before filtering rows marked for
+                                    deletion (ghost rows) and before applying user-defined query
+                                    filters.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>join_row_count</td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>The number of rows processed in a join
+                                    step.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>nested_loop_join_row_count</td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>The number of rows in a nested loop join.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>return_row_count</td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>The number of rows returned by the query.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>spectrum_scan_row_count</td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>The number of rows scanned by Amazon Redshift Spectrum in
+                                    Amazon S3.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>spectrum_scan_size_mb</td>
+                                 
+                                 <td>bigint</td>
+                                 
+                                 <td>The amount of data, in MB, scanned by Amazon Redshift
+                                    Spectrum in Amazon S3.
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CONCAT">CONCAT (Oracle Compatibility Function)</h1><p>The CONCAT function concatenates two character strings and returns the resulting
+                        string. To concatenate more than two strings, use nested CONCAT functions. The
+                        concatenation operator (<code class="code">||</code>) between two strings produces the same results
+                        as the CONCAT function. 
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>For both the CONCAT function and the concatenation operator, if one or both
+                           strings is null, the result of the concatenation is null. 
+                        </p>
+                     </div><h2 id="r_CONCAT-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">CONCAT ( <em>string1</em>, <em>string2</em> )</code></pre><h2 id="r_CONCAT-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string1</em>, <em>string2</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Both arguments can be fixed-length or variable-length character strings
+                                 or expressions. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CONCAT-return-type">Return Type</h2><p> CONCAT returns a string. The data type of the string is the same type as the
+                        input arguments. 
+                     </p><h2 id="r_CONCAT-examples">Examples</h2><p>The following example concatenates two character literals: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select concat(&apos;December 25, &apos;, &apos;2008&apos;);
+
+concat
+-------------------
+December 25, 2008
+(1 row)</code></pre><p>The following query, using the <code class="code">||</code> operator instead of CONCAT,
+                        produces the same result: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select &apos;December 25, &apos;||&apos;2008&apos;;
+
+?column?
+-------------------
+December 25, 2008
+(1 row)</code></pre><p>The following example uses two CONCAT functions to concatenate three character
+                        strings: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select concat(&apos;Thursday, &apos;, concat(&apos;December 25, &apos;, &apos;2008&apos;));
+
+concat
+-----------------------------
+Thursday, December 25, 2008
+(1 row)</code></pre><p>To concatenate columns that might contain nulls, use the <a href="r_NVL_function.html">NVL Expression</a>. The following example
+                        uses NVL to return a 0 whenever NULL is encountered. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select concat(venuename, concat(&apos; seats &apos;, nvl(venueseats, 0))) as seating
+from venue where venuestate = &apos;NV&apos; or venuestate = &apos;NC&apos;
+order by 1
+limit 5;
+
+seating                            
+-----------------------------------
+Ballys Hotel seats 0               
+Bank of America Stadium seats 73298
+Bellagio Hotel seats 0             
+Caesars Palace seats 0             
+Harrahs Hotel seats 0              
+(5 rows)</code></pre><p>The following query concatenates CITY and STATE values from the VENUE table: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select concat(venuecity, venuestate)
+from venue
+where venueseats &gt; 75000
+order by venueseats;
+
+concat
+-------------------
+DenverCO
+Kansas CityMO
+East RutherfordNJ
+LandoverMD
+(4 rows)</code></pre><p>The following query uses nested CONCAT functions. The query concatenates CITY and
+                        STATE values from the VENUE table but delimits the resulting string with a comma and
+                        a space: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select concat(concat(venuecity,&apos;, &apos;),venuestate)
+from venue
+where venueseats &gt; 75000
+order by venueseats;
+
+concat
+---------------------
+Denver, CO
+Kansas City, MO
+East Rutherford, NJ
+Landover, MD
+(4 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

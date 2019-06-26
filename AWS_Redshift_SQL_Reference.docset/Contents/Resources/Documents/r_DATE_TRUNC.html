@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DATE_TRUNC">DATE_TRUNC Function</h1><p>The DATE_TRUNC function truncates a time stamp expression or literal based on the
+                        date
+                        part that you specify, such as hour, week, or month. DATE_TRUNC returns the first
+                        day of
+                        the specified year, the first day of the specified month, or the Monday of the specified
+                        week. 
+                     </p><h2 id="r_DATE_TRUNC-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">DATE_TRUNC(<em>&apos;datepart&apos;, timestamp</em>)</code></pre><h2 id="r_DATE_TRUNC-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>datepart</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The date part to which to truncate the time stamp value. See <a href="r_Dateparts_for_datetime_functions.html">Dateparts for Date or Time Stamp
+                                    Functions</a> for valid formats.
+                                 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>timestamp</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A timestamp column or an expression that implicitly converts to a time
+                                 stamp.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_DATE_TRUNC-return-type">Return Type</h2><p>TIMESTAMP</p><h2 id="r_DATE_TRUNC-example">Example</h2><p>In the following example, the DATE_TRUNC function uses the &apos;week&apos; datepart to return
+                        the date for the Monday of each week.
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select date_trunc(&apos;week&apos;, saletime), sum(pricepaid) from sales where
+saletime like &apos;2008-09%&apos; group by date_trunc(&apos;week&apos;, saletime) order by 1;
+date_trunc  |    sum
+------------+------------
+2008-09-01  | 2474899.00
+2008-09-08  | 2412354.00
+2008-09-15  | 2364707.00
+2008-09-22  | 2359351.00
+2008-09-29  |  705249.00
+(5 rows)
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

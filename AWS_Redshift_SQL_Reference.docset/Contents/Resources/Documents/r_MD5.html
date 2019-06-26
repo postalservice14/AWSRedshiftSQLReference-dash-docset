@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_MD5">MD5 Function</h1><p>Uses the MD5 cryptographic hash function to convert a variable-length string into
+                        a
+                        32-character string that is a text representation of the hexadecimal value of a 128-bit
+                        checksum. 
+                     </p><h2 id="r_MD5-syntax">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">MD5(<em>string</em>)</code></pre><h2 id="r_MD5-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A variable-length string.</p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_MD5-return-type">Return Type</h2><p>The MD5 function returns a 32-character string that is a text representation of
+                        the hexadecimal value of a 128-bit checksum.
+                     </p><h2 id="r_MD5-examples">Examples</h2><p>The following example shows the 128-bit value for the string &apos;Amazon Redshift&apos;: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select md5(&apos;Amazon Redshift&apos;);
+md5
+----------------------------------
+f7415e33f972c03abd4f3fed36748f7a
+(1 row)
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

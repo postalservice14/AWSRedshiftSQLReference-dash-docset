@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="c_Window_functions">Window Functions</h1><div class="highlights">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Window_function_synopsis.html">Window Function Syntax Summary</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_AVG.html">AVG Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_COUNT.html">COUNT Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_CUME_DIST.html">CUME_DIST Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_DENSE_RANK.html">DENSE_RANK Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_first_value.html">FIRST_VALUE and LAST_VALUE Window Functions</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_LAG.html">LAG Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_LEAD.html">LEAD Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_LISTAGG.html">LISTAGG Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_MAX.html">MAX Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_MEDIAN.html">MEDIAN Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_MIN.html">MIN Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_NTH.html">NTH_VALUE Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_NTILE.html">NTILE Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_PERCENT_RANK.html">PERCENT_RANK Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_PERCENTILE_CONT.html">PERCENTILE_CONT Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_PERCENTILE_DISC.html">PERCENTILE_DISC Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_RANK.html">RANK Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_RATIO_TO_REPORT.html">RATIO_TO_REPORT Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_ROW_NUMBER.html">ROW_NUMBER Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_STDDEV.html">STDDEV_SAMP and STDDEV_POP Window Functions</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_SUM.html">SUM Window Function</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_WF_VARIANCE.html">VAR_SAMP and VAR_POP Window Functions</a></li>
+                           <li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Window_function_examples.html">Window Function Examples</a></li>
+                        </ul>
+                     </div><p> Window functions provide application developers the ability to create analytic business
+                        queries more efficiently. Window functions operate on a partition or &quot;window&quot; of a
+                        result
+                        set, and return a value for every row in that window. In contrast, nonwindowed functions
+                        perform their calculations with respect to every row in the result set. Unlike group
+                        functions that aggregate result rows, all rows in the table expression are retained.
+                        
+                     </p><p> The values returned are calculated by utilizing values from the sets of rows in that
+                        window. The window defines, for each row in the table, a set of rows that is used
+                        to
+                        compute additional attributes. A window is defined using a window specification (the
+                        OVER
+                        clause), and is based on three main concepts: 
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>
+                                 <em>Window partitioning,</em> which forms groups of rows (PARTITION
+                                 clause) 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <em>Window ordering</em>, which defines an order or sequence of rows
+                                 within each partition (ORDER BY clause) 
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>
+                                 <em>Window frames</em>, which are defined relative to each row to further
+                                 restrict the set of rows (ROWS specification) 
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>Window functions are the last set of operations performed in a query except for the
+                        final ORDER BY clause. All joins and all WHERE, GROUP BY, and HAVING clauses are completed
+                        before the window functions are processed. Therefore, window functions can appear
+                        only in
+                        the select list or ORDER BY clause. Multiple window functions can be used within a
+                        single
+                        query with different frame clauses. Window functions may be present in other scalar
+                        expressions, such as CASE. 
+                     </p><p>Amazon Redshift supports two types of window functions: aggregate and ranking.</p><p>These are the supported aggregate functions: </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>AVG </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>COUNT </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>CUME_DIST</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>FIRST_VALUE </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>LAG </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>LAST_VALUE </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>LEAD </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>MAX </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>MEDIAN </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>MIN </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>NTH_VALUE </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>PERCENTILE_CONT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>PERCENTILE_DISC</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>RATIO_TO_REPORT</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>STDDEV_POP </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>STDDEV_SAMP (synonym for STDDEV) </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>SUM </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>VAR_POP </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>VAR_SAMP (synonym for VARIANCE) </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p> These are the supported ranking functions: </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>DENSE_RANK </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>NTILE </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>PERCENT_RANK</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>RANK </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>ROW_NUMBER</p>
+                              
+                           </li>
+                        </ul>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

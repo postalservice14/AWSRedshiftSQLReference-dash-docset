@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CALL_procedure">CALL</h1><p>Runs a stored procedure. The CALL command must include the procedure name and the
+                        input
+                        argument values. You must call a stored procedure by using the CALL statement. CALL
+                        can&apos;t
+                        be part of any regular queries. 
+                     </p><h2 id="r_CALL_procedure-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">CALL sp_name ( [ argument ] [, ...] )
+</code></pre><h2 id="r_CALL_procedure-parameters">Parameters</h2><div class="variablelist">           
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>sp_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the procedure to run. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>argument</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The value of the input argument. This parameter can also be a function name,
+                                 for example <code class="code">pg_last_query_id()</code>. You can&apos;t use queries as CALL
+                                 arguments. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CALL_procedure-usage-notes">Usage Notes</h2><p>Amazon Redshift stored procedures support nested and recursive calls, as described
+                        following. In
+                        addition, make sure your driver support is up-to-date, also described following.
+                     </p><div class="highlights" id="inline-topiclist">
+                        <p><strong>Topics</strong></p>
+                        <ul>
+                           <li><a href="#r_CALL_procedure-nested-calls">Nested Calls</a></li>
+                           <li><a href="#r_CALL_procedure-driver-support">Driver Support</a></li>
+                        </ul>
+                     </div><h3 id="r_CALL_procedure-nested-calls">Nested Calls</h3><p>Amazon Redshift stored procedures support nested and recursive calls. The maximum
+                        number of
+                        nesting levels allowed is 16. Nested calls can encapsulate business logic into
+                        smaller procedures, which can be shared by multiple callers. 
+                     </p><p>If you call a nested procedure that has output parameters, the inner procedure must
+                        define INOUT arguments. In this case, the inner procedure is passed in a nonconstant
+                        variable. OUT arguments aren&apos;t allowed. This behavior occurs because a variable
+                        is needed to hold the output of the inner call.
+                     </p><p>The relationship between inner and outer procedures is logged in the <code class="code">from_sp_call</code> column of <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_SVL_STORED_PROC_CALL.html">SVL_STORED_PROC_CALL</a>. 
+                     </p><p>The following example shows passing variables to a nested procedure call through INOUT
+                        arguments.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">CREATE OR REPLACE PROCEDURE inner_proc(INOUT a int, b int, INOUT c int) LANGUAGE plpgsql
+AS $$
+BEGIN
+  a := b * a;
+  c := b * c;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE outer_proc(multiplier int) LANGUAGE plpgsql
+AS $$
+DECLARE
+  x int := 3;
+  y int := 4;
+BEGIN
+  DROP TABLE IF EXISTS test_tbl;
+  CREATE TEMP TABLE test_tbl(a int, b varchar(256));
+  CALL inner_proc(x, multiplier, y);
+  insert into test_tbl values (x, y::varchar);
+END;
+$$;
+
+CALL outer_proc(5);
+      
+SELECT * from test_tbl;
+ a  | b
+----+----
+ 15 | 20
+(1 row)  
+</code></pre><h3 id="r_CALL_procedure-driver-support">Driver Support</h3><p>We recommend that you upgrade your Java Database Connectivity (JDBC) and Open
+                        Database Connectivity (ODBC) drivers to the latest version that has support for Amazon
+                        Redshift
+                        stored procedures. 
+                     </p><p>You might be able to use your existing driver if your client tool uses driver API
+                        operations that pass through the CALL statement to the server. Output parameters,
+                        if
+                        any, are returned as a result set of one row. 
+                     </p><p>The latest versions of Amazon Redshift JDBC and ODBC drivers have metadata support
+                        for stored
+                        procedure discovery. They also have <code class="code">CallableStatement</code> support for custom
+                        Java applications. For more information on drivers, see <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/connecting-to-cluster.html">Connecting to an Amazon Redshift
+                           Cluster Using SQL Client Tools</a> in the
+                        <em>Amazon Redshift Cluster Management Guide.</em>
+                        
+                     </p><div class="aws-note">
+                        <p class="aws-note">Important</p>
+                        <p>Currently, you can&apos;t use a <code class="code">refcursor</code> data type in a stored procedure using a
+                           JDBC or ODBC driver.
+                        </p>
+                     </div><p>The following examples show how to use different API operations of the JDBC driver
+                        for stored procedure calls.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">void statement_example(Connection conn) throws SQLException {
+  statement.execute(&quot;CALL sp_statement_example(1)&quot;);
+}
+
+void prepared_statement_example(Connection conn) throws SQLException {
+  String sql = &quot;CALL sp_prepared_statement_example(42, 84)&quot;;
+  PreparedStatement pstmt = conn.prepareStatement(sql);
+  pstmt.execute();
+}
+
+void callable_statement_example(Connection conn) throws SQLException {
+  CallableStatement cstmt = conn.prepareCall(&quot;CALL sp_create_out_in(?,?)&quot;);
+  cstmt.registerOutParameter(1, java.sql.Types.INTEGER);  
+  cstmt.setInt(2, 42);
+  cstmt.executeQuery();
+  Integer out_value = cstmt.getInt(1);
+}
+</code></pre><h2 id="r_CALL_procedure-examples">Examples</h2><p>The following example calls the procedure name <code class="code">test_spl</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">call test_sp1(3,&apos;book&apos;);
+INFO:  Table &quot;tmp_tbl&quot; does not exist and will be skipped
+INFO:  min_val = 3, f2 = book
+</code></pre><p>The following example calls the procedure name <code class="code">test_spl2</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">call test_sp2(2,&apos;2019&apos;);
+
+         f2          | column2
+---------------------+---------
+ 2019+2019+2019+2019 | 2
+(1 row) 
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

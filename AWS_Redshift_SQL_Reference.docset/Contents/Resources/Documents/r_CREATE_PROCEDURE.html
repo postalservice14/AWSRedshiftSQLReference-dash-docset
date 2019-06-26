@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_CREATE_PROCEDURE">CREATE PROCEDURE</h1><p>Creates a new stored procedure or replaces an existing procedure for the current database.</p><h2 id="r_CREATE_PROCEDURE-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">CREATE [ OR REPLACE ] PROCEDURE sp_procedure_name 
+  ( [ [ argname ] [ argmode ] argtype [, ...] ] )
+AS $$
+  procedure_body
+$$ LANGUAGE plpgsql 
+[ { SECURITY INVOKER | SECURITY DEFINER } ]
+[ SET configuration_parameter { TO value | = value } ]
+</code></pre><h2 id="r_CREATE_PROCEDURE-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                          
+                          
+                                    
+                        
+                        <dl>
+                           
+                           <dt><span class="term"> OR REPLACE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that specifies that if a procedure with the same name and input
+                                 argument data types, or signature, as this one already exists, the existing
+                                 procedure is replaced. You can only replace a procedure with a new procedure
+                                 that defines an identical set of data types. You must be a superuser or the
+                                 owner to replace a procedure.
+                              </p>
+                              
+                              <p>If you define a procedure with the same name as an existing procedure, but a different
+                                 signature, you create a new procedure. 
+                                 In other words, the procedure name is overloaded. For more information, see  
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/stored-procedure-naming.html#stored-procedure-overloading-name">Overloading Procedure Names</a>.
+                                 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>sp_procedure_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The name of the procedure. If you specify a schema name (such as
+                                 <strong class="userinput"><code>myschema.myprocedure</code></strong>), the procedure is created in
+                                 the specified schema. Otherwise, the procedure is created in the current
+                                 schema. For more information about valid names, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_names.html">Names and Identifiers</a>.
+                                 
+                              </p>
+                              
+                              <p>We recommend that you prefix all stored procedure names with
+                                 <code class="code">sp_</code>. Amazon Redshift reserves the <code class="code">sp_</code> prefix for stored
+                                 procedure names. By using the <code class="code">sp_</code> prefix, you ensure that your
+                                 stored procedure name doesn&apos;t conflict with any existing or future Amazon Redshift
+                                 built-in stored procedure or function names. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/stored-procedure-naming.html">Naming Stored Procedures</a>.
+                              </p>
+                              
+                              <p>You can define more than one procedure with the same name if the data types
+                                 for the input arguments, or signatures, are different. In other words, in this
+                                 case the procedure name is overloaded. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/stored-procedure-naming.html#stored-procedure-overloading-name">Overloading Procedure Names</a></p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"><em>[argname] [ argmode] argtype</em> </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A list of argument names, argument modes, and data types. Only the data type is required.
+                                 Name and mode are optional and their position can be switched.
+                              </p>
+                              
+                              <p>The argument mode can be IN, OUT, or INOUT. The default is IN.</p>
+                              
+                              <p>You can use OUT and INOUT arguments to return one or more values from a
+                                 procedure call. When there are OUT or INOUT arguments, the procedure call
+                                 returns one result row containing <em>n</em> columns,
+                                 where <em>n</em> is the total number of OUT or INOUT
+                                 arguments.
+                              </p>
+                              
+                              <p>INOUT arguments are input and output arguments at the same time. <em>Input arguments</em> include both IN and INOUT
+                                 arguments, and <em>output arguments</em> include both
+                                 OUT and INOUT arguments.
+                              </p>
+                              
+                              
+                              <p>OUT arguments aren&apos;t specified as part of the CALL statement. Specify
+                                 INOUT arguments in the stored procedure CALL statement. INOUT arguments can be useful
+                                 when passing and returning values from a nested call, and also when returning a
+                                 <code class="code">refcursor</code>. For more information on <code class="code">refcursor</code> types, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_PLpgSQL-statements.html#r_PLpgSQL-cursors">Cursors</a>.
+                              </p>
+                              
+                              <p>The argument data types can be any standard Amazon Redshift data type. In addition,
+                                 an
+                                 argument data type can be <code class="code">refcursor</code>.
+                              </p>
+                              
+                              <p>You can specify a maximum of 32 input arguments and 32 output arguments. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">AS $$ <em>procedure_body</em> $$ </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A construct that encloses the procedure to be executed. The literal keywords AS $$
+                                 and $$ are required.
+                              </p>
+                              
+                              <p>Amazon Redshift requires you to enclose the statement in your procedure by using a
+                                 format called dollar quoting. 
+                                 Anything within the enclosure is passed exactly as is. You don&apos;t need to escape any
+                                 special characters because the contents of the string are written literally.
+                              </p>
+                              
+                              <p>With <em>dollar quoting, </em>you use a pair of
+                                 dollar signs ($$) to signify the start and the end of the statement to run, as
+                                 shown in the following example.
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">$$ my statement $$</code></pre>
+                              <p>Optionally, between the dollar signs in each pair, you can specify a string to help
+                                 identify the statement. 
+                                 The string that you use must be the same in both the start and the end of the enclosure
+                                 pairs. 
+                                 This string is case-sensitive, and it follows the same constraints as an unquoted
+                                 identifier except that it can&apos;t contain dollar signs. The following example uses the
+                                 string test.
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">$test$ my statement $test$</code></pre>
+                              <p>This syntax is also useful for nested dollar quoting. For more information
+                                 about dollar quoting, see &quot;Dollar-quoted String Constants&quot; under
+                                 <a href="https://www.postgresql.org/docs/9.0/sql-syntax-lexical.html" target="_blank">Lexical Structure</a> in the PostgreSQL documentation.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>procedure_body</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A set of valid PL/pgSQL statements. 
+                                 PL/pgSQL statements augment SQL commands with procedural constructs, including looping
+                                 and conditional expressions, to control logical flow. 
+                                 Most SQL commands can be used in the procedure body, including data modification language
+                                 (DML) such as COPY, UNLOAD and INSERT, and data definition language (DDL) such as
+                                 CREATE TABLE.                                    
+                                 For more information, see 
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_pl_pgSQL_reference.html">PL/pgSQL Language Reference</a>.
+                                  
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">LANGUAGE <em>plpgsql</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A language value. Specify <code class="code">plpgsql</code>. You must have permission for
+                                 usage on language to use <code class="code">plpgsql</code>. For more information, see <a href="r_GRANT.html">GRANT</a>. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">SECURITY INVOKER | SECURITY DEFINER</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The security mode for the procedure determines the procedure&apos;s access privileges at
+                                 runtime. The procedure must have permission to access the underlying database objects.
+                                 
+                              </p>
+                              
+                              <p>For SECURITY INVOKER mode, the procedure uses the privileges of the user calling the
+                                 procedure. The user must have explicit permissions on the underlying database objects.
+                                 The default is SECURITY INVOKER.
+                              </p>
+                              
+                              <p>For SECURITY DEFINER mode, the procedure is run using the database privileges as the
+                                 procedure&apos;s owner. The user calling the procedure needs execute privilege on the procedure,
+                                 but doesn&apos;t need any privileges on the underlying objects. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">SET configuration_parameter { TO value | = value }</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The SET clause causes the specified <code class="code">configuration_parameter</code> to
+                                 be set to the specified value when the procedure is entered. This clause then
+                                 restores <code class="code">configuration_parameter</code> to its earlier value when the procedure exits. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_CREATE_PROCEDURE-examples">Examples</h2><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>If when running these examples you encounter an error similar to:</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">ERROR: 42601: unterminated dollar-quoted string at or near &quot;$$</code></pre><p>See             
+                           <a href="https://docs.aws.amazon.com/redshift/latest/dg/stored-procedure-create.html">Overview of Stored Procedures in Amazon Redshift</a>. 
+                        </p>
+                     </div><p>The following example creates a procedure with two input parameters.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">CREATE OR REPLACE PROCEDURE test_sp1(f1 int, f2 varchar(20))
+AS $$
+DECLARE
+  min_val int;
+BEGIN
+  DROP TABLE IF EXISTS tmp_tbl;
+  CREATE TEMP TABLE tmp_tbl(id int);
+  INSERT INTO tmp_tbl values (f1),(10001),(10002);
+  SELECT INTO min_val MIN(id) FROM tmp_tbl;
+  RAISE INFO &apos;min_val = %, f2 = %&apos;, min_val, f2;
+END;
+$$ LANGUAGE plpgsql;
+</code></pre><p>The following example creates a procedure with one IN parameter, one OUT parameter,
+                        and one INOUT parameter.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">CREATE OR REPLACE PROCEDURE test_sp2(f1 int, f2 INOUT varchar, OUT varchar)
+AS $$
+DECLARE
+  out_var alias for $3;
+  loop_var int;
+BEGIN
+  IF f1 is null OR f2 is null THEN
+    RAISE EXCEPTION &apos;input cannot be null&apos;;
+  END IF;
+  DROP TABLE if exists my_etl;
+  CREATE TEMP TABLE my_etl(a int, b varchar);
+  FOR loop_var IN 1..f1 LOOP
+    insert into my_etl values (loop_var, f2);
+    f2 := f2 || &apos;+&apos; || f2;
+  END LOOP;
+  SELECT INTO out_var count(*) from my_etl;
+END;
+$$ LANGUAGE plpgsql;
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

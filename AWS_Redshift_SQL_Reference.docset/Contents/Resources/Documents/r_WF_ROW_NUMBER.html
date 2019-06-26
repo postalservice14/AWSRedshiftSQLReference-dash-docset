@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_WF_ROW_NUMBER">ROW_NUMBER Window Function</h1><p>Determines the ordinal number of the current row within a group of rows, counting
+                        from 1, based on the ORDER BY expression in the OVER clause. If the optional PARTITION
+                        BY clause is present, the ordinal numbers are reset for each group of rows. Rows with
+                        equal values for the ORDER BY expressions receive the different row numbers
+                        nondeterministically. 
+                     </p><h2 id="r_WF_ROW_NUMBER-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ROW_NUMBER () OVER
+(
+[ PARTITION BY <em>expr_list</em> ]
+[ ORDER BY <em>order_list</em> ]
+) </code></pre><h2 id="r_WF_ROW_NUMBER-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">( ) </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The function takes no arguments, but the empty parentheses are required.
+                                 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">OVER </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The window clauses for the ROW_NUMBER function. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">PARTITION BY <em>expr_list</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional. One or more expressions that define the ROW_NUMBER function.
+                                 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ORDER BY <em>order_list</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Optional. The expression that defines the columns on which the row
+                                 numbers are based. If no PARTITION BY is specified, ORDER BY uses the entire
+                                 table. 
+                                 
+                                 
+                              </p>
+                              
+                              <p>If ORDER BY does not produce a unique ordering or is omitted, the order of the rows
+                                 is
+                                 nondeterministic. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_order_by_WF.html">Unique Ordering of Data for Window
+                                    Functions</a>. 
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="c_Supported_data_types_r_WF_ROW_NUMBER">Return Type</h2><p>BIGINT</p><h2 id="r_WF_ROW_NUMBER-examples">Examples</h2><p>See <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_Examples_of_WF_ROW_NUMBER_WF.html">ROW_NUMBER Window Function
+                           Example</a>. 
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

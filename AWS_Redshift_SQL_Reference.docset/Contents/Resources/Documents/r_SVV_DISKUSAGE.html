@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVV_DISKUSAGE">SVV_DISKUSAGE</h1><p>Amazon Redshift creates the SVV_DISKUSAGE system view by joining the STV_TBL_PERM
+                        and
+                        STV_BLOCKLIST tables. The SVV_DISKUSAGE view contains information about data allocation
+                        for the tables in a database.
+                     </p><p>Use aggregate queries with SVV_DISKUSAGE, as the following examples show, to determine
+                        the number of disk blocks allocated per database, table, slice, or column. Each data
+                        block uses 1 MB. You can also use <a href="https://docs.aws.amazon.com/redshift/latest/dg/r_STV_PARTITIONS.html">STV_PARTITIONS</a> to view summary information about disk
+                        utilization.
+                     </p><p>SVV_DISKUSAGE is visible only to superusers. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_visibility-of-data.html">Visibility of Data in System Tables and
+                           Views</a>.
+                     </p><h2 id="r_SVV_DISKUSAGE-table-rows">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c23b9b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>db_id </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Database ID. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>name </td>
+                                 
+                                 <td>character(72) </td>
+                                 
+                                 <td>Table name. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>slice </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Data slice allocated to the table. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>col </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Zero-based index for the column. Every table you
+                                    create has three hidden columns appended to it: INSERT_XID,
+                                    DELETE_XID, and ROW_ID (OID). A table with 3 user-defined columns
+                                    contains 6 actual columns, and the user-defined columns are
+                                    internally numbered as 0, 1, and 2. The INSERT_XID, DELETE_XID, and
+                                    ROW_ID columns are numbered 3, 4, and 5, respectively, in this
+                                    example. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>tbl </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Table ID. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>blocknum </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>ID for the data block. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>num_values </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Number of values contained on the block. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>minvalue </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Minimum value contained on the block. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>maxvalue </td>
+                                 
+                                 <td>bigint </td>
+                                 
+                                 <td>Maximum value contained on the block. </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>sb_pos </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Internal identifier for the position of the super
+                                    block on disk. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>pinned </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Whether or not the block is pinned into memory as
+                                    part of pre-load. 0 = false; 1 = true. Default is false. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>on_disk </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Whether or not the block is automatically stored
+                                    on disk. 0 = false; 1 = true. Default is false. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>modified </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Whether or not the block has been modified. 0 =
+                                    false; 1 = true. Default is false. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>hdr_modified </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Whether or not the block header has been modified.
+                                    0 = false; 1 = true. Default is false. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>unsorted </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Whether or not a block is unsorted. 0 = false; 1 =
+                                    true. Default is true. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>tombstone </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>For internal use.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>preferred_diskno </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Disk number that the block should be on, unless
+                                    the disk has failed. Once the disk has been fixed, the block will
+                                    move back to this disk. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>temporary </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Whether or not the block contains temporary data,
+                                    such as from a temporary table or intermediate query results. 0 =
+                                    false; 1 = true. Default is false. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>newblock </td>
+                                 
+                                 <td>integer </td>
+                                 
+                                 <td>Indicates whether or not a block is new (true) or
+                                    was never committed to disk (false). 0 = false; 1 = true. 
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_SVV_DISKUSAGE-sample-queries">Sample Queries</h2><p>SVV_DISKUSAGE contains one row per allocated disk block, so a query that selects
+                        all the rows potentially returns a very large number of rows. We recommend using
+                        only aggregate queries with SVV_DISKUSAGE.
+                     </p><p>Return the highest number of blocks ever allocated to column 6 in the USERS table
+                        (the EMAIL column):
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select db_id, trim(name) as tablename, max(blocknum)
+from svv_diskusage
+where name=&apos;users&apos; and col=6
+group by db_id, name;
+
+db_id  | tablename | max
+--------+-----------+-----
+175857 | users     |   2
+(1 row)</code></pre><p>The following query returns similar results for all of the columns in a large
+                        10-column table called SALESNEW. (The last three rows, for columns 10 through 12,
+                        are for the hidden metadata columns.) 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select db_id, trim(name) as tablename, col, tbl, max(blocknum)
+from svv_diskusage
+where name=&apos;salesnew&apos;
+group by db_id, name, col, tbl
+order by db_id, name, col, tbl;
+
+db_id  | tablename  | col |  tbl   | max
+--------+------------+-----+--------+-----
+175857 | salesnew   |   0 | 187605 | 154
+175857 | salesnew   |   1 | 187605 | 154
+175857 | salesnew   |   2 | 187605 | 154
+175857 | salesnew   |   3 | 187605 | 154
+175857 | salesnew   |   4 | 187605 | 154
+175857 | salesnew   |   5 | 187605 |  79
+175857 | salesnew   |   6 | 187605 |  79
+175857 | salesnew   |   7 | 187605 | 302
+175857 | salesnew   |   8 | 187605 | 302
+175857 | salesnew   |   9 | 187605 | 302
+175857 | salesnew   |  10 | 187605 |   3
+175857 | salesnew   |  11 | 187605 |   2
+175857 | salesnew   |  12 | 187605 | 296
+(13 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

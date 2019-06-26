@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_UNLOAD">UNLOAD</h1><p>Unloads the result of a query to one or more text files on Amazon S3, using Amazon
+                        S3 server-side
+                        encryption (SSE-S3). You can also specify server-side encryption with an AWS Key Management
+                        Service key
+                        (SSE-KMS) or client-side encryption with a customer-managed key (CSE-CMK).
+                     </p><p>You can manage the size of files on Amazon S3, and by extension the number of files,
+                        by
+                        setting the MAXFILESIZE parameter.
+                     </p><h2 id="r_UNLOAD-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">UNLOAD (&apos;<em>select-statement</em>&apos;)
+TO &apos;<em>s3://object-path/name-prefix</em>&apos;
+<em>authorization</em>
+[ <em>option</em> [ ... ] ]
+
+where <em>option</em> is
+
+{ MANIFEST [ VERBOSE ] 
+| HEADER
+
+            
+| [ FORMAT [AS] ] CSV
+| DELIMITER [ AS ] &apos;<em>delimiter-char</em>&apos; 
+| FIXEDWIDTH [ AS ] &apos;<em>fixedwidth-spec</em>&apos; }  
+| ENCRYPTED
+| BZIP2  
+| GZIP 
+| ZSTD
+| ADDQUOTES 
+| NULL [ AS ] &apos;<em>null-string</em>&apos;
+| ESCAPE
+| ALLOWOVERWRITE
+| PARALLEL [ { ON | TRUE } | { OFF | FALSE } ]
+| MAXFILESIZE [AS] <em>max-size</em> [ MB | GB ] ]
+| REGION [AS] &apos;aws-region&apos;</code></pre><h2 id="unload-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                                      
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                                  
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">(&apos;<em>select-statement</em>&apos;) </span></dt>
+                           
+                           <dd>
+                              
+                              <p>A SELECT query. The results of the query are unloaded. In most cases, it is
+                                 worthwhile to unload data in sorted order by specifying an ORDER BY clause in
+                                 the query. This approach saves the time required to sort the data when it is
+                                 reloaded. TOP is not supported in the SELECT clause. Use LIMIT instead.
+                              </p>
+                              
+                              <p>The query must be enclosed in single quotes as shown following: </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">(&apos;select * from venue order by venueid&apos;)</code></pre>
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>If your query contains quotes (for example to enclose literal values), put the literal
+                                    between two sets of single quotation marks&#x2014;you must also enclose the query between
+                                    single quotation marks: 
+                                 </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">(&apos;select * from venue where venuestate=&apos;&apos;NV&apos;&apos;&apos;)</code></pre></div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">TO &apos;s3://<em>object-path/name-prefix</em>&apos; </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The full path, including bucket name, to the location on Amazon S3 where Amazon Redshift
+                                 writes the output file objects, including the manifest file if MANIFEST is
+                                 specified. The object names are prefixed with <em>name-prefix</em>.
+                                 For added security, UNLOAD connects to Amazon S3 using an HTTPS connection. By
+                                 default, UNLOAD writes one or more files per slice. UNLOAD appends a slice
+                                 number and part number to the specified name prefix as follows:
+                              </p>
+                              
+                              <p><code class="code"><em class="replaceable"><code>&lt;object-path&gt;</code></em>/<em class="replaceable"><code>&lt;name-prefix&gt;</code></em><em class="replaceable"><code>&lt;slice-number&gt;</code></em>_part_<em class="replaceable"><code>&lt;part-number&gt;</code></em></code>. 
+                              </p>
+                              
+                              <p>If MANIFEST is specified, the manifest file is written as follows:</p>
+                              
+                              <p><code class="code"><em class="replaceable"><code>&lt;object_path&gt;</code></em>/<em class="replaceable"><code>&lt;name_prefix&gt;</code></em>manifest</code>. 
+                              </p>
+                              
+                              <p>UNLOAD automatically creates encrypted files using Amazon S3 server-side
+                                 encryption (SSE), including the manifest file if MANIFEST is used. The COPY
+                                 command automatically reads server-side encrypted files during the load
+                                 operation. You can transparently download server-side encrypted files from your
+                                 bucket using either the Amazon S3 Management Console or API. For more information,
+                                 go to <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/serv-side-encryption.html">Protecting Data Using
+                                    Server-Side Encryption</a>. 
+                              </p>
+                              
+                              <p>To use Amazon S3 client-side encryption, specify the ENCRYPTED option.</p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p>REGION is required when the Amazon S3 bucket is not in the same AWS Region as
+                                    the Amazon Redshift cluster. 
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">Authorization</span></dt>
+                           
+                           
+                           <dd>
+                              
+                              <p>The UNLOAD command needs authorization to write data to Amazon S3. The
+                                 UNLOAD command uses the same parameters the COPY command uses for
+                                 authorization. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-authorization.html">Authorization Parameters</a> in the COPY command syntax
+                                 reference.
+                              </p>
+                              
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">MANIFEST [ VERBOSE ]</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Creates a manifest file that explicitly lists details for the data files
+                                 that are created by the UNLOAD process. The manifest is a text file in JSON
+                                 format that lists the URL of each file that was written to Amazon S3. 
+                              </p>
+                              
+                              <p>If MANIFEST is specified with the VERBOSE option, the manifest includes the
+                                 following details: 
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>The column names and data types, and for CHAR, VARCHAR, or NUMERIC
+                                          data types, dimensions for each column. For CHAR and VARCHAR data types,
+                                          the dimension is the length. For a DECIMAL or NUMERIC data type, the
+                                          dimensions are precision and scale. 
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>The row count unloaded to each file. If the HEADER option is
+                                          specified, the row count includes the header line. 
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>The total file size of all files unloaded and the total row count
+                                          unloaded to all files. If the HEADER option is specified, the row count
+                                          includes the header lines. 
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>The author. Author is always &quot;Amazon Redshift&quot;.</p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              <p>You can specify VERBOSE only following MANIFEST. </p>
+                              
+                              <p>The manifest file is written to the same Amazon S3 path prefix as the unload
+                                 files in the format <code class="code">&lt;object_path_prefix&gt;manifest</code>. For
+                                 example, if UNLOAD specifies the Amazon S3 path prefix
+                                 &apos;<code class="code">s3://mybucket/venue_</code>&apos;, the manifest file location is
+                                 &apos;<code class="code">s3://mybucket/venue_manifest</code>&apos;.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">HEADER</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Adds a header line containing column names at the top of each output file.
+                                 Text transformation options, such as CSV, DELIMITER, ADDQUOTES, and ESCAPE,
+                                 also apply to the header line. HEADER can&apos;t be used with FIXEDWIDTH.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="unload-csv"></a><span class="term">[ FORMAT [AS] ] CSV</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Unloads to a text file in CSV format using a comma ( , ) character as the
+                                 delimiter. If a field contains commas, double quotes, newlines, or carriage
+                                 returns, then the field in the unloaded file is enclosed in double quotes. A
+                                 double quote character within a data field is escaped by an additional double
+                                 quote character. 
+                              </p>
+                              
+                              <p>The FORMAT and AS keywords are optional. CSV can&apos;t be used with DELIMITER or
+                                 FIXEDWIDTH. 
+                              </p>
+                              
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">DELIMITER AS &apos;<em>delimiter_character</em>&apos; </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Single ASCII character that is used to separate fields in the output file,
+                                 such as a pipe character ( | ), a comma ( , ), or a tab ( \t ). The default
+                                 delimiter is a pipe character. The AS keyword is optional. DELIMITER can&apos;t be
+                                 used with FIXEDWIDTH. If the data contains the delimiter character, you need to
+                                 specify the ESCAPE option to escape the delimiter, or use ADDQUOTES to enclose
+                                 the data in double quotes. Alternatively, specify a delimiter that is not
+                                 contained in the data.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">FIXEDWIDTH &apos;<em>fixedwidth_spec</em>&apos; </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Unloads the data to a file where each column width is a fixed length, rather
+                                 than separated by a delimiter. The <em>fixedwidth_spec</em> is a
+                                 string that specifies the number of columns and the width of the columns. The
+                                 AS keyword is optional. Because FIXEDWIDTH does not truncate data, the
+                                 specification for each column in the UNLOAD statement needs to be at least as
+                                 long as the length of the longest entry for that column. The format for
+                                 <em>fixedwidth_spec</em> is shown below: 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">&apos;<em>colID1:colWidth1,colID2:colWidth2, ...</em>&apos;</code></pre>
+                              <p>FIXEDWIDTH can&apos;t be used with DELIMITER or HEADER.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="unload-parameters-encrypted"></a><span class="term">ENCRYPTED</span></dt>
+                           
+                           <dd>
+                              
+                              <p>A clause that specifies that the output files on Amazon S3 are encrypted using
+                                 Amazon S3 server-side encryption or client-side encryption. If MANIFEST is
+                                 specified, the manifest file is also encrypted. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/t_unloading_encrypted_files.html">Unloading Encrypted Data Files</a>. If you don&apos;t specify the
+                                 ENCRYPTED parameter, UNLOAD automatically creates encrypted files using Amazon S3
+                                 server-side encryption with AWS-managed encryption keys (SSE-S3). 
+                              </p>
+                              
+                              <p>To unload to Amazon S3 using server-side encryption with an AWS KMS key (SSE-KMS),
+                                 use the <a href="r_UNLOAD.html#unload-parameters-kms-key-id">KMS_KEY_ID</a> parameter to provide the
+                                 key ID. You can&apos;t use the <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-authorization.html#copy-credentials">CREDENTIALS</a> parameter with the
+                                 KMS_KEY_ID parameter. If you UNLOAD data using KMS_KEY_ID, you can then COPY
+                                 the same data without specifying a key. 
+                              </p>
+                              
+                              <p>To unload to Amazon S3 using client-side encryption with a customer-supplied
+                                 symmetric key (CSE-CMK), provide the key using the <a href="r_UNLOAD.html#unload-parameters-master-symmetric-key">MASTER_SYMMETRIC_KEY</a> parameter or the
+                                 <strong class="userinput"><code>master_symmetric_key</code></strong> portion of a <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-authorization.html#copy-credentials">CREDENTIALS</a> credential string. If you unload data using a
+                                 master symmetric key, you must supply the same key when you COPY the encrypted
+                                 data. 
+                              </p>
+                              
+                              <p>UNLOAD does not support Amazon S3 server-side encryption with a customer-supplied
+                                 key (SSE-C). 
+                              </p>
+                              
+                              <p>To compress encrypted unload files, add the BZIP2, GZIP, or ZSTD parameter. </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="unload-parameters-kms-key-id"></a><span class="term">KMS_KEY_ID &apos;<em>key-id</em>&apos;</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The key ID for an AWS Key Management Service (AWS KMS) key to be used to encrypt data
+                                 files on
+                                 Amazon S3. For more information, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/overview.html">What is
+                                    AWS Key Management Service?</a> If you specify KMS_KEY_ID, you must
+                                 specify the <a href="r_UNLOAD.html#unload-parameters-encrypted">ENCRYPTED</a> parameter also. If
+                                 you specify KMS_KEY_ID, you can&apos;t authenticate using the CREDENTIALS parameter.
+                                 Instead, use either <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-authorization.html#copy-iam-role">IAM_ROLE</a> or <a href="https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-authorization.html#copy-access-key-id">ACCESS_KEY_ID and SECRET_ACCESS_KEY</a>. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="unload-parameters-master-symmetric-key"></a><span class="term">MASTER_SYMMETRIC_KEY &apos;<em>master_key</em>&apos;</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The master symmetric key to be used to encrypt data files on Amazon S3. If you
+                                 specify MASTER_SYMMETRIC_KEY, you must specify the <a href="r_UNLOAD.html#unload-parameters-encrypted">ENCRYPTED</a> parameter also. MASTER_SYMMETRIC_KEY
+                                 can&apos;t be used with the CREDENTIALS parameter. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_loading-encrypted-files.html">Loading Encrypted Data Files from
+                                    Amazon S3</a>. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">BZIP2 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Unloads data to one or more bzip2-compressed files per slice. Each resulting
+                                 file is appended with a <code class="code">.bz2</code> extension. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">GZIP </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Unloads data to one or more gzip-compressed files per slice. Each resulting
+                                 file is appended with a <code class="code">.gz</code> extension. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ZSTD </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Unloads data to one or more Zstandard-compressed files per slice. Each resulting
+                                 file is appended with a <code class="code">.zst</code> extension. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ADDQUOTES </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Places quotation marks around each unloaded data field, so that Amazon Redshift can
+                                 unload data values that contain the delimiter itself. For example, if the
+                                 delimiter is a comma, you could unload and reload the following data
+                                 successfully: 
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight "> &quot;1&quot;,&quot;Hello, World&quot; </code></pre>
+                              <p>Without the added quotes, the string <code class="code">Hello, World</code> would be
+                                 parsed as two separate fields.
+                              </p>
+                              
+                              <p>If you use ADDQUOTES, you must specify REMOVEQUOTES in the COPY if you
+                                 reload the data.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">NULL AS &apos;<em>null-string</em>&apos; </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Specifies a string that represents a null value in unload files. If this
+                                 option is used, all output files contain the specified string in place of any
+                                 null values found in the selected data. If this option is not specified, null
+                                 values are unloaded as: 
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>Zero-length strings for delimited output </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>Whitespace strings for fixed-width output</p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              <p>If a null string is specified for a fixed-width unload and the width of an
+                                 output column is less than the width of the null string, the following behavior
+                                 occurs: 
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>An empty field is output for non-character columns </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>An error is reported for character columns </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">ESCAPE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>For CHAR and VARCHAR columns in delimited unload files, an escape character
+                                 (<code class="code">\</code>) is placed before every occurrence of the following
+                                 characters:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>Linefeed: <code class="code">\n</code></p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>Carriage return: <code class="code">\r</code></p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>The delimiter character specified for the unloaded data. </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>The escape character: <code class="code">\</code></p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>A quote character: <code class="code">&quot;</code> or <code class="code">&apos;</code> (if both ESCAPE
+                                          and ADDQUOTES are specified in the UNLOAD command).
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Important</p>
+                                 <p>If you loaded your data using a COPY with the ESCAPE option, you must
+                                    also specify the ESCAPE option with your UNLOAD command to generate the
+                                    reciprocal output file. Similarly, if you UNLOAD using the ESCAPE option,
+                                    you need to use ESCAPE when you COPY the same data.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="allowoverwrite"></a><span class="term">ALLOWOVERWRITE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>By default, UNLOAD fails if it finds files that it would possibly overwrite.
+                                 If ALLOWOVERWRITE is specified, UNLOAD overwrites existing files, including the
+                                 manifest file. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="unload-parallel"></a><span class="term">PARALLEL </span></dt>
+                           
+                           <dd>
+                              
+                              <p>By default, UNLOAD writes data in parallel to multiple files, according to
+                                 the number of slices in the cluster. The default option is ON or TRUE. If
+                                 PARALLEL is OFF or FALSE, UNLOAD writes to one or more data files serially,
+                                 sorted absolutely according to the ORDER BY clause, if one is used. The maximum
+                                 size for a data file is 6.2 GB. So, for example, if you unload 13.4 GB of data,
+                                 UNLOAD creates the following three files.
+                              </p>
+                              <pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">s3://mybucket/key000    6.2 GB
+s3://mybucket/key001    6.2 GB
+s3://mybucket/key002    1.0 GB</code></pre>
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>The UNLOAD command is designed to use parallel processing. We recommend
+                                    leaving PARALLEL enabled for most cases, especially if the files are used to
+                                    load tables using a COPY command.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="unload-maxfilesize"></a><span class="term">MAXFILESIZE AS max-size [ MB | GB ] </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The maximum size of files UNLOAD creates in Amazon S3. Specify a decimal
+                                 value between 5 MB and 6.2 GB. The AS keyword is optional. The default unit is
+                                 MB. If MAXFILESIZE is not specified, the default maximum file size is 6.2 GB.
+                                 The size of the manifest file, if one is used, is not affected by
+                                 MAXFILESIZE.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="unload-region"></a><span class="term">REGION [AS] &apos;<em>aws-region</em>&apos;</span></dt>
+                           
+                           <dd>
+                              
+                              <p>The AWS Region where the target Amazon S3 bucket is located. REGION is required
+                                 for UNLOAD to an Amazon S3 bucket that is not in the same AWS Region as the Amazon
+                                 Redshift
+                                 cluster. 
+                              </p>
+                              
+                              <p>The value for <em>aws_region</em> must match an AWS Region
+                                 listed in the <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html#redshift_region">Amazon Redshift
+                                    regions and endpoints</a> table in the <em>AWS General
+                                    Reference</em>.
+                              </p>
+                              
+                              
+                              <p>By default, UNLOAD assumes that the target Amazon S3 bucket is located in the
+                                 same AWS Region as the Amazon Redshift cluster.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="unload-usage-notes">Usage Notes</h2><h3 id="unload-usage-escape">Using ESCAPE for All Delimited UNLOAD
+                        Operations
+                     </h3><p>When you UNLOAD using a delimiter, your data can include that delimiter or any of
+                        the characters listed in the ESCAPE option description. In this case, you must use
+                        the ESCAPE option with the UNLOAD statement. If you do not use the ESCAPE option with
+                        the UNLOAD, subsequent COPY operations using the unloaded data might fail.
+                     </p><div class="aws-note">
+                        <p class="aws-note">Important</p>
+                        <p>We strongly recommend that you always use ESCAPE with both UNLOAD and COPY
+                           statements. The exception is if you are certain that your data does not contain
+                           any delimiters or other characters that might need to be escaped. 
+                        </p>
+                     </div><h3 id="unload-usage-floating-point-precision">Loss of Floating-Point
+                        Precision
+                     </h3><p>You might encounter loss of precision for floating-point data that is successively
+                        unloaded and reloaded. 
+                     </p><h3 id="unload-usage-limit-clause">Limit Clause</h3><p>The SELECT query can&apos;t use a LIMIT clause in the outer SELECT. For example, the
+                        following UNLOAD statement fails.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">unload (&apos;select * from venue limit 10&apos;) 
+to &apos;s3://mybucket/venue_pipe_&apos; iam_role &apos;arn:aws:iam::0123456789012:role/MyRedshiftRole&apos;; </code></pre><p>Instead, use a nested LIMIT clause, as in the following example.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">unload (&apos;select * from venue where venueid in 
+(select venueid from venue order by venueid desc limit 10)&apos;) 
+to &apos;s3://mybucket/venue_pipe_&apos; iam_role &apos;arn:aws:iam::0123456789012:role/MyRedshiftRole&apos;;</code></pre><p>Alternatively, you could populate a table using SELECT&#x2026;INTO or CREATE TABLE AS
+                        using a LIMIT clause, then unload from that table.
+                     </p><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

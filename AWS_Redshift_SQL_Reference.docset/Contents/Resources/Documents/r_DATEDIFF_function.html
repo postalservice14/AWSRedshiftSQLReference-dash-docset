@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_DATEDIFF_function">DATEDIFF Function</h1><p>DATEDIFF returns the difference between the date parts of two date or time expressions.
+                        
+                     </p><h2 id="r_DATEDIFF_function-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">DATEDIFF ( <em>datepart</em>, {<em>date</em>|<em>timestamp</em>}, {<em>date</em>|<em>timestamp</em>} )</code></pre><h2 id="r_DATEDIFF_function-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>datepart</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The specific part of the date value (year, month, or day, for example)
+                                 that the function operates on. For more information, see <a href="r_Dateparts_for_datetime_functions.html">Dateparts for Date or Time Stamp
+                                    Functions</a>. 
+                              </p>
+                              
+                              <p>Specifically, DATEDIFF determines the number of <em>datepart
+                                    boundaries</em> that are crossed between two expressions. For
+                                 example, if you are calculating the difference in years between two dates,
+                                 <code class="code">12-31-2008</code> and <code class="code">01-01-2009</code>, the function returns
+                                 1 year despite the fact that these dates are only one day apart. If you are
+                                 finding the difference in hours between two time stamps, <code class="code">01-01-2009
+                                    8:30:00</code> and <code class="code">01-01-2009 10:00:00</code>, the result is 2
+                                 hours. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"><em>date</em>|<em>timestamp</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A date or timestamp columns or expressions that implicitly convert to a
+                                 date or time stamp. The expressions must both contain the specified date
+                                 part. If the second date or time is later than the first date or time, the
+                                 result is positive. If the second date or time is earlier than the first
+                                 date or time, the result is negative.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_DATEDIFF_function-return-type">Return Type</h2><p>BIGINT</p><h2 id="r_DATEDIFF_function-examples">Examples</h2><p>Find the difference, in number of weeks, between two literal date values:
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select datediff(week,&apos;2009-01-01&apos;,&apos;2009-12-31&apos;) as numweeks;
+
+numweeks
+----------
+52
+(1 row)</code></pre><p>Find the difference, in number of quarters, between a literal value in the past and
+                        today&apos;s date. This example assumes that the current date is June 5, 2008. You can
+                        name
+                        dateparts in full or abbreviate them. The default column name for the DATEDIFF function
+                        is DATE_DIFF.
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select datediff(qtr, &apos;1998-07-01&apos;, current_date);
+
+date_diff
+-----------
+40
+(1 row)</code></pre><p>This example joins the SALES and LISTING tables to calculate how many days after they
+                        were listed any tickets were sold for listings 1000 through 1005. The longest wait
+                        for
+                        sales of these listings was 15 days, and the shortest was less than one day (0 days).
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select priceperticket,
+datediff(day, listtime, saletime) as wait
+from sales, listing where sales.listid = listing.listid
+and sales.listid between 1000 and 1005
+order by wait desc, priceperticket desc;
+
+priceperticket | wait
+---------------+------
+ 96.00         |   15
+ 123.00        |   11
+ 131.00        |    9
+ 123.00        |    6
+ 129.00        |    4
+ 96.00         |    4
+ 96.00         |    0
+(7 rows)</code></pre><p>This example calculates the average number of hours sellers waited for all ticket
+                        sales.
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select avg(datediff(hours, listtime, saletime)) as avgwait
+from sales, listing
+where sales.listid = listing.listid;
+
+avgwait
+---------
+465
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_ANALYZE_COMPRESSION">ANALYZE COMPRESSION</h1><p>Performs compression analysis and produces a report with the suggested compression
+                        encoding for the tables analyzed. For each column, the report includes an estimate
+                        of the
+                        potential reduction in disk space compared to the current encoding.
+                     </p><h2 id="r_ANALYZE_COMPRESSION-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ANALYZE COMPRESSION 
+[ [ <em>table_name</em> ]
+[ ( <em>column_name</em> [, ...] ) ] ] 
+[COMPROWS <em>numrows</em>]</code></pre><h2 id="r_ANALYZE_COMPRESSION-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>table_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>You can analyze compression for specific tables, including temporary tables.
+                                 You can qualify the table with its schema name. You can optionally specify a
+                                 <em>table_name</em> to analyze a single table. If you do not
+                                 specify a <em>table_name</em>, all of the tables in the currently
+                                 connected database are analyzed. You can&apos;t specify more than one
+                                 <em>table_name</em> with a single ANALYZE COMPRESSION
+                                 statement.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>column_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>If you specify a <em>table_name</em>, you can also specify one
+                                 or more columns in the table (as a column-separated list within
+                                 parentheses).
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">COMPROWS</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Number of rows to be used as the sample size for compression analysis. The
+                                 analysis is run on rows from each data slice. For example, if you specify
+                                 COMPROWS 1000000 (1,000,000) and the system contains 4 total slices, no more
+                                 than 250,000 rows per slice are read and analyzed. If COMPROWS is not
+                                 specified, the sample size defaults to 100,000 per slice. Values of COMPROWS
+                                 lower than the default of 100,000 rows per slice are automatically upgraded to
+                                 the default value. However, compression analysis doesn&apos;t produce
+                                 recommendations if the amount of data in the table is insufficient to produce a
+                                 meaningful sample. If the COMPROWS number is greater than the number of rows in
+                                 the table, the ANALYZE COMPRESSION command still proceeds and runs the
+                                 compression analysis against all of the available rows.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>numrows</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Number of rows to be used as the sample size for compression analysis. The
+                                 accepted range for <em>numrows</em> is a number between 1000 and
+                                 1000000000 (1,000,000,000).
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_ANALYZE_COMPRESSION_usage_notes">Usage Notes</h2><p>Run ANALYZE COMPRESSION to get recommendations for column encoding schemes, based
+                        on
+                        a sample of the table&apos;s contents. ANALYZE COMPRESSION is an advisory tool and doesn&apos;t
+                        modify the column encodings of the table. The suggested encoding can be applied by
+                        recreating the table, or creating a new table with the same schema. Recreating an
+                        uncompressed table with appropriate encoding schemes can significantly reduce its
+                        on-disk footprint, saving disk space and improving query performance for IO-bound
+                        workloads.
+                     </p><p>ANALYZE COMPRESSION doesn&apos;t consider <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_Runlength_encoding.html">Runlength Encoding</a> encoding on any column that is designated as a
+                        SORTKEY because range-restricted scans might perform poorly when SORTKEY columns are
+                        compressed much more highly than other columns.
+                     </p><p>ANALYZE COMPRESSION acquires an exclusive table lock, which prevents concurrent reads
+                        and writes against the table. Only run the ANALYZE COMPRESSION command when the table
+                        is
+                        idle.
+                     </p><h2 id="r_ANALYZE_COMPRESSION-examples">Examples</h2><p>The following example shows the encoding and estimated percent reduction for the
+                        columns in the LISTING table only:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">analyze compression listing;
+
+Table   | Column         | Encoding | Est_reduction_pct
+--------+----------------+----------+------------------
+listing | listid         | delta    | 75.00            
+listing | sellerid       | delta32k | 38.14            
+listing | eventid        | delta32k | 5.88             
+listing | dateid         | zstd     | 31.73            
+listing | numtickets     | zstd     | 38.41            
+listing | priceperticket | zstd     | 59.48            
+listing | totalprice     | zstd     | 37.90            
+listing | listtime       | zstd     | 13.39            
+         </code></pre><p>The following example analyzes the QTYSOLD, COMMISSION, and SALETIME columns in the
+                        SALES table.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">analyze compression sales(qtysold, commission, saletime);
+
+Table | Column     | Encoding | Est_reduction_pct
+------+------------+----------+------------------
+sales | salesid    | N/A      | 0.00             
+sales | listid     | N/A      | 0.00             
+sales | sellerid   | N/A      | 0.00             
+sales | buyerid    | N/A      | 0.00             
+sales | eventid    | N/A      | 0.00             
+sales | dateid     | N/A      | 0.00             
+sales | qtysold    | zstd     | 67.14            
+sales | pricepaid  | N/A      | 0.00             
+sales | commission | zstd     | 13.94            
+sales | saletime   | zstd     | 13.38                       
+
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

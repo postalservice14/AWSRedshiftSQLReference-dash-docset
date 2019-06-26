@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SVV_COLUMNS">SVV_COLUMNS</h1><p>Use SVV_COLUMNS to view catalog information about the columns of local and external
+                        tables and views, including <a href="r_CREATE_VIEW.html#r_CREATE_VIEW_late-binding-views">late-binding views</a>.
+                     </p><p>SVV_COLUMNS is visible to all users. Superusers can see all rows; regular users can
+                        see only metadata to which they have access. 
+                     </p><p>The SVV_COLUMNS view joins table metadata from the <a href="https://docs.aws.amazon.com/redshift/latest/dg/c_intro_catalog_views.html">System Catalog Tables</a> (tables with
+                        a PG prefix) and the <a href="r_SVV_EXTERNAL_COLUMNS.html">SVV_EXTERNAL_COLUMNS</a> system view. The system catalog tables
+                        describe Amazon Redshift database tables. SVV_EXTERNAL_COLUMNS describes external
+                        tables that are
+                        used with Amazon Redshift Spectrum. 
+                     </p><p>All users can see all rows from the system catalog tables. Regular users can see
+                        column definitions from the SVV_EXTERNAL_COLUMNS view only for external tables to
+                        which
+                        they have been granted access. Although regular users can see table metadata in the
+                        system catalog tables, they can only select data from the user-defined tables if they
+                        own the table or have been granted access. 
+                     </p><h2 id="r_SVV_COLUMNS-table-columns">Table Columns</h2><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac43c15c15c11b3">
+                              
+                              <tr>
+                                 
+                                 <th>Column Name </th>
+                                 
+                                 <th>Data Type </th>
+                                 
+                                 <th>Description </th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>table_catalog</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The name of the catalog where the table
+                                    is.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>table_schema</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The schema name for the table.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>table_name</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The name of the table.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>column_name</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The name of the column.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>ordinal_position</td>
+                                 
+                                 <td>int</td>
+                                 
+                                 <td>The position of the column in the table.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>column_default</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The default value of the column.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>is_nullable</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>A value that indicates whether the column is
+                                    nullable.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>data_type</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The data type of the column.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>character_maximum_length</td>
+                                 
+                                 <td>int</td>
+                                 
+                                 <td>The maximum number of characters in the
+                                    column.
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>numeric_precision</td>
+                                 
+                                 <td>int</td>
+                                 
+                                 <td>The numeric precision.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>numeric_precision_radix</td>
+                                 
+                                 <td>int</td>
+                                 
+                                 <td>The numeric precision radix.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>numeric_scale</td>
+                                 
+                                 <td>int</td>
+                                 
+                                 <td>The numeric scale.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>datetime_precision</td>
+                                 
+                                 <td>int</td>
+                                 
+                                 <td>The datetime precision.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>interval_type</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The interval type.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>interval_precision</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The interval precision.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>character_set_catalog</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The character set catalog.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>character_set_schema</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The character set schema.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>character_set_name</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The character set name.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>collation_catalog</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The collation catalog.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>collation_schema</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The collation schema.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>collation_name</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The collation name.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>domain_name</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>The domain name.</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>remarks</td>
+                                 
+                                 <td>text</td>
+                                 
+                                 <td>Remarks</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

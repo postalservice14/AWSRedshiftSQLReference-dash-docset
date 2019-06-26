@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_ATAN">ATAN Function</h1><p>ATAN is a trigonometric function that returns the arc tangent of a number. The return
+                        value is in radians and is between PI/2 and -PI/2. 
+                     </p><h2 id="r_ATAN-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">ATAN(<em>number</em>)</code></pre><h2 id="r_ATAN-argument">Argument</h2><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>number</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The input parameter is a double precision number. </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_ATAN-return-type">Return Type</h2><p>The ATAN function returns a double precision number. </p><h2 id="r_ATAN-examples">Examples</h2><p>The following example returns the arc tangent of 1 and multiplies it by 4: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select atan(1) * 4 as pi;
+pi
+------------------
+3.14159265358979
+(1 row)</code></pre><p>The following example converts the arc tangent of 1 to the equivalent number of
+                        degrees: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select (atan(1) * 180/(select pi())) as degrees;
+degrees
+---------
+45
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

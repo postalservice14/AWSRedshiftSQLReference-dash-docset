@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_GRANT">GRANT</h1><p>Defines access privileges for a user or user group.</p><p>Privileges include access options such as being able to read data in tables and views,
+                        write data, and create tables. Use this command to give specific privileges for a
+                        table,
+                        database, schema, or function. To revoke privileges from a database object, use the
+                        <a href="r_REVOKE.html">REVOKE</a> command. 
+                     </p><p>You can&apos;t GRANT or REVOKE permissions on an external table. Instead, grant or revoke
+                        the
+                        permissions on the external schema.
+                     </p><p>For stored procedures, the only privilege that can be granted is EXECUTE.</p><h2 id="r_GRANT-synopsis">Syntax</h2><p>
+                        
+                        
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">GRANT { { SELECT | INSERT | UPDATE | DELETE | REFERENCES } [,...] | ALL [ PRIVILEGES ] }
+    ON { [ TABLE ] <em>table_name</em> [, ...] | ALL TABLES IN SCHEMA <em>schema_name</em> [, ...] }
+    TO { <em>username</em> [ WITH GRANT OPTION ] | GROUP <em>group_name</em> | PUBLIC } [, ...]
+
+GRANT { { CREATE | TEMPORARY | TEMP } [,...] | ALL [ PRIVILEGES ] }
+    ON DATABASE <em>db_name</em> [, ...]
+    TO { <em>username</em> [ WITH GRANT OPTION ] | GROUP <em>group_name</em> | PUBLIC } [, ...]
+
+GRANT { { CREATE | USAGE } [,...] | ALL [ PRIVILEGES ] }
+    ON SCHEMA <em>schema_name</em> [, ...]
+    TO { <em>username</em> [ WITH GRANT OPTION ] | GROUP <em>group_name</em> | PUBLIC } [, ...]
+
+GRANT { EXECUTE | ALL [ PRIVILEGES ] }
+    ON { FUNCTION <em>function_name</em> ( [ [ <em>argname</em> ] <em>argtype</em> [, ...] ] ) [, ...] | ALL FUNCTIONS IN SCHEMA <em>schema_name</em> [, ...] }
+    TO { <em>username</em> [ WITH GRANT OPTION ] | GROUP <em>group_name</em> | PUBLIC } [, ...]
+
+GRANT { EXECUTE | ALL [ PRIVILEGES ] }
+    ON { PROCEDURE <em>procedure_name</em> ( [ [ <em>argname</em> ] <em>argtype</em> [, ...] ] ) [, ...] | ALL PROCEDURES IN SCHEMA <em>schema_name</em> [, ...] }
+    TO { <em>username</em> [ WITH GRANT OPTION ] | GROUP <em>group_name</em> | PUBLIC } [, ...]
+
+GRANT USAGE 
+    ON LANGUAGE <em>language_name</em> [, ...]
+    TO { <em>username</em> [ WITH GRANT OPTION ] | GROUP <em>group_name</em> | PUBLIC } [, ...]</code></pre><h2 id="r_GRANT-parameters">Parameters</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                                    
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><a id="grant-select"></a><span class="term">SELECT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants privilege to select data from a table or view using a SELECT
+                                 statement. The SELECT privilege is also required to reference existing column
+                                 values for UPDATE or DELETE operations.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-insert"></a><span class="term">INSERT </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants privilege to load data into a table using an INSERT statement or a
+                                 COPY statement. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-update"></a><span class="term">UPDATE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants privilege to update a table column using an UPDATE statement. UPDATE
+                                 operations also require the SELECT privilege, because they must reference table
+                                 columns to determine which rows to update, or to compute new values for
+                                 columns.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-delete"></a><span class="term">DELETE</span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants privilege to delete a data row from a table. DELETE operations also
+                                 require the SELECT privilege, because they must reference table columns to
+                                 determine which rows to delete.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-references"></a><span class="term">REFERENCES </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants privilege to create a foreign key constraint. You need to grant this
+                                 privilege on both the referenced table and the referencing table; otherwise,
+                                 the user can&apos;t create the constraint. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-all"></a><span class="term">ALL [ PRIVILEGES ] </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants all available privileges at once to the specified user or user group.
+                                 The PRIVILEGES keyword is optional.
+                              </p>
+                              
+                              <p>GRANT ALL ON SCHEMA does not grant CREATE privileges for external
+                                 schemas.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-on-table"></a><span class="term">ON [ TABLE ] <em>table_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the specified privileges on a table or a view. The TABLE keyword is
+                                 optional. You can list multiple tables and views in one statement.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-all-tables"></a><span class="term">ON ALL TABLES IN SCHEMA <em>schema_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the specified privileges on all tables and views in the referenced
+                                 schema.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-to"></a><span class="term">TO <em>username</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Indicates the user receiving the privileges.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-with-grant"></a><span class="term">WITH GRANT OPTION </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Indicates that the user receiving the privileges can in turn grant the same
+                                 privileges to others. WITH GRANT OPTION can not be granted to a group or to
+                                 PUBLIC.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-group"></a><span class="term">GROUP <em>group_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the privileges to a user group.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-public"></a><span class="term">PUBLIC </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the specified privileges to all users, including users created later.
+                                 PUBLIC represents a group that always includes all users. An individual user&apos;s
+                                 privileges consist of the sum of privileges granted to PUBLIC, privileges
+                                 granted to any groups that the user belongs to, and any privileges granted to
+                                 the user individually.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-create"></a><span class="term">CREATE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Depending on the database object, grants the following privileges to the
+                                 user or user group:
+                              </p>
+                              
+                              <div class="itemizedlist">
+                                 
+                                 
+                                 
+                                 
+                                 <ul class="itemizedlist" type="disc">
+                                    <li class="listitem">
+                                       
+                                       <p>For databases, CREATE allows users to create schemas within the
+                                          database.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>For schemas, CREATE allows users to create objects within a schema. To
+                                          rename an object, the user must have the CREATE privilege and own the
+                                          object to be renamed.
+                                       </p>
+                                       
+                                    </li>
+                                    <li class="listitem">
+                                       
+                                       <p>CREATE ON SCHEMA isn&apos;t supported for Amazon Redshift Spectrum external schemas.
+                                          To grant usage of external tables in an external schema, grant USAGE ON
+                                          SCHEMA to the users that need access. Only the owner of an external
+                                          schema or a superuser is permitted to create external tables in the
+                                          external schema. To transfer ownership of an external schema, use <a href="r_ALTER_SCHEMA.html">ALTER SCHEMA</a> to change
+                                          the owner. 
+                                       </p>
+                                       
+                                    </li>
+                                 </ul>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-temporary"></a><span class="term">TEMPORARY | TEMP </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the privilege to create temporary tables in the specified database.
+                                 To run Amazon Redshift Spectrum queries, the database user must have permission
+                                 to create temporary tables in the database. 
+                              </p>
+                              
+                              <div class="aws-note">
+                                 <p class="aws-note">Note</p>
+                                 <p>By default, users are granted permission to create temporary tables by
+                                    their automatic membership in the PUBLIC group. To remove the privilege for
+                                    any users to create temporary tables, revoke the TEMP permission from the
+                                    PUBLIC group and then explicitly grant the permission to create temporary
+                                    tables to specific users or groups of users.
+                                 </p>
+                              </div>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-database"></a><span class="term">ON DATABASE <em>db_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the specified privileges on a database.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-usage"></a><span class="term">USAGE </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants USAGE privilege on a specific schema, which makes objects in that
+                                 schema accessible to users. Specific actions on these objects must be granted
+                                 separately (for example, SELECT or UPDATE privileges on tables). By default,
+                                 all users have CREATE and USAGE privileges on the PUBLIC schema. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-schema"></a><span class="term">ON SCHEMA <em>schema_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the specified privileges on a schema.</p>
+                              
+                              <p>GRANT CREATE ON SCHEMA and the CREATE privilege in GRANT ALL ON SCHEMA
+                                 aren&apos;t supported for Amazon Redshift Spectrum external schemas. To grant usage of
+                                 external
+                                 tables in an external schema, grant USAGE ON SCHEMA to the users that need
+                                 access. Only the owner of an external schema or a superuser is permitted to
+                                 create external tables in the external schema. To transfer ownership of an
+                                 external schema, use <a href="r_ALTER_SCHEMA.html">ALTER SCHEMA</a> to change the owner. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-function"></a><span class="term">EXECUTE ON FUNCTION <em>function_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the EXECUTE privilege on a specific function. Because function names
+                                 can be overloaded, you must include the argument list for the function. For
+                                 more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-naming-udfs.html">Naming UDFs</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-all-functions"></a><span class="term">EXECUTE ON ALL FUNCTIONS IN SCHEMA <em>schema_name</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the specified privileges on all functions in the referenced
+                                 schema.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-procedure"></a><span class="term">EXECUTE ON PROCEDURE <em>procedure_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the EXECUTE privilege on a specific stored procedure. Because stored procedure
+                                 names
+                                 can be overloaded, you must include the argument list for the procedure. For
+                                 more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/stored-procedure-naming.html">Naming Stored Procedures</a>.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><a id="grant-all-procedures"></a><span class="term">EXECUTE ON ALL PROCEDURES IN SCHEMA <em>schema_name</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the specified privileges on all stored procedures in the referenced
+                                 schema.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">USAGE ON LANGUAGE <em>language_name</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>Grants the USAGE privilege on a language. </p> 
+                              
+                              <p>The USAGE ON LANGUAGE privilege is required to create user-defined
+                                 functions (UDFs) by running the <a href="r_CREATE_FUNCTION.html">CREATE FUNCTION</a> command. For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/udf-security-and-privileges.html">UDF Security and Privileges</a>. 
+                              </p>
+                              
+                              <p>The USAGE ON LANGUAGE privilege is required to create stored procedures by
+                                 running the <a href="r_CREATE_PROCEDURE.html">CREATE PROCEDURE</a> command. For more information, see
+                                 <a href="https://docs.aws.amazon.com/redshift/latest/dg/stored-procedure-security-and-privileges.html">Security and Privileges for
+                                    Stored Procedures </a>.
+                              </p>
+                              
+                              <p>For Python UDFs, use <code class="code">plpythonu</code>. For SQL UDFs, use
+                                 <code class="code">sql</code>. For stored procedures, use <code class="code">plpgsql</code>.
+                              </p>
+                              
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_GRANT-usage-notes">Usage Notes</h2><p>To grant privileges on an object, you must meet one of the following criteria:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>Be the object owner.</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>Be a superuser.</p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>Have a grant privilege for that object and privilege.</p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>For example, the following command enables the user HR both to perform SELECT
+                        commands on the employees table and to grant and revoke the same privilege for other
+                        users.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">grant select on table employees to HR with grant option;</code></pre><p>HR can&apos;t grant privileges for any operation other than SELECT, or on any other table
+                        than employees. 
+                     </p><p>Having privileges granted on a view doesn&apos;t imply having privileges on the
+                        underlying tables. Similarly, having privileges granted on a schema doesn&apos;t imply
+                        having privileges on the tables in the schema. You need to grant access to the
+                        underlying tables explicitly.
+                     </p><p>Superusers can access all objects regardless of GRANT and REVOKE commands that set
+                        object privileges.
+                     </p><h2 id="r_GRANT-examples">Examples</h2><p> The following example grants the SELECT privilege on the SALES table to the user
+                        <code class="code">fred</code>. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">grant select on table sales to fred;</code></pre><p>The following example grants the SELECT privilege on all tables in the QA_TICKIT
+                        schema to the user <code class="code">fred</code>. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">grant select on all tables in schema qa_tickit to fred;</code></pre><p>The following example grants all schema privileges on the schema QA_TICKIT to the
+                        user group QA_USERS. Schema privileges are CREATE and USAGE. USAGE grants users access
+                        to the objects in the schema, but does not grant privileges such as INSERT or SELECT
+                        on
+                        those objects. Privileges must be granted on each object separately.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create group qa_users;
+grant all on schema qa_tickit to group qa_users;</code></pre><p>The following example grants all privileges on the SALES table in the QA_TICKIT
+                        schema to all users in the group QA_USERS. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">grant all on table qa_tickit.sales to group qa_users;</code></pre><p>The following sequence of commands shows how access to a schema doesn&apos;t grant
+                        privileges on a table in the schema. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user schema_user in group qa_users password &apos;Abcd1234&apos;;
+create schema qa_tickit;
+create table qa_tickit.test (col1 int);
+grant all on schema qa_tickit to schema_user;
+
+set session authorization schema_user;
+select current_user;
+
+current_user
+--------------
+schema_user
+(1 row)
+
+select count(*) from qa_tickit.test;
+
+ERROR: permission denied for relation test [SQL State=42501] 
+
+set session authorization dw_user;
+grant select on table qa_tickit.test to schema_user;
+set session authorization schema_user;
+select count(*) from qa_tickit.test;
+
+count
+-------
+0
+(1 row)</code></pre><p>The following sequence of commands shows how access to a view doesn&apos;t imply
+                        access to its underlying tables. The user called VIEW_USER can&apos;t select from the DATE
+                        table, although this user has been granted all privileges on VIEW_DATE. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">create user view_user password &apos;Abcd1234&apos;;
+create view view_date as select * from date;
+grant all on view_date to view_user;
+set session authorization view_user;
+select current_user;
+
+current_user
+--------------
+view_user
+(1 row)
+
+select count(*) from view_date;
+count
+-------
+365
+(1 row)
+
+select count(*) from date;
+ERROR:  permission denied for relation date</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

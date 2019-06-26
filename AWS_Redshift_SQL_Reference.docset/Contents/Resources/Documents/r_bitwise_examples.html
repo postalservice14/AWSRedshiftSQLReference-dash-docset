@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_bitwise_examples">Bit-Wise Function Examples</h1><p>The USERS table in the TICKIT sample database contains several Boolean columns that
+                        indicate whether each user is known to like different types of events, such as sports,
+                        theatre, opera, and so on. For example:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select userid, username, lastname, city, state, 
+likesports, liketheatre
+from users limit 10;
+
+userid | username | lastname  |     city     | state | likesports | liketheatre
+--------+----------+-----------+--------------+-------+------------+-------------
+1 | JSG99FHE | Taylor    | Kent         | WA    | t          | t
+9 | MSD36KVR | Watkins   | Port Orford  | MD    | t          | f</code></pre><p>Assume that a new version of the USERS table is built in a different way, with a
+                        single integer column that defines (in binary form) eight types of events that each
+                        user
+                        likes or dislikes. In this design, each bit position represents a type of event, and
+                        a
+                        user who likes all eight types has all eight bits set to 1 (as in the first row of
+                        the
+                        following table). A user who does not like any of these events has all eight bits
+                        set to
+                        0 (see second row). A user who likes only sports and jazz is represented in the third
+                        row:
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c15c25b9">
+                              
+                              <tr valign="top">
+                                 
+                                 <th></th>
+                                 
+                                 <th>SPORTS</th>
+                                 
+                                 <th>THEATRE</th>
+                                 
+                                 <th>JAZZ</th>
+                                 
+                                 <th>OPERA</th>
+                                 
+                                 <th>ROCK</th>
+                                 
+                                 <th>VEGAS</th>
+                                 
+                                 <th>BROADWAY</th>
+                                 
+                                 <th>CLASSICAL</th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>User 1</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>1</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>User 2</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>User 3</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>1</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                                 <td>0</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><p>In the database table, these binary values could be stored in a single LIKES column
+                        as integers:
+                     </p><div class="table">
+                        <div class="table-contents">
+                           <table id="w278aac41c11c15c25c13">
+                              
+                              <tr valign="top">
+                                 
+                                 <th>User</th>
+                                 
+                                 <th>Binary value</th>
+                                 
+                                 <th>Stored value (integer)</th>
+                                 
+                              </tr>
+                              
+                              
+                              <tr>
+                                 
+                                 <td>User 1</td>
+                                 
+                                 <td>11111111</td>
+                                 
+                                 <td>255</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>User 2</td>
+                                 
+                                 <td>00000000</td>
+                                 
+                                 <td>0</td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>User 3</td>
+                                 
+                                 <td>10100000</td>
+                                 
+                                 <td>160</td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+                     </div><h2 id="r_bitwise_examples-bit_and-and-bit_or-examples">BIT_AND and BIT_OR
+                        Examples
+                     </h2><p>Given that meaningful business information is stored in integer columns, you can
+                        use bit-wise functions to extract and aggregate that information. The following query
+                        applies the BIT_AND function to the LIKES column in a table called USERLIKES and
+                        groups the results by the CITY column. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select city, bit_and(likes) from userlikes group by city 
+order by city;
+city      | bit_and
+---------------+---------
+Los Angeles   |       0
+Sacramento    |       0
+San Francisco |       0
+San Jose      |      64
+Santa Barbara |     192
+(5 rows)</code></pre><p>These results can be interpreted as follows:</p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>The integer value <code class="code">192</code> for Santa Barbara translates to the
+                                 binary value <code class="code">11000000</code>. In other words, all users in this city like
+                                 sports and theatre, but not all users like any other type of event.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>The integer <code class="code">64</code> translates to <code class="code">01000000</code>, so for
+                                 users in San Jose, the only type of event that they all like is theatre.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>The values of <code class="code">0</code> for the other three cities indicate that no
+                                 &quot;likes&quot; are shared by all users in those cities.
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>If you apply the BIT_OR function to the same data, the results are as
+                        follows:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select city, bit_or(likes) from userlikes group by city
+order by city;
+city      | bit_or
+---------------+--------
+Los Angeles   |    127
+Sacramento    |    255
+San Francisco |    255
+San Jose      |    255
+Santa Barbara |    255
+(5 rows)</code></pre><p>For four of the cities listed, all of the event types are liked by at least one
+                        user (<code class="code">255=11111111</code>). For Los Angeles, all of the event types except
+                        sports are liked by at least one user (<code class="code">127=01111111</code>).
+                     </p><h2 id="r_bitwise_examples-bool_and-and-bool_or-examples">BOOL_AND and
+                        BOOL_OR Examples
+                     </h2><p>You can use the Boolean functions against either Boolean expressions or integer
+                        expressions. For example, the following query return results from the standard USERS
+                        table in the TICKIT database, which has several Boolean columns.
+                     </p><p>The BOOL_OR function returns <code class="code">true</code> for all five rows. At least one
+                        user in each of those states likes sports. The BOOL_AND function returns
+                        <code class="code">false</code> for all five rows. Not all users in each of those states likes
+                        sports.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select state, bool_or(likesports), bool_and(likesports) from users 
+group by state order by state limit 5;
+
+state | bool_or | bool_and
+-------+--------------------
+AB    | t       | f
+AK    | t       | f
+AL    | t       | f
+AZ    | t       | f
+BC    | t       | f
+(5 rows)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

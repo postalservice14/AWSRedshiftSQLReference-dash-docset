@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SESSION_USER">SESSION_USER</h1><p>Returns the name of the user associated with the current session. This is the user
+                        who initiated the current database connection. 
+                     </p><div class="aws-note">
+                        <p class="aws-note">Note</p>
+                        <p>Do not use trailing parentheses when calling SESSION_USER. </p>
+                     </div><h2 id="r_SESSION_USER-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">session_user</code></pre><h2 id="r_SESSION_USER-return-type">Return Type</h2><p>Returns a CHAR or VARCHAR string. </p><h2 id="r_SESSION_USER-example">Example</h2><p>The following example returns the current session user: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select session_user;
+
+session_user
+--------------
+dwuser
+(1 row)</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

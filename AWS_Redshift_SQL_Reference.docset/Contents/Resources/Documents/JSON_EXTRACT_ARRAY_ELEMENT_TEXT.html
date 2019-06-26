@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="JSON_EXTRACT_ARRAY_ELEMENT_TEXT">JSON_EXTRACT_ARRAY_ELEMENT_TEXT
+                        Function
+                     </h1><p>JSON_EXTRACT_ARRAY_ELEMENT_TEXT returns a JSON array element in the outermost array
+                        of a JSON string, using a zero-based index. The first element in an array is at position
+                        0. If the index is negative or out of bound, JSON_EXTRACT_ARRAY_ELEMENT_TEXT returns
+                        empty string. If the <em>null_if_invalid</em> argument is set to
+                        <code class="code">true</code> and the JSON string is invalid, the function returns NULL instead
+                        of returning an error.
+                     </p><p>For more information, see <a href="https://docs.aws.amazon.com/redshift/latest/dg/json-functions.html">JSON Functions</a>. 
+                     </p><h2 id="JSON_EXTRACT_ARRAY_ELEMENT_TEXT-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">json_extract_array_element_text(&apos;<em>json string</em>&apos;, <em>pos</em> [, <em>null_if_invalid</em> ] )</code></pre><h2 id="JSON_EXTRACT_ARRAY_ELEMENT_TEXT-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>json_string</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A properly formatted JSON string.</p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term"><em>pos</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>An integer representing the index of the array element to be returned,
+                                 using a zero-based array index.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><div class="variablelist">
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term"><em>null_if_invalid</em></span></dt>
+                           
+                           <dd>
+                              
+                              <p>A Boolean value that specifies whether to return NULL if the input JSON
+                                 string is invalid instead of returning an error. To return NULL if the JSON
+                                 is invalid, specify <code class="code">true</code> (<code class="code">t</code>). To return an error
+                                 if the JSON is invalid, specify <code class="code">false</code> (<code class="code">f</code>). The
+                                 default is <code class="code">false</code>.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="JSON_EXTRACT_ARRAY_ELEMENT_TEXT-return">Return Type</h2><p>A VARCHAR string representing the JSON array element referenced by
+                        <em>pos</em>.
+                     </p><h2 id="JSON_EXTRACT_ARRAY_ELEMENT_TEXT-examples">Example</h2><p>The following example returns array element at position 2: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select json_extract_array_element_text(&apos;[111,112,113]&apos;, 2);
+ 
+json_extract_array_element_text 
+-------------------------------
+113 </code></pre><p>The following example returns an error because the JSON is invalid.</p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select json_extract_array_element_text(&apos;[&quot;a&quot;,[&quot;b&quot;,1,[&quot;c&quot;,2,3,null,]]]&apos;,1);
+ 
+An error occurred when executing the SQL command:
+select json_extract_array_element_text(&apos;[&quot;a&quot;,[&quot;b&quot;,1,[&quot;c&quot;,2,3,null,]]]&apos;,1)</code></pre><p>The following example sets <em>null_if_invalid</em> to
+                        <em>true</em>, so the statement returns NULL instead of returning an
+                        error for invalid JSON.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select json_extract_array_element_text(&apos;[&quot;a&quot;,[&quot;b&quot;,1,[&quot;c&quot;,2,3,null,]]]&apos;,1,true);
+ 
+json_extract_array_element_text
+-------------------------------
+</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

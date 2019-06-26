@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_NVL2">NVL2 Expression</h1><p>Returns one of two values based on whether a specified expression evaluates to NULL
+                        or NOT NULL.
+                     </p><h2 id="r_NVL2-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">NVL2 ( <em>expression</em>, <em>not_null_return_value</em>, <em>null_return_value</em> )</code></pre><h2 id="r_NVL2-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>expression</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>An expression, such as a column name, to be evaluated for null
+                                 status.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>not_null_return_value</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The value returned if <em>expression</em> evaluates to NOT
+                                 NULL. The <em>not_null_return_value</em> value must either have
+                                 the same data type as <em>expression</em> or be implicitly
+                                 convertible to that data type.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>null_return_value</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The value returned if <em>expression</em> evaluates to NULL.
+                                 The <em>null_return_value</em> value must either have the same
+                                 data type as <em>expression</em> or be implicitly convertible to
+                                 that data type.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_NVL2-return-type">Return Type</h2><p>The NVL2 return type is determined as follows:</p><div class="itemizedlist">
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>If either <em>not_null_return_value</em> or
+                                 <em>null_return_value</em> is null, the data type of the
+                                 not-null expression is returned.
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><p>If both <em>not_null_return_value</em> and
+                        <em>null_return_value</em> are not null:
+                     </p><div class="itemizedlist">
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <ul class="itemizedlist" type="disc">
+                           <li class="listitem">
+                              
+                              <p>If <em>not_null_return_value</em> and
+                                 <em>null_return_value</em> have the same data type, that data
+                                 type is returned.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>If <em>not_null_return_value</em> and
+                                 <em>null_return_value</em> have different numeric data types,
+                                 the smallest compatible numeric data type is returned.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>If <em>not_null_return_value</em> and
+                                 <em>null_return_value</em> have different datetime data types, a
+                                 timestamp data type is returned.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>If <em>not_null_return_value</em> and
+                                 <em>null_return_value</em> have different character data types,
+                                 the data type of <em>not_null_return_value</em> is returned.
+                              </p>
+                              
+                           </li>
+                           <li class="listitem">
+                              
+                              <p>If <em>not_null_return_value</em> and
+                                 <em>null_return_value</em> have mixed numeric and non-numeric
+                                 data types, the data type of <em>not_null_return_value</em> is
+                                 returned.
+                              </p>
+                              
+                           </li>
+                        </ul>
+                     </div><div class="aws-note">
+                        <p class="aws-note">Important</p>
+                        <p>In the last two cases where the data type of
+                           <em>not_null_return_value</em> is returned,
+                           <em>null_return_value</em> is implicitly cast to that data type. If
+                           the data types are incompatible, the function fails.
+                        </p>
+                     </div><h2 id="nvl2-usage-notes">Usage Notes</h2><p><a href="r_DECODE_expression.html">DECODE Expression</a> can be
+                        used in a similar way to NVL2 when the <em>expression</em> and
+                        <em>search</em> parameters are both null. The difference is that for
+                        DECODE, the return will have both the value and the data type of the
+                        <em>result</em> parameter. In contrast, for NVL2, the return will have
+                        the value of either the <em>not_null_return_value</em> or
+                        <em>null_return_value</em> parameter, whichever is selected by the
+                        function, but will have the data type of
+                        <em>not_null_return_value</em>.
+                     </p><p>For example, assuming column1 is NULL, the following queries will return the same
+                        value. However, the DECODE return value data type will be INTEGER and the NVL2 return
+                        value data type will be VARCHAR.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select decode(column1, null, 1234, &apos;2345&apos;);
+select nvl2(column1, &apos;2345&apos;, 1234);</code></pre><h2 id="r_NVL2-examples">Example</h2><p>The following example modifies some sample data, then evaluates two fields to
+                        provide appropriate contact information for users: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">update users set email = null where firstname = &apos;Aphrodite&apos; and lastname = &apos;Acevedo&apos;;
+
+select (firstname + &apos; &apos; + lastname) as name, 
+nvl2(email, email, phone) AS contact_info
+from users 
+where state = &apos;WA&apos;
+and lastname  like &apos;A%&apos;
+order by lastname, firstname;
+
+name			     contact_info	
+--------------------+-------------------------------------------
+Aphrodite Acevedo	(906) 632-4407
+Caldwell Acevedo 	Nunc.sollicitudin@Duisac.ca
+Quinn Adams		  vel@adipiscingligulaAenean.com
+Kamal Aguilar		quis@vulputaterisusa.com
+Samson Alexander	 hendrerit.neque@indolorFusce.ca
+Hall Alford		  ac.mattis@vitaediamProin.edu
+Lane Allen		   et.netus@risusDonec.org
+Xander Allison	   ac.facilisis.facilisis@Infaucibus.com
+Amaya Alvarado	   dui.nec.tempus@eudui.edu
+Vera Alvarez		 at.arcu.Vestibulum@pellentesque.edu
+Yetta Anthony		enim.sit@risus.org
+Violet Arnold		ad.litora@at.com
+August Ashley		consectetuer.euismod@Phasellus.com
+Karyn Austin		 ipsum.primis.in@Maurisblanditenim.org
+Lucas Ayers		  at@elitpretiumet.com</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>

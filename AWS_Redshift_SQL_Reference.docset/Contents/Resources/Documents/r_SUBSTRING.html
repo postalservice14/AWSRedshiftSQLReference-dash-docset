@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/awsdocs.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/awsdocs.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div id="content" style="padding: 10px 30px;">
+    <div></div><h1 class="topictitle" id="r_SUBSTRING">SUBSTRING Function</h1><p>Returns the characters extracted from a string based on the specified character
+                        position for a specified number of characters. 
+                     </p><p>The character position and number of characters are based on the number of
+                        characters, not bytes, so that multi-byte characters are counted as single characters.
+                        You cannot specify a negative length, but you can specify a negative starting
+                        position.
+                     </p><h2 id="r_SUBSTRING-synopsis">Syntax</h2><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SUBSTRING(<em>string</em> FROM <em>start_position</em> [ FOR <em>number_characters</em> ] )</code></pre><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight">SUBSTRING(<em>string</em>, <em>start_position</em>, <em>number_characters</em> )</code></pre><h2 id="r_SUBSTRING-arguments">Arguments</h2><div class="variablelist">
+                        
+                        
+                        
+                        
+                        <dl>
+                           
+                           <dt><span class="term">
+                                 <em>string</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The string to be searched. Non-character data types are treated like a
+                                 string. 
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>start_position</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The position within the string to begin the extraction, starting at 1.
+                                 The <em>start_position</em> is based on the number of
+                                 characters, not bytes, so that multi-byte characters are counted as single
+                                 characters. This number can be negative.
+                              </p>
+                              
+                           </dd>
+                           
+                           
+                           <dt><span class="term">
+                                 <em>number_characters</em>
+                                 </span></dt>
+                           
+                           <dd>
+                              
+                              <p>The number of characters to extract (the length of the substring). The
+                                 <em>number_characters</em> is based on the number of
+                                 characters, not bytes, so that multi-byte characters are counted as single
+                                 characters. This number cannot be negative.
+                              </p>
+                              
+                           </dd>
+                           
+                        </dl>
+                     </div><h2 id="r_SUBSTRING-return-type">Return Type</h2><p>VARCHAR</p><h2 id="r_SUBSTRING_usage_notes">Usage Notes</h2><p>The following example returns a four-character string beginning with the sixth
+                        character. 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select substring(&apos;caterpillar&apos;,6,4);
+substring
+-----------
+pill
+(1 row)</code></pre><p>If the <em>start_position</em> +
+                        <em>number_characters</em> exceeds the length of the
+                        <em>string</em>, SUBSTRING returns a substring starting from the
+                        <em>start_position</em> until the end of the string. For example: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select substring(&apos;caterpillar&apos;,6,8);
+substring
+-----------
+pillar
+(1 row)</code></pre><p>If the <code class="code">start_position</code> is negative or 0, the SUBSTRING function
+                        returns a substring beginning at the first character of string with a length of
+                        <code class="code">start_position</code> + <code class="code">number_characters</code> -1. For
+                        example:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select substring(&apos;caterpillar&apos;,-2,6);
+substring
+-----------
+cat
+(1 row)</code></pre><p>If <code class="code">start_position</code> + <code class="code">number_characters</code> -1 is less than or
+                        equal to zero, SUBSTRING returns an empty string. For example:
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select substring(&apos;caterpillar&apos;,-5,4);
+substring
+-----------
+
+(1 row)</code></pre><h2 id="r_SUBSTRING-examples">Examples</h2><p>The following example returns the month from the LISTTIME string in the LISTING
+                        table: 
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select listid, listtime,
+substring(listtime, 6, 2) as month
+from listing
+order by 1, 2, 3
+limit 10;
+
+ listid |      listtime       | month
+--------+---------------------+-------
+      1 | 2008-01-24 06:43:29 | 01
+      2 | 2008-03-05 12:25:29 | 03
+      3 | 2008-11-01 07:35:33 | 11
+      4 | 2008-05-24 01:18:37 | 05
+      5 | 2008-05-17 02:29:11 | 05
+      6 | 2008-08-15 02:08:13 | 08
+      7 | 2008-11-15 09:38:15 | 11
+      8 | 2008-11-09 05:07:30 | 11
+      9 | 2008-09-09 08:03:36 | 09
+     10 | 2008-06-17 09:44:54 | 06
+(10 rows)</code></pre><p>The following example is the same as above, but uses the FROM...FOR option: </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select listid, listtime,
+substring(listtime from 6 for 2) as month
+from listing
+order by 1, 2, 3
+limit 10;
+
+ listid |      listtime       | month
+--------+---------------------+-------
+      1 | 2008-01-24 06:43:29 | 01
+      2 | 2008-03-05 12:25:29 | 03
+      3 | 2008-11-01 07:35:33 | 11
+      4 | 2008-05-24 01:18:37 | 05
+      5 | 2008-05-17 02:29:11 | 05
+      6 | 2008-08-15 02:08:13 | 08
+      7 | 2008-11-15 09:38:15 | 11
+      8 | 2008-11-09 05:07:30 | 11
+      9 | 2008-09-09 08:03:36 | 09
+     10 | 2008-06-17 09:44:54 | 06
+(10 rows)</code></pre><p>You cannot use SUBSTRING to predictably extract the prefix of a string that might
+                        contain multi-byte characters because you need to specify the length of a multi-byte
+                        string based on the number of bytes, not the number of characters. To extract the
+                        beginning segment of a string based on the length in bytes, you can CAST the string
+                        as VARCHAR(<em>byte_length</em>) to truncate the string,
+                        where <em>byte_length</em> is the required length. The
+                        following example extracts the first 5 bytes from the string <code class="code">&apos;Fourscore and
+                           seven&apos;</code>.
+                     </p><pre class="programlisting"><div class="code-btn-container"><div class="btn-copy-code" title="Copy"></div><div class="btn-dark-theme" title="Dark theme" title-dark="Dark theme" title-light="Light theme"></div></div><code class="nohighlight ">select cast(&apos;Fourscore and seven&apos; as varchar(5));
+
+varchar
+-------
+Fours</code></pre><div id="marketing-target"><span class="close-button"></span><div class="marketing-title" id="marketing-title"></div>
+                        <div class="marketing-description"><span id="marketing-description"></span><span id="marketing-cta"></span></div>
+                     </div></div>
+</body>
+</html>
